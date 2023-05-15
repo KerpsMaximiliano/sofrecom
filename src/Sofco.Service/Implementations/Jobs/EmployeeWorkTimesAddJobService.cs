@@ -169,7 +169,7 @@ namespace Sofco.Service.Implementations.Jobs
         private int GetTaskID()
         {
             var setting = unitOfWork.SettingRepository.GetByKey(SettingConstant.PreLoadHoursDefault);
-            return  setting.Id;
+            return Convert.ToInt32(setting.Value);
            
         }
 
