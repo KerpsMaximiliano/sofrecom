@@ -103,7 +103,9 @@
                                     <tr>
                                         <th class="font-13">Nombre</th>
                                         <th class="font-13">Presupuesto</th>
+                                        <th class="font-13">Moneda</th>
                                         <th class="font-13">Monto</th>
+                                        <th class="font-13">Unidad</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -111,7 +113,9 @@
                                         <td class="font-13">{{ item.providerDescription }} </td>
                                         <td><button type="button" class="btn btn-success"
                                             (click)="downloadProvFile(item)">Descargar</button></td>
+                                        <td class="font-13">{{item.currencyID | requestNoteCurrency }}</td>
                                         <td class="font-13">{{item.ammount}}</td>
+                                        <td class="font-13">{{item.unitID | requestNoteUnit }}</td>
                                     </tr> 
                                 </tbody>
                             </table>
