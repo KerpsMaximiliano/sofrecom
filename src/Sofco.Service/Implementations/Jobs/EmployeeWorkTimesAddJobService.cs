@@ -29,7 +29,7 @@ namespace Sofco.Service.Implementations.Jobs
             get
             {
                 if (taskID == null)
-                     taskID = GetTaskID();
+                    taskID = GetTaskID();
 
                 return taskID.Value;
             }
@@ -63,7 +63,7 @@ namespace Sofco.Service.Implementations.Jobs
 
                     unitOfWork.Save();
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     logger.LogError(ex);
                 }
@@ -75,17 +75,18 @@ namespace Sofco.Service.Implementations.Jobs
             List<RescheduledAllocation> rescheduledAllocations = new List<RescheduledAllocation>();
 
             List<Employee> employees = allocations.Select(x => x.Employee).Distinct().ToList();
-            foreach (Employee employee in employees) 
+            foreach (Employee employee in employees)
             {
                 var workTimes = this.unitOfWork.WorkTimeRepository.GetLiteByEmployeeId(date, employee.Id);
                 decimal employeWorkedHours = workTimes.Sum(x => x.Hours);
 
+                if (employee.EndDate.HasValue && employee.EndDate.Value.Date < date.Date)
+                    continue;
                 if (employeWorkedHours >= employee.BusinessHours || workTimes.Any(x => x.Source == WorkTimeSource.License.ToString()))
                     continue;
 
                 var filteredAllocations = allocations.Where(x => x.EmployeeId == employee.Id && !workTimes.Any(p => p.AnalyticId == x.AnalyticId)).ToList();
                 var totalPorcentaje = filteredAllocations.Sum(allocation => allocation.Percentage);
-
 
                 foreach (Allocation employeeAllocation in filteredAllocations)
                 {
@@ -96,12 +97,12 @@ namespace Sofco.Service.Implementations.Jobs
                     rescheduledAllocation.Date = date;
                     rescheduledAllocation.RemainBusinessHours = employee.BusinessHours - employeWorkedHours;
                     rescheduledAllocation.Percentage = employeeAllocation.Percentage * 100 / totalPorcentaje;
-
+                    //  if (employeeAllocation.Analytic.AutomaticChargeable)
                     rescheduledAllocations.Add(rescheduledAllocation);
                 }
             }
 
-            return rescheduledAllocations;    
+            return rescheduledAllocations;
         }
 
         public WorkTime CreateDomain(RescheduledAllocation allocation, DateTime day)
