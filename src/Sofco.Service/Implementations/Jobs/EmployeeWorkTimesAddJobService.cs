@@ -61,6 +61,7 @@ namespace Sofco.Service.Implementations.Jobs
                         unitOfWork.WorkTimeRepository.Save(workTime);
                     }
 
+
                     unitOfWork.Save();
                 }
                 catch (Exception ex)
@@ -97,8 +98,8 @@ namespace Sofco.Service.Implementations.Jobs
                     rescheduledAllocation.Date = date;
                     rescheduledAllocation.RemainBusinessHours = employee.BusinessHours - employeWorkedHours;
                     rescheduledAllocation.Percentage = employeeAllocation.Percentage * 100 / totalPorcentaje;
-                    //  if (employeeAllocation.Analytic.AutomaticChargeable)
-                    rescheduledAllocations.Add(rescheduledAllocation);
+                    if (employeeAllocation.Analytic.AutomaticChargeable.HasValue && employeeAllocation.Analytic.AutomaticChargeable.Value)
+                         rescheduledAllocations.Add(rescheduledAllocation);
                 }
             }
 
@@ -114,7 +115,7 @@ namespace Sofco.Service.Implementations.Jobs
             domain.UserId = this.unitOfWork.UserRepository.GetByEmail(allocation.EmployeeEmail).Id;
             domain.TaskId = TaskID;
             domain.Date = allocation.Date;
-            domain.Hours = allocation.RemainBusinessHours * allocation.Percentage/100;
+            domain.Hours = CalculateHours(allocation);
             domain.Source = WorkTimeSource.MassiveImport.ToString();
 
             domain.CreationDate = DateTime.UtcNow.Date;
@@ -122,6 +123,16 @@ namespace Sofco.Service.Implementations.Jobs
 
             return domain;
         }
+
+        private  decimal CalculateHours(RescheduledAllocation allocation)
+        {
+            List<WorkTime> workTimesInMemory = unitOfWork.WorkTimeRepository.GetAddTrackedByEmployee(allocation.EmployeeId);
+            Decimal maxHours = allocation.RemainBusinessHours - workTimesInMemory.Sum(x => x.Hours);
+            Decimal calculateHours = allocation.RemainBusinessHours * allocation.Percentage / 100;
+
+            return Math.Min(maxHours, calculateHours);
+        }
+
         private IList<Allocation> GetAllocations(DateTime day)
         {
             IList<Allocation> allocations = this.unitOfWork.AllocationRepository.GetAllocationsLiteBetweenDatesAndFullBillingPercentage(day);
