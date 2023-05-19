@@ -300,7 +300,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         public List<WorkTime> GetAddTrackedByEmployee(int employeeID)
         {
             return context.ChangeTracker.Entries<WorkTime>()
-                   .Where(e => e.State == EntityState.Added && e.Entity.Employee.Id== employeeID)
+                   .Where(e => e.State == EntityState.Added && e.Entity.EmployeeId== employeeID)
                    .Select(e => e.Entity)
                    .ToList();
         }
