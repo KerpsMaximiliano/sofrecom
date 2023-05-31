@@ -14,13 +14,16 @@ namespace Sofco.WebApi.Controllers.Admin
     public class PreloadAutomaticWorkTimesController : Controller
     {
         private readonly IEmployeeWorkTimesAddJobService employeeWorkTimesAddJobService;
+        private readonly IEmployeeWorkTimesMonthAddJobService employeeWorkTimesMonthAddJobService;
+
         private readonly ITaskService taskService;
 
 
-        public PreloadAutomaticWorkTimesController(IEmployeeWorkTimesAddJobService employeeWorkTimesAddJobService, ISettingService settingService, ITaskService taskService)
+        public PreloadAutomaticWorkTimesController(IEmployeeWorkTimesAddJobService employeeWorkTimesAddJobService, ISettingService settingService, ITaskService taskService, IEmployeeWorkTimesMonthAddJobService employeeWorkTimesMonthAddJobService)
         {
             this.employeeWorkTimesAddJobService = employeeWorkTimesAddJobService;
             this.taskService = taskService;
+            this.employeeWorkTimesMonthAddJobService = employeeWorkTimesMonthAddJobService;
         }
         [HttpGet("GetTasks")]
         public IActionResult GetTasks()
@@ -33,6 +36,12 @@ namespace Sofco.WebApi.Controllers.Admin
         public IActionResult RunProcess()
         {
             this.employeeWorkTimesAddJobService.Run();
+            return Ok();
+        }
+        [HttpGet("RunMonthProcess")]
+        public IActionResult RunMonthProcess()
+        {
+            this.employeeWorkTimesMonthAddJobService.Run();
             return Ok();
         }
     }
