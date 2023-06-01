@@ -4,6 +4,7 @@
     {
         MassiveImport,
         License,
-        Manual
+        Manual,
+        AutomaticProcess
     }
 }
