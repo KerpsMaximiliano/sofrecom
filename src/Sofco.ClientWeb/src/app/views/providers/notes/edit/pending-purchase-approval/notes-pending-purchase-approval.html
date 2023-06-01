@@ -33,11 +33,14 @@
                                 <input type="number" class="form-control" formControlName="id">
                             </div>
                         </div>
+                        <ng2-modal [config]="{title: 'Lista de proveedores', id: 'alerta-proveedores', acceptButton: true, cancelButton: true, acceptButtonText: 'Aceptar', cancelButtonText: 'Cancelar', closeIcon: true }" id="alert-modal" #alertModal (accept)="alertModalAccept(alertModal)">
+                          <p>Al cambiar el rubro todos los proveedores seleccionados se quitarán de la lista ¿Está seguro de que desear realizar esta acción?</p>
+                        </ng2-modal>
                         <div class="form-group">
                             <label class="col-sm-3 control-label text-left">Rubro: </label>
                             <div class="col-sm-9">
                                 <div style="display: flex;">
-                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea" style="flex-grow: 3; flex-shrink: 1;" (change)="change($event)"></ng-select>
+                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea" style="flex-grow: 3; flex-shrink: 1;" (change)="change($event, alertModal)"></ng-select>
                                     <div *ngIf="critical != null" style="flex-shrink: 1;">
                                         <label class="col-xs-4 control-label text-left">Crítico: </label>
                                         <div class="col-xs-8">

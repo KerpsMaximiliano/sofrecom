@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { Ng2ModalComponent } from "app/components/modal/ng2modal.component";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -336,23 +337,33 @@ export class NotesPendingPurchaseApproval {
         this.formNota.get('providerArea').enable();
     }
 
-    change(event) {
-        if(event != undefined) {
-            this.critical = (event.critical) ? "Si" : "No";
-            this.ammountReq = event.rnAmmountReq;
-            this.providers = [];
-            this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[event.id]}).subscribe(d => {
-                this.providers = d.data;
-            });
-            Object.keys(this.formProvidersGrid.controls).forEach(key => {
-                this.formProvidersGrid.get(key).clearValidators();
-                if(this.ammountReq) {
-                    this.formProvidersGrid.get(key).setValidators(Validators.required);
-                }
-            });
-        } else {
-            this.critical = null
-        }
+    change(event, alertModal: Ng2ModalComponent) {
+      if(event != undefined) {
+        this.critical = (event.critical) ? "Si" : "No";
+        this.ammountReq = event.rnAmmountReq;
+        this.providers = [];
+        this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[event.id]}).subscribe(d => {
+            this.providers = d.data;
+        });
+        Object.keys(this.formProvidersGrid.controls).forEach(key => {
+            this.formProvidersGrid.get(key).clearValidators();
+            if(this.ammountReq) {
+                this.formProvidersGrid.get(key).setValidators(Validators.required);
+            }
+        });
+      } else {
+          this.critical = null
+      }
+      if(this.proveedoresSelected.length) {
+        alertModal.show();
+      }
+    }
+
+    alertModalAccept(alertModal: Ng2ModalComponent) {
+      alertModal.hide();
+      this.proveedoresSelected.splice(0);
+      this.formNota.controls.providers.setValue(null);
+      delete this.formProvidersGrid.controls;
     }
 
     openTravelModal() {
