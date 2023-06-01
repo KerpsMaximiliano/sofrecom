@@ -543,6 +543,8 @@ export class NotesPendingPurchaseApproval {
             }
         });
         this.formProvidersGrid.removeControl(`control${item.providerId}`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-currency`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-unit`);
         this.proveedoresSelected = [...this.proveedoresSelected];
     }
 
