@@ -46,6 +46,9 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void Run()
         {
+            if (!this.MustExecute())
+                return;
+
             List<DateTime> days = GetDaysToAnalize();
 
             foreach (DateTime day in days)
@@ -69,6 +72,11 @@ namespace Sofco.Service.Implementations.Jobs
                     logger.LogError(ex);
                 }
             }
+        }
+
+        protected virtual bool MustExecute()
+        {
+            return true;
         }
 
         private IList<RescheduledAllocation> UpdateAllocationsByWorkTimes(IList<Allocation> allocations, DateTime date)
@@ -143,13 +151,13 @@ namespace Sofco.Service.Implementations.Jobs
                 .ToList();
         }
 
-        private List<DateTime> GetDaysToAnalize()
+        protected virtual List<DateTime> GetDaysToAnalize()
         {
             List<DateTime> days = GetDaysUntilFirstPreviousMonday(DateTime.Now);
             return this.FilterDaysHolidays(days);
         }
 
-        private List<DateTime> FilterDaysHolidays(List<DateTime> days)
+        protected List<DateTime> FilterDaysHolidays(List<DateTime> days)
         {
             List<Holiday> holidays = this.unitOfWork.HolidayRepository.Get(DateTime.Now.Year);
             return days.FindAll(d => !IsHoliday(d, holidays));

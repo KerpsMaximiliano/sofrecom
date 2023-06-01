@@ -44,5 +44,8 @@
 
         public const string EmployeeWorkTimesAdd = "EmployeeWorkTimesAdd";
 
+        public const string EmployeeWorkTimesMonthAdd = "EmployeeWorkTimesMonthAdd";
+
+
     }
 }
