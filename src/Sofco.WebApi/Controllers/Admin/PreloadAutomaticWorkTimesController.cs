@@ -25,6 +25,7 @@ namespace Sofco.WebApi.Controllers.Admin
             this.taskService = taskService;
             this.employeeWorkTimesMonthAddJobService = employeeWorkTimesMonthAddJobService;
         }
+
         [HttpGet("GetTasks")]
         public IActionResult GetTasks()
         {
@@ -38,6 +39,7 @@ namespace Sofco.WebApi.Controllers.Admin
             this.employeeWorkTimesAddJobService.Run();
             return Ok();
         }
+
         [HttpGet("RunMonthProcess")]
         public IActionResult RunMonthProcess()
         {

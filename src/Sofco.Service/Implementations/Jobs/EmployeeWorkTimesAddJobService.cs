@@ -46,9 +46,6 @@ namespace Sofco.Service.Implementations.Jobs
 
         public void Run()
         {
-            if (!this.MustExecute())
-                return;
-
             List<DateTime> days = GetDaysToAnalize();
 
             foreach (DateTime day in days)
@@ -72,11 +69,6 @@ namespace Sofco.Service.Implementations.Jobs
                     logger.LogError(ex);
                 }
             }
-        }
-
-        protected virtual bool MustExecute()
-        {
-            return true;
         }
 
         private IList<RescheduledAllocation> UpdateAllocationsByWorkTimes(IList<Allocation> allocations, DateTime date)
