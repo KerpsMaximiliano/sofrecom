@@ -31,13 +31,17 @@ dt {
     border: 1px solid red;
 }
 
+/*#region Corrección de ancho de campo unidad */
+// Estos selectores ajustan el ancho los ng-select que tengan la clase "short-ng-select"
 /deep/ .short-ng-select.ng-select.ng-select-single {
   min-width: 8rem;
 }
 
+// Arreglo de dropdown
 /deep/ .short-ng-select.ng-dropdown-panel.ng-select-bottom {
   width: fit-content;
 }
+/*#endregion Corrección de ancho de campo unidad*/
 
 input::-webkit-outer-spin-button,
       input::-webkit-inner-spin-button {
