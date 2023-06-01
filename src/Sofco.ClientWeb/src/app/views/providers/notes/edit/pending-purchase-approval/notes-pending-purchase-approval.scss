@@ -31,6 +31,14 @@ dt {
     border: 1px solid red;
 }
 
+/deep/ .short-ng-select.ng-select.ng-select-single {
+  min-width: 8rem;
+}
+
+/deep/ .short-ng-select.ng-dropdown-panel.ng-select-bottom {
+  width: fit-content;
+}
+
 input::-webkit-outer-spin-button,
       input::-webkit-inner-spin-button {
         -webkit-appearance: none;

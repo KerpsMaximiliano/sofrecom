@@ -137,13 +137,13 @@
                                             <input type="number" [formControlName]="'control' + item.providerId" class="form-control">
                                         </td>
                                         <td>
-                                            <ng-select [items]="units" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-unit'"></ng-select>
+                                            <ng-select class="short-ng-select" [items]="units" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-unit'"></ng-select>
                                         </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProveedor(i, item)"
                                                 class="btn btn-danger btn-xs" [disabled]="closed || rejected" ><i class="fa fa-trash"></i></button>
                                         </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
