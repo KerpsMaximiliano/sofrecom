@@ -58,3 +58,21 @@ input[type="number"] {
   }
 /*#endregion Corrección de ancho de campo unidad*/
 
+/*#region Estilado del modal */
+  // Texto informativo - arregla separación entre párrafos y
+  p.info {
+    margin: 0;
+  }
+
+  // Texto de alerta a resaltar
+  span.warn {
+    font-weight: bolder;
+    color: black;
+    padding: 0; // Dado que está incrustado en otro texto dentro de un p
+  }
+
+  // Separa la pregunta del texto informativo
+  p.ask {
+    margin: .8rem auto 0;
+  }
+/*#endregion Estilado del modal */
