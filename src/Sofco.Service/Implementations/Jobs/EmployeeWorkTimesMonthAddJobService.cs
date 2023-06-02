@@ -17,7 +17,7 @@ using Sofco.Service.Implementations.Entities;
 
 namespace Sofco.Service.Implementations.Jobs
 {
-    public class EmployeeWorkTimesMonthAddJobService : EmployeeWorkTimesAddJobService, IEmployeeWorkTimesMonthAddJobService
+    public class EmployeeWorkTimesMonthAddJobService : EmployeeWorkTimesAddJobServiceBase, IEmployeeWorkTimesMonthAddJobService
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -28,7 +28,7 @@ namespace Sofco.Service.Implementations.Jobs
         {
             get
             {
-                if (closesDate ==null || closesDate.Count==0)
+                if (closesDate == null || closesDate.Count == 0)
                     closesDate = this.unitOfWork.CloseDateRepository.GetBeforeAndCurrent();
 
                 return closesDate;
@@ -40,7 +40,7 @@ namespace Sofco.Service.Implementations.Jobs
 
 
 
-        public EmployeeWorkTimesMonthAddJobService(IUnitOfWork unitOfWork, ILogMailer<EmployeeWorkTimesAddJobService> logger) : base(unitOfWork,logger) 
+        public EmployeeWorkTimesMonthAddJobService(IUnitOfWork unitOfWork, ILogMailer<EmployeeWorkTimesAddJobService> logger) : base(unitOfWork, logger)
         {
             this.unitOfWork = unitOfWork;
         }
@@ -74,5 +74,7 @@ namespace Sofco.Service.Implementations.Jobs
             days.Reverse();
             return days;
         }
+
+      
     }
 }

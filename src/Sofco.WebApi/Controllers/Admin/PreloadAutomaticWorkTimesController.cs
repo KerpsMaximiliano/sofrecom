@@ -19,9 +19,9 @@ namespace Sofco.WebApi.Controllers.Admin
         private readonly ITaskService taskService;
 
 
-        public PreloadAutomaticWorkTimesController(IEmployeeWorkTimesAddJobService employeeWorkTimesAddJobService, ISettingService settingService, ITaskService taskService, IEmployeeWorkTimesMonthAddJobService employeeWorkTimesMonthAddJobService)
+        public PreloadAutomaticWorkTimesController(ISettingService settingService, ITaskService taskService, IEmployeeWorkTimesMonthAddJobService employeeWorkTimesMonthAddJobService,  IEmployeeWorkTimesAddJobService employeeWorkTimesAddJobS)
         {
-            this.employeeWorkTimesAddJobService = employeeWorkTimesAddJobService;
+            this.employeeWorkTimesAddJobService = employeeWorkTimesAddJobS;
             this.taskService = taskService;
             this.employeeWorkTimesMonthAddJobService = employeeWorkTimesMonthAddJobService;
         }
