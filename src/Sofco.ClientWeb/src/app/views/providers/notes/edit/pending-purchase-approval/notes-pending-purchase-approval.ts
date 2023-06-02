@@ -16,6 +16,18 @@ import { WorkflowService } from "app/services/workflow/workflow.service";
 import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
 
+// Declaración de interfaces utilizadas
+declare interface ProviderArea {
+  active: boolean;
+  startDate: string;
+  critical: boolean;
+  description: string;
+  endDate: any;
+  id: number;
+  rnAmmountReq: boolean;
+}
+
+
 @Component({
     selector: 'notes-pending-purchase-approval',
     templateUrl: './notes-pending-purchase-approval.html',
@@ -59,6 +71,10 @@ export class NotesPendingPurchaseApproval {
     trainingFormError: boolean = false;
 
     providerAreas = [];
+    /** Registro de rubro anterior o inicial (para poder deshacer el cambio) */
+    protected previousProviderArea?: ProviderArea;
+    /** Registro de rubro nuevo (al que se busca cambiar) */
+    protected currentProviderArea?: ProviderArea;
     participanteViajeSeleccionado = null;
     participanteViajeSeleccionadoCuit = null;
     participanteViajeSeleccionadoFecha = null;
@@ -283,7 +299,10 @@ export class NotesPendingPurchaseApproval {
             });
             this.critical = (d.data.critical) ? "Si" : "No";
             this.formNota.get('id').disable();
-        });
+
+            // Inicializa el registro de la selección de rubro con el valor inicial del select, si es que tiene
+            this.previousProviderArea = d.data;
+          });
         this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[this.currentNote.providerAreaId]}).subscribe(d => {
             this.providers = d.data;
         });
@@ -337,12 +356,34 @@ export class NotesPendingPurchaseApproval {
         this.formNota.get('providerArea').enable();
     }
 
-    change(event, alertModal: Ng2ModalComponent) {
-      if(event != undefined) {
-        this.critical = (event.critical) ? "Si" : "No";
-        this.ammountReq = event.rnAmmountReq;
+    /**
+     * Evento que regula el comportamiento del cambio de rubro en el select
+     * @param {ProviderArea} event Nuevo rubro selecionado
+     * @param {Ng2ModalComponent} alertModal Instancia del modal de advertencia para el cambio de rubro (requerida para mostrarlo y oculrtarlo)
+     */
+    change(event: ProviderArea, alertModal: Ng2ModalComponent) {
+      this.currentProviderArea = event;
+      // Si hay proveedores seleccionados abre el modal de alerta, sino cambia de rubro sin alertar
+      if(this.proveedoresSelected.length) {
+        alertModal.show();
+      } else {
+        this.providerAreaChange();
+      }
+    }
+
+    /**
+     * Método que procesa el cambio de rubrio, actualizando la lista de proveedores
+     */
+    providerAreaChange() {
+      // Actualización de registro de la selección de rubro al nuevo valor
+      this.previousProviderArea = this.currentProviderArea;
+
+      // Lógica previamente implementada en método change()
+      if(this.currentProviderArea != undefined) {
+        this.critical = (this.currentProviderArea.critical) ? "Si" : "No";
+        this.ammountReq = this.currentProviderArea.rnAmmountReq;
         this.providers = [];
-        this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[event.id]}).subscribe(d => {
+        this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[this.currentProviderArea.id]}).subscribe(d => {
             this.providers = d.data;
         });
         Object.keys(this.formProvidersGrid.controls).forEach(key => {
@@ -354,16 +395,40 @@ export class NotesPendingPurchaseApproval {
       } else {
           this.critical = null
       }
-      if(this.proveedoresSelected.length) {
-        alertModal.show();
-      }
+
+      // Reestablece el select que agrega proveedores (evita que quede seleccionado el de otro rubro)
+      this.formNota.controls.providers.setValue(null);
     }
 
+    /**
+     * Acción ejecutada al recibir el evento (accept) del alertModal, oculta el modal y
+     * reestablece la lista de proveedores seleccionados y el select para agregar proveedores
+     * @param {Ng2ModalComponent} alertModal Instancia del modal de advertencia para el cambio de rubro (requerida para mostrarlo y oculrtarlo)
+     */
     alertModalAccept(alertModal: Ng2ModalComponent) {
+      // Cambia el rubro con la lógica utilizada anteriormente
+      this.providerAreaChange();
+
+      // Borra los proveedores de la lista
+      this.proveedoresSelected.splice(0).forEach((item) => {
+        this.formProvidersGrid.removeControl(`control${item.providerId}`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-currency`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-unit`);
+      });
+
+      // Oculta el modal
       alertModal.hide();
-      this.proveedoresSelected.splice(0);
-      this.formNota.controls.providers.setValue(null);
-      delete this.formProvidersGrid.controls;
+
+      // Sobreescribe el rubro, dado que se cambió
+      this.previousProviderArea = this.currentProviderArea;
+    }
+
+    /**
+     * Acción ejecutada al recibir el evento (close) del alertModal, oculta el modal y
+     * revierte el cambio en el select de rubro
+     */
+    alertModalCancel() {
+      this.formNota.get('providerArea').setValue(this.previousProviderArea.id);
     }
 
     openTravelModal() {
@@ -579,6 +644,15 @@ export class NotesPendingPurchaseApproval {
                 this.comments = d;
             });
         })
+    }
+
+    /**
+     *
+     * @param {ProviderArea} providerArea Rubro que se desea imprimir en pantalla
+     * @returns {string} Si hay rubro su descripción (incluso si está vacía), en caso contrario el mensaje por defecto cuando no hay rubro
+     */
+    protected printProviderArea(providerArea?: ProviderArea): string {
+      return providerArea ? providerArea.description : "Sin rubro";
     }
 
 }

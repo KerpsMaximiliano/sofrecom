@@ -33,10 +33,21 @@
                                 <input type="number" class="form-control" formControlName="id">
                             </div>
                         </div>
-                        <ng2-modal [config]="{title: 'Lista de proveedores', id: 'alerta-proveedores', acceptButton: true, cancelButton: true, acceptButtonText: 'Aceptar', cancelButtonText: 'Cancelar', closeIcon: true }" id="alert-modal" #alertModal (accept)="alertModalAccept(alertModal)">
-                          <p>Al cambiar el rubro todos los proveedores seleccionados se quitarán de la lista ¿Está seguro de que desear realizar esta acción?</p>
-                        </ng2-modal>
                         <div class="form-group">
+
+                            <!-- Modal que muestra alerta al cambiar de rubro -->
+                            <ng2-modal [config]="{title: '¿Reestablecer proveedores?', id: 'alerta-proveedores', acceptButton: true, cancelButton: true, acceptButtonText: 'Continuar', cancelButtonText: 'Cancelar', closeIcon: true }" #alertModal (close)="alertModalCancel()" (accept)="alertModalAccept(alertModal)">
+                              <!-- Información del cambio de rubro -->
+                              <p class="info"><span *ngIf="currentProviderArea; else removeProviderArea">Está por cambiar el rubro a "{{ printProviderArea(currentProviderArea) | translate }}"</span>, pero hay proveedores del rubro "{{ printProviderArea(previousProviderArea) | translate }}".</p>
+                              <!-- Texto a mostrar al quitar el rubro -->
+                              <ng-template #removeProviderArea>Está por quitar el rubro</ng-template>
+
+                              <!-- Texto de advertencia y confirmación -->
+                              <p class="info">Al cambiar el rubro <span class="warn">se borrarán todos los proveedores agregados</span>.</p>
+                              <!-- Pregunta al usuario -->
+                              <p class="ask">¿Desea continuar de todas formas?</p>
+                            </ng2-modal>
+
                             <label class="col-sm-3 control-label text-left">Rubro: </label>
                             <div class="col-sm-9">
                                 <div style="display: flex;">
