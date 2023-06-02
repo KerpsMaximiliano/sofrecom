@@ -137,7 +137,7 @@
                                             <ng-select [items]="currencies" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-currency'"></ng-select>
                                         </td>
                                         <td>
-                                            <input type="number" [formControlName]="'control' + item.providerId" class="form-control">
+                                            <input [ngClass]="{'w-8': true}" type="number" [formControlName]="'control' + item.providerId" class="form-control">
                                         </td>
                                         <td>
                                             <ng-select class="short-ng-select" [items]="units" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-unit'"></ng-select>
