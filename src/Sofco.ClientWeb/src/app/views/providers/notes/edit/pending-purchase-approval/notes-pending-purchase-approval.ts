@@ -35,11 +35,11 @@ export class NotesPendingPurchaseApproval {
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({
         url: this.requestNoteService.uploadDraftFiles(),
-        authToken: 'Bearer ' + Cookie.get('access_token'), 
+        authToken: 'Bearer ' + Cookie.get('access_token'),
     });
     public uploaderProviders: FileUploader = new FileUploader({
         url: this.requestNoteService.uploadDraftFiles(),
-        authToken: 'Bearer ' + Cookie.get('access_token'), 
+        authToken: 'Bearer ' + Cookie.get('access_token'),
     });
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
@@ -254,7 +254,7 @@ export class NotesPendingPurchaseApproval {
         this.analyticService.getByCurrentUserRequestNote().subscribe(d => {
             this.analiticas = d.data;
         });
-        
+
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
         });
@@ -392,7 +392,7 @@ export class NotesPendingPurchaseApproval {
         if(this.uploader.queue.length > 0){
             this.uploader.queue[0].remove();
         }
-  
+
         this.selectedFile.nativeElement.value = '';
     }
 
@@ -501,7 +501,7 @@ export class NotesPendingPurchaseApproval {
             this.formProvidersGrid.addControl(`control${busqueda.id}-currency`, new FormControl(null));
             this.formProvidersGrid.addControl(`control${busqueda.id}-unit`, new FormControl(null));
         }
-        
+
         this.formNota.get('providers').setValue(null);
     }
 
@@ -570,7 +570,7 @@ export class NotesPendingPurchaseApproval {
                 this.comments = d;
             });
         })
-        
+
     }
 
     deleteComment(item: any) {

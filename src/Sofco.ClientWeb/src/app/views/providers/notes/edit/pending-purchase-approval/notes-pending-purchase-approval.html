@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-12 row">
             <div class="pull-left" style="margin-left: 2rem;">
-                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']"> 
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']">
                     <i class="fa fa-arrow-left"></i>       Volver
                 </button>
             </div>
@@ -13,7 +13,7 @@
                 <!-- <button class="btn btn-danger btn-outline dim" (click)="reject()">
                     Rechazar       <i class="fa fa-times"></i>
                 </button>
-                <button class="btn btn-success btn-outline dim" (click)="approve()"> 
+                <button class="btn btn-success btn-outline dim" (click)="approve()">
                     Aprobar       <i class="fa fa-arrow-right"></i>
                 </button> -->
                 <div class="btn-right">
@@ -62,7 +62,7 @@
                                     <tr>
                                         <th class="font-13">{{item.productService}}</th>
                                         <th class="font-13">{{item.quantity}}</th>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -78,7 +78,7 @@
                                     <tr>
                                         <td class="font-13">{{item.description}}</td>
                                         <td class="font-13">{{item.asigned}}</td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -223,7 +223,7 @@
                                                 <button title="eliminar" (click)="deleteComment(item)"
                                                     class="btn btn-danger btn-xs" [disabled]="closed || rejected" *ngIf="userInfo.userName == item.userName"><i class="fa fa-trash"></i></button>
                                             </td>
-                                        </tr> 
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -236,17 +236,17 @@
         <div class="col-sm-3">
             <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
             <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple [disabled]="closed || rejected" *ngIf="mode == 'Edit'"/>
-    
+
             <div class="uploader-margin-top" *ngIf="!closed && !rejected">
                 <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
                 <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
-    
+
                 <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
                 </button>
-                
+
                 <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
                 </button>
@@ -280,7 +280,7 @@
                                         <td class="font-13">{{ item.name }} </td>
                                         <td class="font-13">{{ item.birthday }} </td>
                                         <td class="font-13">{{ item.cuil }} </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -381,7 +381,7 @@
                                     <tr *ngFor="let item of participantesCapacitacion; let i = index">
                                         <td>{{ item.name }} </td>
                                         <td>{{ item.sector }} </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
