@@ -73,6 +73,15 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Analítica</label>
+                                <ng-select [items]="analiticas" bindLabel="text" bindValue="id" [(ngModel)]="analyticId">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="panel-footer">
                             <div class="text-right">
                                 <button class="btn btn-warning" (click)="refreshSearch()"> {{ 'ACTIONS.clean' | translate }}
