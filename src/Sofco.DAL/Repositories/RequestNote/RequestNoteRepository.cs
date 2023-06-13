@@ -79,7 +79,7 @@ namespace Sofco.DAL.Repositories.RequestNote
                 .Where(n => !filters.StatusId.HasValue || n.StatusId == filters.StatusId)
                 .Where(n => !filters.FromDate.HasValue || n.CreationDate >= filters.FromDate)
                 .Where(n => !filters.ToDate.HasValue || n.CreationDate < filters.ToDate)
-                .Where(n => !filters.AnalyticID.HasValue || n.Analytics.Any(p => p.Id == filters.AnalyticID))
+                .Where(n => !filters.AnalyticID.HasValue || n.Analytics.Any(p => p.AnalyticId == filters.AnalyticID))
                 .Where(n => !filters.ProviderId.HasValue || n.Providers.Any(p=> p.ProviderId == filters.ProviderId))
                 //Provider? Quieren filtrar por todos o selected?
                 .Include(x => x.Status)
