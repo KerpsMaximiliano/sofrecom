@@ -133,7 +133,12 @@ namespace Sofco.Service.Implementations.Jobs
             Decimal maxHours = allocation.RemainBusinessHours - workTimesInMemory.Sum(x => x.Hours);
             Decimal calculateHours = allocation.RemainBusinessHours * allocation.Percentage / 100;
 
-            return Math.Min(maxHours, calculateHours);
+            if (calculateHours >= maxHours)
+                return maxHours;
+            if (calculateHours + (allocation.RemainBusinessHours / 100) > maxHours)
+                return maxHours;
+
+            return calculateHours;
         }
 
         private IList<Allocation> GetAllocations(DateTime day)
