@@ -91,18 +91,14 @@ export class NotesComponent implements OnInit, AfterViewInit{
                     }
                 })
                 this.notes = this.notesInProcess;
-                this.notes.sort(function(a, b) { 
+                this.notes.sort(function(a, b) {
                     return b.id - a.id;
                 });
                 console.log(this.notes)
                 this.initGrid();
-                setTimeout(() => {
-                    let el: HTMLElement = document.getElementsByClassName('sorting_asc')[0] as HTMLElement;
-                    el.click()
-                }, 501);
             });
         }, 500);
-        
+
         this.employeeService.getEveryone().subscribe(d => {
             d.forEach(employee => {
                 if(employee.endDate == null && employee.isExternal == 0) {
@@ -229,16 +225,20 @@ export class NotesComponent implements OnInit, AfterViewInit{
 
     initGrid() {
         var columns = [0, 1, 2, 3, 4, 5];
-    
+
         var params = {
             selector: '#dataTable',
             columns: columns,
             title: 'Notas',
             withExport: true
         }
-    
+
         this.dataTableService.destroy(params.selector);
         this.dataTableService.initialize(params);
+        setTimeout(() => {
+          let el: HTMLElement = document.getElementsByClassName('sorting_asc')[0] as HTMLElement;
+          el.click()
+        }, 501);
     }
 
     changeTab(tab?: number) {
