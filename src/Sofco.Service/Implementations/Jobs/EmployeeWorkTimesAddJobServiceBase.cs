@@ -119,7 +119,7 @@ namespace Sofco.Service.Implementations.Jobs
             domain.TaskId = TaskID;
             domain.Date = allocation.Date;
             domain.Hours = CalculateHours(allocation);
-            domain.Source = WorkTimeSource.MassiveImport.ToString();
+            domain.Source = WorkTimeSource.AutomaticProcess.ToString();
 
             domain.CreationDate = DateTime.UtcNow.Date;
             domain.Status = WorkTimeStatus.Approved;
