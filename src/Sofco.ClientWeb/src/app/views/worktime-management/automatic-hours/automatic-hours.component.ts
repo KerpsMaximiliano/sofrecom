@@ -32,7 +32,7 @@ export class AutomaticHoursComponent implements OnInit {
     ngOnInit(): void {
         this.settingsService.getAll().subscribe(d => {
             this.setting = d.body.data.find(setting => setting.key == 'TareaPrecargaHorasDefault');
-            this.form.controls['task'].setValue(Number(this.setting ? this.setting.value : null));
+            this.form.controls['task'].setValue(Number(this.setting.value));
         })
         this.automaticHoursService.getTasks().subscribe(d => {
             this.tasks = d;
