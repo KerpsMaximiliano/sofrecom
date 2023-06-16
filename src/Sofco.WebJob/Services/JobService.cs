@@ -85,9 +85,9 @@ namespace Sofco.WebJob.Services
 
             RecurringJob.AddOrUpdate<IEmployeeTestPeriodJobService>(JobNames.EmployeeTestPeriod, j => j.Execute(), Cron.Daily(8), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IEmployeeWorkTimesAddJob>(JobNames.EmployeeWorkTimesAdd, j => j.Execute(), Cron.Weekly(DayOfWeek.Thursday, 23, 30), localTimeZone);
+            RecurringJob.AddOrUpdate<IEmployeeWorkTimesAddJob>(JobNames.EmployeeWorkTimesAdd, j => j.Execute(), Cron.Weekly(DayOfWeek.Friday, 21), localTimeZone);
 
-            RecurringJob.AddOrUpdate<IEmployeeWorkTimesMonthAddJob>(JobNames.EmployeeWorkTimesMonthAdd, j => j.Execute(), Cron.Daily(23, 42), localTimeZone);
+            RecurringJob.AddOrUpdate<IEmployeeWorkTimesMonthAddJob>(JobNames.EmployeeWorkTimesMonthAdd, j => j.Execute(), Cron.Daily(23), localTimeZone);
 
 
         }
