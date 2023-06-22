@@ -78,9 +78,13 @@
                             <td>{{ item.id }}</td>
                             <td>{{ item.name }}</td>
                             <td>
-                                <div *ngFor="let prov of item.providerArea">
-                                    <div>{{prov}} <b *ngIf="item.providerArea.indexOf(prov) != (item.providerArea.length - 1)">-</b></div>
-                                </div>
+                                <ol class="provider-areas-column" *ngIf="item.providerArea.length; else itemNoProviderAreas">
+                                    <ng-template ngFor let-prov [ngForOf]="item.providerArea | keyvalue">
+                                        <li>{{prov.value}}</li>
+                                        <hr *ngIf="prov.key < (item.providerArea.length - 1)">
+                                    </ng-template>
+                                </ol>
+                                <ng-template #itemNoProviderAreas>Sin rubro</ng-template>
                             </td>
                             <td>{{ item.CUIT }}</td>
                             <td>{{ item.ingresosBrutos }}</td>

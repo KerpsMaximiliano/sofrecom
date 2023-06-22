@@ -24,7 +24,10 @@ interface ProviderArea {
 
 @Component({
     selector: 'providers',
-    templateUrl: './providers.html'
+    templateUrl: './providers.html',
+    styleUrls: [
+      './providers.scss',
+    ]
 })
 
 export class ProvidersComponent implements OnInit{
