@@ -22,5 +22,8 @@ export class AutomaticHoursService {
   runProcess() {
     return this.http.get<any>(`${this.baseUrl}/PreloadAutomaticWorkTimes/RunProcess`);
   }
-  
+  runProcessMensual() {
+    return this.http.get<any>(`${this.baseUrl}/PreloadAutomaticWorkTimes/RunMonthProcess`);
+  }
+
 }

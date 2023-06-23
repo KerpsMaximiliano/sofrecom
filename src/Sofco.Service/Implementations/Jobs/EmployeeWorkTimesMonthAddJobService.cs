@@ -53,7 +53,8 @@ namespace Sofco.Service.Implementations.Jobs
         protected override bool MustExecute()
         {
             CloseDate closeDate = ClosesDate.First();
-            return closeDate.Year == DateTime.Now.Year && closeDate.Month == DateTime.Now.Month && closeDate.Day == DateTime.Now.Day;
+            return true;
+            //return closeDate.Year == DateTime.Now.Year && closeDate.Month == DateTime.Now.Month && closeDate.Day == DateTime.Now.Day;
         }
         private List<DateTime> GetDaysBeetweenLastsCloses()
         {

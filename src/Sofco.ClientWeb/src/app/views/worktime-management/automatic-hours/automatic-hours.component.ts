@@ -72,6 +72,19 @@ export class AutomaticHoursComponent implements OnInit {
         })
     }
 
+    runMensual() {
+        if (this.form.invalid) {
+            this.markFormGroupTouched(this.form);
+            return;
+        };
+        this.automaticHoursService.runProcessMensual().subscribe(d => {
+            this.messageService.showMessage("Proceso de carga de horas ejecutado", 0);
+        },
+        err => {
+            this.messageService.showMessage("Error al ejecutar el proceso", 1);
+        })
+    }
+
     markFormGroupTouched(formGroup: FormGroup) {
         (<any>Object).values(formGroup.controls).forEach(control => {
             control.markAsTouched();
