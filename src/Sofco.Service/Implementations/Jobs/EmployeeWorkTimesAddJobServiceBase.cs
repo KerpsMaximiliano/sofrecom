@@ -89,7 +89,9 @@ namespace Sofco.Service.Implementations.Jobs
                 if (employeWorkedHours >= employee.BusinessHours || workTimes.Any(x => x.Source == WorkTimeSource.License.ToString()))
                     continue;
 
-                var filteredAllocations = allocations.Where(x => x.EmployeeId == employee.Id && !workTimes.Any(p => p.AnalyticId == x.AnalyticId)).ToList();
+                var filteredAllocations = allocations.Where(x => x.EmployeeId == employee.Id 
+                    && !workTimes.Any(p => p.AnalyticId == x.AnalyticId) 
+                    && x.Analytic.AutomaticChargeable.HasValue && x.Analytic.AutomaticChargeable.Value).ToList();
                 var totalPorcentaje = filteredAllocations.Sum(allocation => allocation.Percentage);
 
                 foreach (Allocation employeeAllocation in filteredAllocations)
@@ -101,8 +103,8 @@ namespace Sofco.Service.Implementations.Jobs
                     rescheduledAllocation.Date = date;
                     rescheduledAllocation.RemainBusinessHours = employee.BusinessHours - employeWorkedHours;
                     rescheduledAllocation.Percentage = employeeAllocation.Percentage * 100 / totalPorcentaje;
-                    if (employeeAllocation.Analytic.AutomaticChargeable.HasValue && employeeAllocation.Analytic.AutomaticChargeable.Value)
-                         rescheduledAllocations.Add(rescheduledAllocation);
+                    //if (employeeAllocation.Analytic.AutomaticChargeable.HasValue && employeeAllocation.Analytic.AutomaticChargeable.Value)
+                    rescheduledAllocations.Add(rescheduledAllocation);
                 }
             }
 
@@ -132,6 +134,7 @@ namespace Sofco.Service.Implementations.Jobs
             List<WorkTime> workTimesInMemory = unitOfWork.WorkTimeRepository.GetAddTrackedByEmployee(allocation.EmployeeId);
             Decimal maxHours = allocation.RemainBusinessHours - workTimesInMemory.Sum(x => x.Hours);
             Decimal calculateHours = allocation.RemainBusinessHours * allocation.Percentage / 100;
+            calculateHours = Math.Round(calculateHours, 2);
 
             if (calculateHours >= maxHours)
                 return maxHours;
@@ -171,11 +174,13 @@ namespace Sofco.Service.Implementations.Jobs
         {
             List<DateTime> days = new List<DateTime>();
 
-           
+            date = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
+
             while (date.DayOfWeek != DayOfWeek.Monday)
             {
                 if (date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday)
                 {
+                    
                     days.Add(date);
                 }
                 date = date.AddDays(-1);
