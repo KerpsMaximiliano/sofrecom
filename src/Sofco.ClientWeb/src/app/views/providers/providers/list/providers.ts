@@ -6,13 +6,9 @@ import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { forkJoin } from "rxjs";
 
-/** Posibles estados de la propiedad crítico */
-enum CriticalProvider {
-  YES = 'Sí',
-  NO = 'No',
-  BOTH = 'Todo',
-}
-
+/**
+ * Interfaz para representar las propiedades de un Rubro
+ */
 interface ProviderArea {
   active?: boolean;
   critical?: boolean;
@@ -21,6 +17,12 @@ interface ProviderArea {
   startDate?: string | null;
   id?: number;
 }
+
+/**
+ * Tipo de dato para estandarizar la estructura de
+ * las opciones de los ng-select
+ */
+type SelectOption = { id: number, text: string };
 
 @Component({
     selector: 'providers',
@@ -46,20 +48,20 @@ export class ProvidersComponent implements OnInit{
         'Exento',
         'No aplica'
     ];
-    states = [
+    states: SelectOption[] = [
         { id: 0, text: "Todos" },
         { id: 1, text: "Activo" },
         { id: 2, text: "Inactivo" },
     ];
-    critical = [
-      CriticalProvider.YES,
-      CriticalProvider.NO,
-      CriticalProvider.BOTH,
+    critical: SelectOption[] = [
+      { id: 0, text: "Todos" },
+      { id: 1, text: "Sí" },
+      { id: 2, text: "No" },
     ];
     stateId: number = 0;
     businessName: string;
     areas = [];
-    criticalSearch = [];
+    criticalSearch: [] | SelectOption['id'] = []; // No es de opción múltiple, toma el valor literlal del id
     areaId = [];
     data = [];
     dataBackup = [];
@@ -110,12 +112,8 @@ export class ProvidersComponent implements OnInit{
     }
 
     search() {
-        // Filtrado por crítico en el "back" (sólo busca proveedores con rubros críticos)
-        const areas = this.criticalSearch.length === 1 && this.criticalSearch[0] !== CriticalProvider.BOTH ?
-          this.areaId.filter((area)=> area.critical === (this.criticalSearch[0] == CriticalProvider.YES ? true : false)) :
-          this.areaId;
 
-        this.providersService.getByParams({statusId: this.stateId == 0 ? null : this.stateId, businessName: this.businessName, providersArea: areas}).subscribe(d => {
+        this.providersService.getByParams({statusId: this.stateId == 0 ? null : this.stateId, businessName: this.businessName, providersArea: this.areaId}).subscribe(d => {
             this.data = [];
             d.data.forEach(this.setData.bind(this));
             this.initGrid();
@@ -147,14 +145,14 @@ export class ProvidersComponent implements OnInit{
             model.providerArea = areas
             //model.providerAreaId = area.id
         }
-        if(someCritical && someNotCritical) {
-          model.critical = CriticalProvider.BOTH;
-        } else if (someCritical || someNotCritical) {
-          model.critical = someCritical ? CriticalProvider.YES : CriticalProvider.NO;
-        }
 
         // Filtrado por crítico en el front
-        if(!this.criticalSearch.length || this.criticalSearch.includes(model.critical)) {
+        const passCritical =
+          Array.isArray(this.criticalSearch) || this.criticalSearch === this.critical[0].id ||  // Caso sin filtro o "Todos"
+          (this.criticalSearch === this.critical[1].id && someCritical) ||                      // Caso filtro = "Sí"
+          (this.criticalSearch === this.critical[2].id && someNotCritical);                     // Caso filtro = "No"
+
+        if(passCritical) {
           this.data.push(model);
           this.data = [...this.data]
         }
