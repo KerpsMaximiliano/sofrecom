@@ -34,6 +34,7 @@ namespace Sofco.Service.Implementations.Jobs
             }
 
         }
+        protected string notExecuteMessage { get; set; }
         #endregion
 
         public EmployeeWorkTimesAddJobServiceBase(IUnitOfWork unitOfWork, ILogMailer<EmployeeWorkTimesAddJobService> logger)
@@ -45,7 +46,7 @@ namespace Sofco.Service.Implementations.Jobs
         public void Run()
         {
             if (!this.MustExecute())
-                return;
+                throw new Exception(notExecuteMessage);
 
             List<DateTime> days = GetDaysToAnalize();
 

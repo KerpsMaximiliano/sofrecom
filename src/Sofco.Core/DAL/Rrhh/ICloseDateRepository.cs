@@ -12,6 +12,7 @@ namespace Sofco.Core.DAL.Rrhh
         CloseDatesSettings GetBeforeCurrentAndNext();
         IList<CloseDate> GetAllBeforeNextMonth();
         IList<CloseDate> GetBeforeAndCurrent();
+        IList<CloseDate> GetNext();    
         Tuple<CloseDate, CloseDate> GetBeforeAndCurrent(int closeMonthId);
         CloseDate GetFirstBeforeNextMonth();
     }

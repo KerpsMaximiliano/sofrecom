@@ -126,5 +126,16 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Take(2)
                 .ToList();
         }
+        public IList<CloseDate> GetNext()
+        {
+            var today = DateTime.UtcNow.Date;
+
+            return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, x.Day).Date > today)
+                .OrderBy(x => x.Year)
+                .OrderBy(x => x.Month)
+                .OrderBy(x => x.Day)
+                .Take(1)
+                .ToList();
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace Sofco.Service.Implementations.Jobs
 
         #region private properties
 
+        private const string DATENOTVALIDMESSAGE = "La precarga de horas mensual solamente podrá ejecutarse el dia";
+
         private IList<CloseDate> closesDate;
         private IList<CloseDate> ClosesDate
         {
@@ -53,6 +55,10 @@ namespace Sofco.Service.Implementations.Jobs
         protected override bool MustExecute()
         {
             CloseDate closeDate = ClosesDate.First();
+            CloseDate nextCloseDate = this.unitOfWork.CloseDateRepository.GetNext().FirstOrDefault();
+            if (nextCloseDate != null) 
+                 notExecuteMessage = String.Format("{3} {0}-{1}-{2}", nextCloseDate.Day, nextCloseDate.Month, nextCloseDate.Year, DATENOTVALIDMESSAGE);
+
             return closeDate.Year == DateTime.Now.Year && closeDate.Month == DateTime.Now.Month && closeDate.Day == DateTime.Now.Day;
         }
         private List<DateTime> GetDaysBeetweenLastsCloses()

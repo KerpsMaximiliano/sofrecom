@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sofco.Core.Models;
@@ -39,12 +40,18 @@ namespace Sofco.WebApi.Controllers.Admin
             this.employeeWorkTimesAddJobService.Run();
             return Ok();
         }
-
         [HttpGet("RunMonthProcess")]
         public IActionResult RunMonthProcess()
         {
-            this.employeeWorkTimesMonthAddJobService.Run();
-            return Ok();
+            try
+            {
+                this.employeeWorkTimesMonthAddJobService.Run();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Ok(ex.Message);
+            }
         }
     }
 }
