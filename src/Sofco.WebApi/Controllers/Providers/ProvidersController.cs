@@ -61,5 +61,15 @@ namespace Sofco.WebApi.Controllers.Providers
 
             return this.CreateResponse(response);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var response = providers.Delete(id);
+
+            return this.CreateResponse(response);
+        }
+
+
     }
 }

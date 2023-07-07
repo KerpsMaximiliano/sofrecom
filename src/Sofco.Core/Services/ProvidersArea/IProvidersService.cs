@@ -13,6 +13,8 @@ namespace Sofco.Core.Services.Providers
         Response<ProvidersModelGet> GetById(int providersAreaid);
         Response<ProvidersModel> Post(ProvidersModel model);
         Response Put(int id, ProvidersModel model);
+        Response<int> Delete(int id);
+
 
     }
 }

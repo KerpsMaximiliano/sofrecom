@@ -126,6 +126,19 @@ namespace Sofco.Service.Implementations.providers
             return response;
         }
 
+        public Response<int> Delete(int id)
+        {
+            var providers = unitOfWork.ProvidersRepository.GetById(id);
+            var response = new Response<int>();
+
+            providers.Active = false;
+            unitOfWork.Save();
+
+            response.Data = id;
+            return response;
+        }
+
+
         public Response<ProvidersModel> Post(ProvidersModel provider)
         {
             var response = new Response<ProvidersModel>();
