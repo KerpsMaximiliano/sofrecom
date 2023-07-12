@@ -22,6 +22,10 @@ export class AnalyticService {
     return this.http.get<any>(`${this.baseUrl}/analytics/${id}`);
   }
 
+  getByIdWithOnlyPendingRefunds(id) {
+    return this.http.get<any>(`${this.baseUrl}/analytics/onlyPendingRefunds/${id}`);
+  }
+
   getByTitle(title) {
     return this.http.get<any>(`${this.baseUrl}/analytics/title/${title}`);
   }

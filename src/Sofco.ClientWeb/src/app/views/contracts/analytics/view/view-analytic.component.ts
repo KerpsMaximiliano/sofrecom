@@ -80,7 +80,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
         this.paramsSubscrip = this.activatedRoute.params.subscribe(params => {
             this.messageService.showLoading();
 
-            this.getByIdSubscrip = this.analyticService.getById(params['id']).subscribe(data => {
+            this.getByIdSubscrip = this.analyticService.getByIdWithOnlyPendingRefunds(params['id']).subscribe(data => {
                 this.messageService.closeLoading();
                 this.form.model = data;
                 this.showClientButton = this.form.model.clientExternalId != null;
@@ -110,27 +110,31 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
 
     
     close(){
-        if(this.statusClose){
-			if (this.form.model.refund && this.form.model.refund.filter(f => f.statusId != 20).length != 0) {
-                // Alert
-                this.getRefunds();
-                var msj = this.i18nService.translateByKey("allocationManagement.analytics.withRefund");
-                this.messageService.showMessage(msj, 2)
+        if (this.form.model.refund && this.form.model.refund.length != 0) {
+            // Alert
+            this.getRefunds();
+            var msj = this.i18nService.translateByKey("allocationManagement.analytics.withRefund");
+            this.messageService.showMessage(msj, 2)
+            this.confirmModal.hide();
+        } else {
 
-                this.confirmModal.hide();
-            } else {
+            if(this.statusClose){
+                
                 this.closeSubscrip = this.analyticService.close(this.form.model.id).subscribe(response => {
                     this.confirmModal.hide();
                     this.form.model.status = 2;
                 });
-            }        }
-        else {
-            this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
-                this.confirmModal.hide();
-                this.form.model.status = 3;
-            });
+            }
+            else 
+            {
+                this.closeSubscrip = this.analyticService.closeForExpenses(this.form.model.id).subscribe(response => {
+                    this.confirmModal.hide();
+                    this.form.model.status = 3;
+                });
+            }
         }
     }
+
     getRefunds() {
         this.form.model.refund.filter(f => f.statusId != 20)
         .forEach(element => {
@@ -188,7 +192,7 @@ export class ViewAnalyticComponent implements OnInit, OnDestroy {
     }
 
     openForCloseForExpenses(){
-        this.statusClose = true;
+        this.statusClose = false;
         this.confirmModal.show();
     }
     

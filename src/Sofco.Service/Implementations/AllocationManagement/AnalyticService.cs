@@ -316,6 +316,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<Analytic> GetByIdWithOnlyPendingRefunds(int id)
+        {
+            var response = new Response<Analytic>();
+
+            response.Data = AnalyticValidationHelper.Find(response, unitOfWork, id, false);
+
+            return response;
+        }
+
         public Response<IList<Allocation>> GetTimelineResources(int id, DateTime dateSince, int months)
         {
             var response = new Response<IList<Allocation>>();
