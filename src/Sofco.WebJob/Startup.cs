@@ -50,7 +50,12 @@ namespace Sofco.WebJob
             services.AddMvc();
 
             services.AddHangfire(x => x
-                .UseSqlServerStorage(Configuration.GetConnectionString("WebJobConnection")));
+                .UseSqlServerStorage(Configuration.GetConnectionString("WebJobConnection"), 
+                new Hangfire.SqlServer.SqlServerStorageOptions
+                {
+                    SchemaName = "HangFire_2"
+                }
+                ));
 
             services.Configure<EmailConfig>(Configuration.GetSection("Mail"));
             services.Configure<CrmConfig>(Configuration.GetSection("CRM"));
