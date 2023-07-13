@@ -17,7 +17,7 @@ namespace Sofco.Core.Services
         Response<ProvidersAreaModel> Post(ProvidersAreaModel model);
 
         Response Put(int id, ProvidersAreaModel model);
-
-       
+        Response Enable(int id);
+        Response Disable(int id);
     }
 }

@@ -108,6 +108,33 @@ namespace Sofco.Service.Implementations.providers
 
             return response;
         }
+
+        public Response Disable(int id)
+        {
+            var providerArea = unitOfWork.ProviderAreaRepository.GetById(id);
+            var response = new Response<int>();
+
+            providerArea.Active = false;
+            providerArea.EndDate = DateTime.Now;
+
+            unitOfWork.Save();
+            response.Data = id;
+            return response;
+        }
+
+        public Response Enable(int id)
+        {
+            var providerArea = unitOfWork.ProviderAreaRepository.GetById(id);
+            var response = new Response<int>();
+
+            providerArea.Active = true;
+            providerArea.EndDate = null;
+            providerArea.StartDate = DateTime.Now;
+
+            unitOfWork.Save();
+            response.Data = id;
+            return response;
+        }
     }
 
 }

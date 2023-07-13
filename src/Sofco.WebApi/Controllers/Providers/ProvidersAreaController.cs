@@ -52,5 +52,24 @@ namespace Sofco.WebApi.Controllers.Providers
 
             return this.CreateResponse(response);
         }
+
+
+        [HttpPut("{id}")]
+        public IActionResult Enable(int id)
+        {
+            var response = providers.Enable(id);
+
+            return this.CreateResponse(response);
+        }
+
+
+        [HttpPut("{id}")]
+        public IActionResult Disable(int id)
+        {
+            var response = providers.Disable(id);
+
+            return this.CreateResponse(response);
+        }
+
     }
 }
