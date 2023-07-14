@@ -96,7 +96,7 @@ namespace Sofco.Service.Implementations.providers
         public Response Put(int id, ProvidersAreaModel provider)
         {
             var response = new Response<ProvidersAreaModel>();
-            var providerContext = providersAreaRepository.GetById(provider.Id);
+            var providerContext = providersAreaRepository.GetById(id);
 
             providerContext.Critical = provider.Critical;
             providerContext.Description = provider.Description;

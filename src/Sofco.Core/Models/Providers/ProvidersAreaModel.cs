@@ -9,6 +9,9 @@ namespace Sofco.Core.Models.Admin
     {
         public ProvidersAreaModel(Sofco.Domain.Models.Providers.ProvidersArea providersArea) 
         {
+            if (providersArea == null)
+                return;
+
             Id = providersArea.Id;
             Description = providersArea.Description;
             Critical = providersArea.Critical;

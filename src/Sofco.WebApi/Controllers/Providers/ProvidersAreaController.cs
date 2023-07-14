@@ -53,8 +53,7 @@ namespace Sofco.WebApi.Controllers.Providers
             return this.CreateResponse(response);
         }
 
-
-        [HttpPut("{id}")]
+        [HttpPost("Enable/{id}")]
         public IActionResult Enable(int id)
         {
             var response = providers.Enable(id);
@@ -63,7 +62,7 @@ namespace Sofco.WebApi.Controllers.Providers
         }
 
 
-        [HttpPut("{id}")]
+        [HttpPost("Disable/{id}")]
         public IActionResult Disable(int id)
         {
             var response = providers.Disable(id);
