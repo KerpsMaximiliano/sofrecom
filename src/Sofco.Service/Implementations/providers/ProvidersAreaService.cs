@@ -21,6 +21,7 @@ using Sofco.Domain.Utils;
 using Sofco.Framework.Workflow.Notifications;
 using Sofco.Core.Services;
 using Sofco.Core.DAL.Provider;
+using Sofco.Domain.Models.Providers;
 
 namespace Sofco.Service.Implementations.providers
 {
@@ -68,11 +69,12 @@ namespace Sofco.Service.Implementations.providers
 
             try
             {
-                providerArea.Active = provider.Active;
+                providerArea.Active = true;
                 providerArea.Critical = provider.Critical;
                 providerArea.Description = provider.Description;
-                providerArea.EndDate = provider.EndDate;
-                providerArea.StartDate = provider.StartDate;
+                providerArea.EndDate = null;
+                providerArea.StartDate = DateTime.Now;
+                providerArea.RNAmmountReq = provider.RNAmmountReq;
                 providerArea.Id = provider.Id;
 
                 unitOfWork.ProviderAreaRepository.Add(providerArea);
@@ -93,16 +95,13 @@ namespace Sofco.Service.Implementations.providers
 
         public Response Put(int id, ProvidersAreaModel provider)
         {
-            var providerArea = new Domain.Models.Providers.ProvidersArea();
             var response = new Response<ProvidersAreaModel>();
+            var providerContext = providersAreaRepository.GetById(provider.Id);
 
-            providerArea.Active = provider.Active;
-            providerArea.Critical = provider.Critical;
-            providerArea.Description = provider.Description;
-            providerArea.EndDate = provider.EndDate;
-            providerArea.StartDate = provider.StartDate;
-            providerArea.Id = provider.Id;
-            providersAreaRepository.Update(providerArea);
+            providerContext.Critical = provider.Critical;
+            providerContext.Description = provider.Description;
+            providerContext.RNAmmountReq = provider.RNAmmountReq;
+            unitOfWork.Save();
 
             response.Data = provider;
 
