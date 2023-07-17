@@ -1085,6 +1085,9 @@
             "sentHours": "Horas pendientes de aprobación",
             "draftHours": "Horas en borrador",
             "pendingHours": "Horas pendientes de carga"
+        },
+        "automaticHours": {
+            "title": "Carga de Hora Automáticas"
         }
     },
     "months": {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Core.DAL.Admin;
@@ -51,6 +52,11 @@ namespace Sofco.DAL.Repositories.Admin
         public new IList<Task> GetAll()
         {
             return context.Tasks.Include(x => x.Category).ToList().AsReadOnly();
+        }
+
+        public IList<Task> GetByCategory(string descripcion)
+        {
+            return context.Tasks.Where(x => x.Category.Description==descripcion).ToList().AsReadOnly();
         }
     }
 }

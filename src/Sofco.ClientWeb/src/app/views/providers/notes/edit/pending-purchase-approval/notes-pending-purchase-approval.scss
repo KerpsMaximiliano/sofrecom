@@ -3,7 +3,7 @@
 }
 
 dt {
-    margin-bottom: 10px 
+    margin-bottom: 10px
 }
 
 .font-14 {
@@ -26,7 +26,54 @@ dt {
     min-width: 2rem;
 }
 
+.w-8 {
+  min-width: 8rem;
+}
+
 .red-input-border {
     border-color: red;
     border: 1px solid red;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Works for Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/*#region Corrección de ancho de campo unidad */
+  // Estos selectores ajustan el ancho los ng-select que tengan la clase "short-ng-select"
+  /deep/ .short-ng-select.ng-select.ng-select-single {
+    min-width: 66px;
+  }
+
+  // Arreglo de dropdown
+  /deep/ .short-ng-select.ng-dropdown-panel.ng-select-bottom {
+    width: fit-content;
+    min-width: 66px;
+  }
+/*#endregion Corrección de ancho de campo unidad*/
+
+/*#region Estilado del modal */
+  // Texto informativo - arregla separación entre párrafos y
+  p.info {
+    margin: 0;
+  }
+
+  // Texto de alerta a resaltar
+  span.warn {
+    font-weight: bolder;
+    color: black;
+    padding: 0; // Dado que está incrustado en otro texto dentro de un p
+  }
+
+  // Separa la pregunta del texto informativo
+  p.ask {
+    margin: .8rem auto 0;
+  }
+/*#endregion Estilado del modal */

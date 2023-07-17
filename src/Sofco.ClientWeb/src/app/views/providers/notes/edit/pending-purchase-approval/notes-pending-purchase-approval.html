@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-sm-12 row">
             <div class="pull-left" style="margin-left: 2rem;">
-                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']"> 
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']">
                     <i class="fa fa-arrow-left"></i>       Volver
                 </button>
             </div>
@@ -13,7 +13,7 @@
                 <!-- <button class="btn btn-danger btn-outline dim" (click)="reject()">
                     Rechazar       <i class="fa fa-times"></i>
                 </button>
-                <button class="btn btn-success btn-outline dim" (click)="approve()"> 
+                <button class="btn btn-success btn-outline dim" (click)="approve()">
                     Aprobar       <i class="fa fa-arrow-right"></i>
                 </button> -->
                 <div class="btn-right">
@@ -34,10 +34,24 @@
                             </div>
                         </div>
                         <div class="form-group">
+
+                            <!-- Modal que muestra alerta al cambiar de rubro -->
+                            <ng2-modal [config]="{title: '¿Reestablecer proveedores?', id: 'alerta-proveedores', acceptButton: true, cancelButton: true, acceptButtonText: 'Continuar', cancelButtonText: 'Cancelar', closeIcon: true }" #alertModal (close)="alertModalCancel()" (accept)="alertModalAccept(alertModal)">
+                              <!-- Información del cambio de rubro -->
+                              <p class="info"><span *ngIf="currentProviderArea; else removeProviderArea">Está por cambiar el rubro a "{{ printProviderArea(currentProviderArea) | translate }}"</span>, pero hay proveedores del rubro "{{ printProviderArea(previousProviderArea) | translate }}".</p>
+                              <!-- Texto a mostrar al quitar el rubro -->
+                              <ng-template #removeProviderArea>Está por quitar el rubro</ng-template>
+
+                              <!-- Texto de advertencia y confirmación -->
+                              <p class="info">Al cambiar el rubro <span class="warn">se borrarán todos los proveedores agregados</span>.</p>
+                              <!-- Pregunta al usuario -->
+                              <p class="ask">¿Desea continuar de todas formas?</p>
+                            </ng2-modal>
+
                             <label class="col-sm-3 control-label text-left">Rubro: </label>
                             <div class="col-sm-9">
                                 <div style="display: flex;">
-                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea" style="flex-grow: 3; flex-shrink: 1;" (change)="change($event)"></ng-select>
+                                    <ng-select [items]="providerAreas" bindLabel="description" bindValue="id" formControlName="providerArea" style="flex-grow: 3; flex-shrink: 1;" (change)="change($event, alertModal)"></ng-select>
                                     <div *ngIf="critical != null" style="flex-shrink: 1;">
                                         <label class="col-xs-4 control-label text-left">Crítico: </label>
                                         <div class="col-xs-8">
@@ -59,7 +73,7 @@
                                     <tr>
                                         <th class="font-13">{{item.productService}}</th>
                                         <th class="font-13">{{item.quantity}}</th>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -75,7 +89,7 @@
                                     <tr>
                                         <td class="font-13">{{item.description}}</td>
                                         <td class="font-13">{{item.asigned}}</td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -115,7 +129,9 @@
                                         <th class="font-13">Nombre</th>
                                         <th class="font-13">Presupuesto</th>
                                         <th></th>
+                                        <th class="font-13">Moneda</th>
                                         <th class="font-13">Monto</th>
+                                        <th class="font-13">Unidad</th>
                                         <th class="column-sm text-center font-13">{{ 'ACTIONS.title' | translate }}</th>
                                     </tr>
                                 </thead>
@@ -126,15 +142,22 @@
                                             <input #selectedFile type="file" ng2FileSelect (onFileSelected)="selectedFileProvider(item.providerId, $event, i)" [uploader]="uploaderProviders" [disabled]="closed || rejected" />
                                         </td>
                                         <td><button type="button" class="btn btn-success"
-                                            (click)="downloadProvFile(item)" *ngIf="item.fileId != null && mode == 'Edit'">Descargar</button></td>
+                                            (click)="downloadProvFile(item)" *ngIf="item.fileId != null && mode == 'Edit'">Descargar</button>
+                                        </td>
                                         <td>
-                                            <input type="number" [formControlName]="'control' + item.providerId">
+                                            <ng-select [items]="currencies" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-currency'"></ng-select>
+                                        </td>
+                                        <td>
+                                            <input [ngClass]="{'w-8': true}" type="number" [formControlName]="'control' + item.providerId" class="form-control">
+                                        </td>
+                                        <td>
+                                            <ng-select class="short-ng-select" [items]="units" bindLabel="description" bindValue="id" [formControlName]="'control' + item.providerId + '-unit'"></ng-select>
                                         </td>
                                         <td class="column-sm text-center">
                                             <button title="eliminar" (click)="eliminarProveedor(i, item)"
                                                 class="btn btn-danger btn-xs" [disabled]="closed || rejected" ><i class="fa fa-trash"></i></button>
                                         </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -211,7 +234,7 @@
                                                 <button title="eliminar" (click)="deleteComment(item)"
                                                     class="btn btn-danger btn-xs" [disabled]="closed || rejected" *ngIf="userInfo.userName == item.userName"><i class="fa fa-trash"></i></button>
                                             </td>
-                                        </tr> 
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -224,17 +247,17 @@
         <div class="col-sm-3">
             <h3>{{'billing.solfac.import' | translate }} <p *ngIf="uploadedFilesId.length > 0">{{uploadedFilesId.length}} archivos subidos</p></h3>
             <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" multiple [disabled]="closed || rejected" *ngIf="mode == 'Edit'"/>
-    
+
             <div class="uploader-margin-top" *ngIf="!closed && !rejected">
                 <label *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
                 <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
-    
+
                 <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
                 </button>
-                
+
                 <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()" [disabled]="!uploader.getNotUploadedItems().length" *ngIf="mode == 'Edit'">
                     <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
                 </button>
@@ -268,7 +291,7 @@
                                         <td class="font-13">{{ item.name }} </td>
                                         <td class="font-13">{{ item.birthday }} </td>
                                         <td class="font-13">{{ item.cuil }} </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -369,7 +392,7 @@
                                     <tr *ngFor="let item of participantesCapacitacion; let i = index">
                                         <td>{{ item.name }} </td>
                                         <td>{{ item.sector }} </td>
-                                    </tr> 
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -114,5 +114,17 @@ namespace Sofco.DAL.Repositories.Rrhh
                 .Take(1)
                 .FirstOrDefault();
         }
+
+        public IList<CloseDate> GetBeforeAndCurrent()
+        {
+            var today = DateTime.UtcNow.Date;
+
+            return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, x.Day).Date <= today)
+                .OrderByDescending(x => x.Year)
+                .ThenByDescending(x => x.Month)
+                .ThenByDescending(x => x.Day)
+                .Take(2)
+                .ToList();
+        }
     }
 }

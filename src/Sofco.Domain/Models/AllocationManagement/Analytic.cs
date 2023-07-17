@@ -67,9 +67,9 @@ namespace Sofco.Domain.Models.AllocationManagement
         public ServiceType ServiceType { get; set; }
 
         public string UsersQv { get; set; }
-
         public int? SoftwareLawId { get; set; }
-        
+        public bool? AutomaticChargeable { get; set; }
+
         public SoftwareLaw SoftwareLaw { get; set; }
 
         public string ClosedBy { get; set; }

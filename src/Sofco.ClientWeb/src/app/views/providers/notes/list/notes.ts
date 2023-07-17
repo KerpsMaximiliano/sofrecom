@@ -4,6 +4,7 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
@@ -31,6 +32,8 @@ export class NotesComponent implements OnInit, AfterViewInit{
     notesBackup = [];
     notesInProcess = [];
     notesEnded = [];
+    analiticas = [];
+    analyticId: number;
 
     @ViewChild('tabOne') tabOne: ElementRef;
     @ViewChild('tabTwo') tabTwo: ElementRef;
@@ -51,7 +54,8 @@ export class NotesComponent implements OnInit, AfterViewInit{
         private router: Router,
         private requestNoteService: RequestNoteService,
         private dataTableService: DataTableService,
-        private purchaseOrderService: PurchaseOrderService
+        private purchaseOrderService: PurchaseOrderService,
+        private analyticService: AnalyticService
     ){}
 
     ngOnInit(): void {
@@ -63,13 +67,17 @@ export class NotesComponent implements OnInit, AfterViewInit{
     }
 
     inicializar() {
+        this.analyticService.getByCurrentUserRequestNote().subscribe(d => {
+            this.analiticas = d.data;
+        });
         var json = {
             statusId: null,
             creationUserId: null,
             fromDate: null,
             toDate: null,
             providerId: null,
-            noteId: null
+            noteId: null,
+            analyticId: null
         };
         setTimeout(() => {
             this.requestNoteService.getAll(json).subscribe(d=>{
@@ -163,6 +171,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
             fromDate: this.dateSince,
             toDate: this.dateTo,
             providerId: this.providerId,
+            analyticId: this.analyticId
         };
         json.fromDate = (this.dateSince == null || this.dateSince == undefined) ? null : `${this.dateSince.getFullYear()}/${this.dateSince.getMonth() + 1}/${this.dateSince.getDate()}`;
         json.toDate = (this.dateTo == null || this.dateTo == undefined) ? null : `${this.dateTo.getFullYear()}/${this.dateTo.getMonth() + 1}/${this.dateTo.getDate()}`;

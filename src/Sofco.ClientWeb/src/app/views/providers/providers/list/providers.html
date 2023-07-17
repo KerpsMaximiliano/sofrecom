@@ -37,6 +37,12 @@
                         <ng-select [items]="areas" bindLabel="description" bindValue="id" [(ngModel)]="areaId" [multiple]="true"></ng-select>
                     </div>
                 </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="control-label">Crítico</label>
+                        <ng-select [items]="critical" bindLabel="text" bindValue="id" [(ngModel)]="criticalSearch" [multiple]="false"></ng-select>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="panel-footer">
@@ -47,11 +53,11 @@
                         <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i></button>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     </div>
-    <div class="ibox"> 
+    <div class="ibox">
         <div class="ibox-content">
             <div class="panel-body table-responsive">
                 <table class="table table-striped dataTable" role="grid" id="dataTable">
@@ -68,21 +74,25 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of data">
-                            <td>{{ item.id }} </td>
-                            <td>{{ item.name }} </td>
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.name }}</td>
                             <td>
-                                <div *ngFor="let prov of item.providerArea">
-                                    <div>{{prov}} <b *ngIf="item.providerArea.indexOf(prov) != (item.providerArea.length - 1)">-</b></div>
-                                </div>
+                                <ol class="provider-areas-column" *ngIf="item.providerArea.length; else itemNoProviderAreas">
+                                    <ng-template ngFor let-prov [ngForOf]="item.providerArea | keyvalue">
+                                        <li>{{prov.value}}</li>
+                                        <hr *ngIf="prov.key < (item.providerArea.length - 1)">
+                                    </ng-template>
+                                </ol>
+                                <ng-template #itemNoProviderAreas>Sin rubro</ng-template>
                             </td>
-                            <td>{{ item.CUIT }} </td>
-                            <td>{{ item.ingresosBrutos }} </td>
-                            <td>{{ item.condicionIVA }} </td>
+                            <td>{{ item.CUIT }}</td>
+                            <td>{{ item.ingresosBrutos }}</td>
+                            <td>{{ item.condicionIVA }}</td>
                             <td class="column-sm text-center">
                                 <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i class="fa fa-eye"></i></button>
                                 <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i class="fa fa-edit"></i></button>
                             </td>
-                        </tr> 
+                        </tr>
                     </tbody>
                 </table>
             </div>

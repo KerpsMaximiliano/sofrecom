@@ -13,6 +13,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         IList<WorkTime> Get(DateTime startDate, DateTime endDate, int currentUserId);
 
         IList<WorkTime> GetByEmployeeId(DateTime startDate, DateTime endDate, int employeeId);
+        IList<WorkTime> GetLiteByEmployeeId(DateTime date, int employeeId);
 
         IList<WorkTime> GetByEmployeeIds(DateTime startDate, DateTime endDate, List<int> employeeIds);
 
@@ -40,7 +41,7 @@ namespace Sofco.Core.DAL.WorkTimeManagement
         IList<WorkTime> GetTotalHoursBetweenDays(int allocationEmployeeId, DateTime startDate, DateTime endDate, int analyticId);
 
         decimal GetPendingHoursByEmployeeId(int employeeId);
-
+        List<WorkTime> GetAddTrackedByEmployee(int employeeID);
         List<WorkTime> GetWorkTimePendingHoursByEmployeeId(int employeeId);
 
         IList<WorkTime> Search(SearchParams parameters, List<int> analyticIds);
