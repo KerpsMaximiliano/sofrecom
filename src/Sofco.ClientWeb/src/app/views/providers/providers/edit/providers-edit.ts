@@ -48,7 +48,7 @@ export class ProvidersEditComponent implements OnInit{
         country: new FormControl(null, [Validators.maxLength(20), Validators.required]),
         contactName: new FormControl(null, [Validators.maxLength(100), Validators.required]),
         phone: new FormControl(null, [Validators.maxLength(50), Validators.required, Validators.pattern("^[0-9]*$")]),
-        email: new FormControl(null, [Validators.maxLength(100), Validators.required, Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]),
+        email: new FormControl(null, [Validators.maxLength(100), Validators.required]),//Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
         website: new FormControl(null, [Validators.maxLength(1000)]),
         comments: new FormControl(null, [Validators.maxLength(5000)])
     });
@@ -229,12 +229,12 @@ export class ProvidersEditComponent implements OnInit{
             this.form.get('phone').updateValueAndValidity();
             //Email
             this.form.get('email').clearValidators();
-            this.form.get('email').setValidators([Validators.maxLength(100), Validators.required, Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]);
+            this.form.get('email').setValidators([Validators.maxLength(100), Validators.required]);
             this.form.get('email').updateValueAndValidity();
         } else {
             //CUIT
             this.form.get('cuit').clearValidators();
-            this.form.get('cuit').setValidators([Validators.maxLength(11), Validators.minLength(11), Validators.pattern("^[0-9]*$")]);
+            this.form.get('cuit').setValidators([Validators.maxLength(11), Validators.minLength(11), Validators.pattern("^[0-9]*$")]);//Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
             this.form.get('cuit').updateValueAndValidity();
             //Ing. Brutos
             this.form.get('ingresosBrutos').clearValidators();
@@ -272,7 +272,7 @@ export class ProvidersEditComponent implements OnInit{
             this.form.get('phone').updateValueAndValidity();
             //Email
             this.form.get('email').clearValidators();
-            this.form.get('email').setValidators([Validators.maxLength(100), Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]);
+            this.form.get('email').setValidators([Validators.maxLength(100)]);//Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
             this.form.get('email').updateValueAndValidity();
         }
     }

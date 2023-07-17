@@ -9,6 +9,9 @@
         public const string ValidatePeriodCloseMonthKey = "ValidatePeriodCloseMonth";
 
         public const string WorkTimeReportByHours = "WorkTimeReportByHours";
+
+        public const string PreLoadHoursDefault = "TareaPrecargaHorasDefault";
+
     }
 }
  

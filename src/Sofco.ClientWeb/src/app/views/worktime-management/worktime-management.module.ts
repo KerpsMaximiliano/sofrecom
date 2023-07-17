@@ -38,18 +38,20 @@ import { RrhhService } from 'app/services/human-resources/rrhh.service';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AmountFormatModule } from 'app/pipes/amount-format.module';
+import { AutomaticHoursComponent } from './automatic-hours/automatic-hours.component';
+import { AutomaticHoursService } from 'app/services/admin/automatic-hours.service';
 
 @NgModule({
   declarations: [WorkTimeApprovalComponent, WorkTimeStatusApproveComponent, WorkTimeStatusRejectComponent, 
                  WorkTimeReportComponent, WorkTimeSearchComponent, HolidaysComponent, ImportWorkTimesComponent,
-                WorkTimeControlComponent],
+                WorkTimeControlComponent, AutomaticHoursComponent],
 
   imports : [CommonModule, Ng2DatatablesModule, NgDatepickerModule, RouterModule, FormsModule, ICheckModule, Ng2ModalModule, ReactiveFormsModule,
              TranslateModule, FileUploadModule, Select2Module, LayoutsModule, SpinnerModule, DatePickerModule, IboxtoolsModule, 
              PCheckModule, WorkTimeRouter, DateRangePickerModule, TooltipModule, NgSelectModule, AmountFormatModule],
 
   providers   : [WorktimeService, UtilsService, HolidayService, EmployeeService, AnalyticService, CustomerService, ServiceService, 
-                 WorktimeControlService, RrhhService],
+                 WorktimeControlService, RrhhService, AutomaticHoursService],
 
   exports     : []
 })

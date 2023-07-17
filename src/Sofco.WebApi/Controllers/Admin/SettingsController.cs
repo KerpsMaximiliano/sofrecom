@@ -60,5 +60,12 @@ namespace Sofco.WebApi.Controllers.Admin
 
             return this.CreateResponse(response);
         }
+
+        [HttpGet("GetByKey")]
+        public IActionResult GetByKey(string key)
+        {
+            var list = settingService.GetByKey(key);
+            return Ok(list);
+        }
     }
 }

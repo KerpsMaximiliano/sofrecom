@@ -6,6 +6,7 @@ using Sofco.Core.Models.AdvancementAndRefund.Advancement;
 using Sofco.Core.Models.AdvancementAndRefund.Common;
 using Sofco.Core.Models.AdvancementAndRefund.Refund;
 using Sofco.Core.Models.Workflow;
+using Sofco.Domain.Models.AdvancementAndRefund;
 using Sofco.Domain.Utils;
 using File = Sofco.Domain.Models.Common.File;
 
@@ -34,5 +35,7 @@ namespace Sofco.Core.Services.AdvancementAndRefund
         Response<IList<Option>> GetAnalitycs();
 
         Response<Stream> GetZip(int id);
+
+        Response<IList<Refund>> GetPendingByAnaliticId(int id);
     }
 }
