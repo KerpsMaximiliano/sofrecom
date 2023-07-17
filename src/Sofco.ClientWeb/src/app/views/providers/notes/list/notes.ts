@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
+import { Ng2ModalComponent } from "app/components/modal/ng2modal.component";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -9,9 +10,36 @@ import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
 import { environment } from "environments/environment";
 
+export interface Note {
+  creationDate: string;
+  creationUserDescription: string;
+  creationUserId: number;
+  creationUserName: string;
+  description: string;
+  hasEditPermissions: boolean;
+  hasReadPermissions: boolean;
+  id: number;
+  status: number;
+  statusDescription: string;
+  statusId: number;
+}
+
+export enum AnaliticState {
+  PENDING_APPROVAL =  "Pendiente de Aprobación",
+  APPROVED =  "Aprobada",
+}
+
+export interface AnaliticManager {
+  name: string;
+  status: AnaliticState;
+}
+
 @Component({
     selector: 'notes',
-    templateUrl: './notes.html'
+    templateUrl: './notes.html',
+    styleUrls: [
+      './analitic-managers.scss',
+    ],
 })
 
 export class NotesComponent implements OnInit, AfterViewInit{
@@ -32,6 +60,11 @@ export class NotesComponent implements OnInit, AfterViewInit{
     notesInProcess = [];
     notesEnded = [];
 
+    analiticManagers: { [key: string]: Set<string> } = {
+      approved: new Set<string>(),
+      pending_approval: new Set<string>(),
+    }
+
     @ViewChild('tabOne') tabOne: ElementRef;
     @ViewChild('tabTwo') tabTwo: ElementRef;
     @ViewChild('providersModal') providersModal;
@@ -43,6 +76,18 @@ export class NotesComponent implements OnInit, AfterViewInit{
         "",
         "Cerrar"
     );
+
+    analiticStates = AnaliticState;
+
+    @ViewChild('approvedManagersModal') approvedManagersModal;
+    public approvedManagersModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
+      "PMs Aprobadores",
+      "rejectModal",
+      false,
+      true,
+      "",
+      "Cerrar"
+  );
 
     constructor(
         private employeeService: EmployeeService,
@@ -63,6 +108,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
     }
 
     inicializar() {
+
         var json = {
             statusId: null,
             creationUserId: null,
@@ -91,7 +137,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
                     }
                 })
                 this.notes = this.notesInProcess;
-                this.notes.sort(function(a, b) { 
+                this.notes.sort(function(a, b) {
                     return b.id - a.id;
                 });
                 console.log(this.notes)
@@ -102,7 +148,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
                 }, 501);
             });
         }, 500);
-        
+
         this.employeeService.getEveryone().subscribe(d => {
             d.forEach(employee => {
                 if(employee.endDate == null && employee.isExternal == 0) {
@@ -229,14 +275,14 @@ export class NotesComponent implements OnInit, AfterViewInit{
 
     initGrid() {
         var columns = [0, 1, 2, 3, 4, 5];
-    
+
         var params = {
             selector: '#dataTable',
             columns: columns,
             title: 'Notas',
             withExport: true
         }
-    
+
         this.dataTableService.destroy(params.selector);
         this.dataTableService.initialize(params);
     }
@@ -264,5 +310,25 @@ export class NotesComponent implements OnInit, AfterViewInit{
 
     get currentEnviroment() {
         return environment;
+    }
+
+    getApprovedManagers(noteId: Note["id"]) {
+      for(let managerSet in this.analiticManagers) {
+        this.analiticManagers[managerSet].clear();
+      }
+      this.messageService.showLoading();
+      this.approvedManagersModal.show();
+      this.requestNoteService.getApprovedManagers<AnaliticManager>(noteId).subscribe(
+        (managers) => {
+          this.messageService.closeLoading();
+          for(let manager of managers) {
+            if(manager.status == AnaliticState.APPROVED) {
+              this.analiticManagers.approved.add(manager.name);
+            } else if(manager.status == AnaliticState.PENDING_APPROVAL) {
+              this.analiticManagers.pending_approval.add(manager.name);
+            }
+          }
+        }
+      );
     }
 }

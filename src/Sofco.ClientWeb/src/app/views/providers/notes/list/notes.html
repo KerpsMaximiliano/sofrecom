@@ -81,7 +81,7 @@
                                         class="fa fa-search"></i></button>
                             </div>
                         </div>
-    
+
                     </div>
                 </div>
             </div>
@@ -90,8 +90,8 @@
             <button class="btn btn-success pull-right" routerLink="./add" style="margin-top: .15rem"> Nueva <i class="fa fa-plus"></i></button>
         </div>
     </div>
-    
-    <div class="ibox"> 
+
+    <div class="ibox">
         <div class="ibox-content">
             <div class="tabs-container">
                 <ul class="nav nav-pills" role="tablist">
@@ -125,8 +125,9 @@
                                         <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)" *ngIf="note.statusId != 11 && note.statusId != 12 && note.hasEditPermissions"><i class="fa fa-edit"></i></button>
                                         <button title="proveedores" class="btn btn-info btn-xs" (click)="getProviders(note.id)" *ngIf="note.statusId == currentEnviroment.NP_PEND_APRO_DAF || note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL || note.statusId == currentEnviroment.NP_CERRADA"><i class="fa fa-suitcase"></i></button>
                                         <button title="agregar orden de compra" class="btn btn-default btn-xs" (click)="addOC(note.id)" *ngIf="(note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL) && note.hasEditPermissions"><i class="fa fa-barcode"></i></button>
+                                        <button title="Mostrar PMs Aprobadores" class="btn btn-default btn-xs" (click)="getApprovedManagers(note.id)" *ngIf="note.statusId == currentEnviroment.NP_PEND_APRO_GER_AN && note.hasReadPermissions"><i class="fa fa-barcode"></i></button>
                                     </td>
-                                </tr> 
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -136,7 +137,7 @@
     </div>
 </div>
 
-<ng2-modal [config]="providersModalConfig" #providersModal>
+<!-- <ng2-modal [config]="providersModalConfig" #providersModal>
     <div *ngIf="modalProvidersList.length > 0">
         <div *ngFor="let prov of modalProvidersList">
             <h3>{{prov.name}} - {{prov.cuit}}</h3>
@@ -145,4 +146,33 @@
     <div *ngIf="modalProvidersList.length == 0">
         <h2>No hay proveedores seleccionados</h2>
     </div>
-</ng2-modal> 
+</ng2-modal> -->
+
+<!-- PMs Aprobadores -->
+<ng2-modal class="analitic-managers-modal" [config]="approvedManagersModalConfig" #approvedManagersModal>
+
+    <!-- Aprobados -->
+    <div class="managers approved">
+      <h3>Estado: "{{analiticStates.APPROVED}}"</h3>
+      <ng-template [ngIf]="analiticManagers.approved.size" [ngIfElse]="noAnaliticManagers">
+        <ul *ngFor="let manager of analiticManagers.approved">
+          <li>{{ manager }}</li>
+        </ul>
+      </ng-template>
+    </div>
+
+    <!-- Pendientes de aprobación -->
+    <div class="managers pending-approval">
+      <h3>Estado: "{{analiticStates.PENDING_APPROVAL}}"</h3>
+      <ng-template [ngIf]="analiticManagers.pending_approval.size" [ngIfElse]="noAnaliticManagers">
+        <ul *ngFor="let manager of analiticManagers.pending_approval">
+          <li>{{ manager }}</li>
+        </ul>
+      </ng-template>
+    </div>
+
+    <!-- Mensaje a mostrar cuando no hay gerentes -->
+    <ng-template #noAnaliticManagers>
+      <span>No hay gerentes con este estado</span>
+    </ng-template>
+</ng2-modal>
