@@ -82,7 +82,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
     @ViewChild('approvedManagersModal') approvedManagersModal;
     public approvedManagersModalConfig: Ng2ModalConfig = new Ng2ModalConfig(
       "PMs Aprobadores",
-      "rejectModal",
+      "managersModal",
       false,
       true,
       "",

@@ -137,7 +137,7 @@
     </div>
 </div>
 
-<!-- <ng2-modal [config]="providersModalConfig" #providersModal>
+<ng2-modal [config]="providersModalConfig" #providersModal>
     <div *ngIf="modalProvidersList.length > 0">
         <div *ngFor="let prov of modalProvidersList">
             <h3>{{prov.name}} - {{prov.cuit}}</h3>
@@ -146,11 +146,10 @@
     <div *ngIf="modalProvidersList.length == 0">
         <h2>No hay proveedores seleccionados</h2>
     </div>
-</ng2-modal> -->
+</ng2-modal>
 
 <!-- PMs Aprobadores -->
 <ng2-modal class="analitic-managers-modal" [config]="approvedManagersModalConfig" #approvedManagersModal>
-
     <!-- Aprobados -->
     <div class="managers approved">
       <h3>Estado: "{{analiticStates.APPROVED}}"</h3>
@@ -160,7 +159,6 @@
         </ul>
       </ng-template>
     </div>
-
     <!-- Pendientes de aprobación -->
     <div class="managers pending-approval">
       <h3>Estado: "{{analiticStates.PENDING_APPROVAL}}"</h3>
@@ -170,7 +168,6 @@
         </ul>
       </ng-template>
     </div>
-
     <!-- Mensaje a mostrar cuando no hay gerentes -->
     <ng-template #noAnaliticManagers>
       <span>No hay gerentes con este estado</span>
