@@ -1087,7 +1087,7 @@
             "pendingHours": "Horas pendientes de carga"
         },
         "automaticHours": {
-            "title": "Carga de Hora Automáticas"
+            "title": "Carga Automática de Horas"
         }
     },
     "months": {
