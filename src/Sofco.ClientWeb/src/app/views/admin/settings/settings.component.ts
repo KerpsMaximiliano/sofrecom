@@ -9,11 +9,12 @@ import { forEach } from 'lodash';
 
 @Component({
   selector: 'app-settings',
-  templateUrl: './settings.component.html'
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit, OnDestroy {
 
-  JobsSettingCategory = 2;
+  
 
   settings: Array<any>;
   serviceSubscrip: Subscription;
@@ -56,11 +57,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   getAll() {
     this.loading = true;
+    let JobsSettingCategory = 2;
     this.serviceSubscrip = this.service.getAll().subscribe(
       d => {
         const settings: Array<any> = d.body.data;
-        this.settings = settings.filter(item => item.category !== this.JobsSettingCategory);
-        this.jobSettings = settings.filter(item => item.category === this.JobsSettingCategory);
+        this.settings = settings.filter(item => item.category !== JobsSettingCategory);
+        this.jobSettings = settings.filter(item => item.category === JobsSettingCategory);
         this.settingUsers = JSON.parse(this.jobSettings[2].value);
         this.loading = false
       },
@@ -78,17 +80,15 @@ export class SettingsComponent implements OnInit, OnDestroy {
       err => this.messageService.closeLoading());
   }
 
-  save() {
+  save(item) {
     this.loading = true;
-
-    this.serviceSubscrip = this.service.save(this.settings).subscribe(
+    this.serviceSubscrip = this.service.save(item).subscribe(
       d => { this.settings = d.data; this.loading = false; this.saveResponseHandler(); },
       err => this.loading = false);
   }
 
   updateLicenseType(item) {
     this.messageService.showLoading();
-
     this.licenseTypesSubscrip = this.service.saveLicenseType(item).subscribe(
       response => { this.messageService.closeLoading(); },
       err => this.messageService.closeLoading());
@@ -108,31 +108,45 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   saveSetting(item) {
     this.messageService.showLoading();
-
-    this.licenseTypesSubscrip = this.service.saveItem(item).subscribe(
-      response => { this.messageService.closeLoading(); this.messageService.succes('ADMIN.settings.saveSuccess'); },
-      err => this.messageService.closeLoading());
-  }
-
-  saveSetting2(item) {
-    if (item < 1 || item > 31) {
+    if (item.value < 1 || item.value > 31) {
       this.messageService.showMessage("El día del mes de Job de Recurso SIN Asignación debe ser del 1 al 31", 1);
-    } else {
-      this.service.put({ key: "JobRecursosSinAsignacionDia", value: item}).subscribe(
-        response => { 
+      this.messageService.closeLoading();
+    } else{
+      if(item.id === 26){
+        item.value = JSON.stringify(this.settingUsers)
+      }
+    this.licenseTypesSubscrip = this.service.saveItem(item).subscribe(
+        (res) => {
           this.messageService.closeLoading();
           this.messageService.succes('ADMIN.settings.saveSuccess');
-      },
-      err => this.messageService.closeLoading());
+        },
+        (error) => {
+          this.messageService.closeLoading();
+          this.messageService.showError('Ha ocurrido un error al guardar los datos.');
+        }
+    );
     }
-  } 
-
-  saveSetting3(item) {
-    this.service.put({ key: "JobRecursosSinAsignacionDestinatarios", value: JSON.stringify(item)}).subscribe(
-      response => { 
-        this.messageService.closeLoading();
-        this.messageService.succes('ADMIN.settings.saveSuccess');
-    },
-    err => this.messageService.closeLoading());
   }
+
+  // saveSetting2(item) {
+  //   if (item < 1 || item > 31) {
+  //     this.messageService.showMessage("El día del mes de Job de Recurso SIN Asignación debe ser del 1 al 31", 1);
+  //   } else {
+  //     this.service.put({ key: "JobRecursosSinAsignacionDia", value: item}).subscribe(
+  //       response => { 
+  //         this.messageService.closeLoading();
+  //         this.messageService.succes('ADMIN.settings.saveSuccess');
+  //     },
+  //     err => this.messageService.closeLoading());
+  //   }
+  // } 
+
+  // saveSetting3(item) {
+  //   this.service.put({ key: "JobRecursosSinAsignacionDestinatarios", value: JSON.stringify(item)}).subscribe(
+  //     response => { 
+  //       this.messageService.closeLoading();
+  //       this.messageService.succes('ADMIN.settings.saveSuccess');
+  //   },
+  //   err => this.messageService.closeLoading());
+  // }
 }

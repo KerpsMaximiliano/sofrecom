@@ -119,6 +119,7 @@
         },
 		"settings": {
 			"title": "Configs",
+			"generalSettings":"Genral settings",
 			"licenseTitle": "Licenses's Configuration",
 			"saveSuccess": "Save successfully",
 			"AllocationManagement_Months": "Allocations - Months",
@@ -133,7 +134,14 @@
 			"LicenseCertificatePendingDayOfMonth": "Notification of certificates not delivered (day of the month).",
 			"WorkingHoursPerDaysMax": "Top working day",
 			"CloseMonth": "Day of the close of the month",
-			"ValidatePeriodCloseMonth": "Validate close month"
+			"ValidatePeriodCloseMonth": "Validate close month",
+			"JobRecursosSinAsignacionDia": "Resource Job WITHOUT Assignment (day of the month)",
+            "JobRecursosSinAsignacionDestinatarios":"Resource Job WITHOUT Assignment (recipients)",
+            "grid": {
+                "license": "License",
+                "days": "Days",
+                "value":"Value"
+            }
 		}
 	},
 	"billing":{
