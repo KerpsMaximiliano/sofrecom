@@ -82,6 +82,8 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
 
             unitOfWork.SettingRepository.Save(setting);
+            
+            settingData.ClearKeys();
 
             response.Data = setting;
 
