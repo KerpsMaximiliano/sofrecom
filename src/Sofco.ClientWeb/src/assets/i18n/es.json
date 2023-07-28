@@ -837,7 +837,8 @@
         "close": "Cerrar",
         "back": "Volver",
 		"reabrir": "Reabrir",
-        "REABRIR": "Reabrir",        "approve": "Aprobar",
+        "REABRIR": "Reabrir",        
+        "approve": "Aprobar",
         "reject": "Rechazar",
         "sendToDaf": "Enviar a DAF",
         "annulment": "Anular",
@@ -1089,6 +1090,39 @@
         "automaticHours": {
             "title": "Carga de Hora Automáticas"
         }
+    },
+    "providers": {
+        "title": "Proveedores",
+        "search":"Búsqueda de Proveedores",
+        "providersList":"Listado de Proveedores",
+        "add":"Agregar",
+        "grid": {
+            "status":"Estado",
+            "businessName":"Razón Social",
+            "sector":"Rubro",
+            "critical":"Crítico",
+            "id":"Id",
+            "cuit":"CUIT",
+            "grossIncome":"Ingresos Brutos",
+            "iva":"Condición IVA",
+            "address":"Dirección",
+            "street":"Calle",
+            "locality":"Localidad",
+            "zipCode":"Código Postal",
+            "province":"Provincia",
+            "country":"País",
+            "contact":"Contacto",
+            "contactName":"Nombre y Apellido",
+            "phone":"Teléfono",
+            "email":"E-mail",
+            "web":"Sitio Web",
+            "comments":"Comentarios",
+            "providerNumber":"Número de Proveedor",
+            "startDate":"Fecha Alta",
+            "endDate":"Fecha Baja",
+            "billing":"Facturación"
+        }
+
     },
     "months": {
         "january": "Enero",

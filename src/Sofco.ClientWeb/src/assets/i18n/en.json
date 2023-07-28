@@ -988,6 +988,38 @@
             "pendingHours": "Pending Hours"
         }
 	},
+	"providers": {
+        "title": "Providers",
+        "search":"Providers Search",
+        "providersList":"Providers List",
+        "add":"Add",
+        "grid": {
+            "status":"Status",
+            "businessName":"Business Name",
+            "sector":"Sector",
+            "critical":"Critical",
+            "id":"Id",
+            "cuit":"CUIT",
+            "grossIncome":"Gross Income",
+            "iva":"IVA Condition",
+            "address":"Address",
+            "street":"Street",
+            "locality":"Locality",
+            "zipCode":"Zip Code",
+            "province":"Province",
+            "country":"Country",
+            "contact":"Contact",
+            "contactName":"Name and Surname",
+            "phone":"Phone",
+            "email":"E-mail",
+            "web":"Website",
+            "comments":"Comments",
+            "providerNumber":"Provider Number",
+            "startDate":"Start Date",
+            "endDate":"End Date",
+            "billing":"Billing"
+        }
+	},
 	"months": {
 		"january": "January",
 		"february": "February",
