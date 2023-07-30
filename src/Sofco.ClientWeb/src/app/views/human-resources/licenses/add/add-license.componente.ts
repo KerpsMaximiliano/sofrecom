@@ -112,6 +112,13 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   public add(): void {
     this.messageService.showLoading();
 
+    // Restable la hora, minutos y segundos a 00:00:00.000.
+    if (this.model.startDate)
+      this.model.startDate = this.dateFormatter(this.model.startDate);
+    if (this.model.endDate) {
+      this.model.endDate = this.dateFormatter(this.model.endDate);
+    }
+
     this.addSubscrip = this.licenseService.add(this.model).subscribe(
       (res) => {
         this.messageService.closeLoading();
@@ -303,5 +310,20 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     userInfo.managerId = this.model.managerId;
     userInfo.managerDesc = this.model.managerDesc;
     UserInfoService.setUserInfo(userInfo);
+  }
+
+  /**
+   * Cambia la hora, minutos y segundos de una fecha con formato: ISO 8601 y devuelve la nueva fecha.
+   * @param date Licencia desde/hasta con formato: ISO 8601 UTF.
+   * @returns Licencia desde/hasta con formato: ISO 8601 c/UTF = 00:00:00.000.
+   */
+  private dateFormatter(date: Date): Date {
+    let format = new Date(date);
+
+    format.setHours(0, 0, 0, 0);
+
+    console.log(format);
+
+    return format;
   }
 }
