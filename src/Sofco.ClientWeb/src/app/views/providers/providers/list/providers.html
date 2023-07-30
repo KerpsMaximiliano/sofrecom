@@ -75,32 +75,45 @@
         <table class="table table-striped dataTable" role="grid" id="dataTable">
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Razón social</th>
-              <th>Rubro</th>
-              <th>CUIT</th>
-              <th>Ing. Brutos</th>
-              <th>Condición IVA</th>
+              <th> Id </th>
+              <th> Razón social </th>
+              <th> Rubro </th>
+              <th> CUIT </th>
+              <th> Ing. Brutos </th>
+              <th> Condición IVA </th>
               <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
             </tr>
           </thead>
+
           <tbody>
             <tr *ngFor="let item of data">
               <td>{{ item.id }} </td>
               <td>{{ item.name }} </td>
               <td>
-                <div *ngFor="let prov of item.providerArea">
-                  <div>{{prov}} <b *ngIf="item.providerArea.indexOf(prov) != (item.providerArea.length - 1)">-</b></div>
+                <div *ngIf="areas$.length; else dataAreas">
+                  <div *ngIf="item.providerArea; else itemNoProviderArea">
+                    <div *ngFor="let area of item.providerArea">
+                      - {{ area }}.
+                    </div>
+                  </div>
+                  <ng-template #itemNoProviderArea>
+                    Sin rubro.
+                  </ng-template>
                 </div>
+                <ng-template #dataAreas>
+                  No se han podido cargar las áreas.
+                </ng-template>
               </td>
-              <td>{{ item.CUIT }} </td>
-              <td>{{ item.ingresosBrutos }} </td>
-              <td>{{ item.condicionIVA }} </td>
+              <td>{{ item.cuit }}</td>
+              <td>{{ item.ingresosBrutos }}</td>
+              <td>{{ item.condicionIVA }}</td>
               <td class="column-sm text-center">
-                <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)"><i
-                    class="fa fa-eye"></i></button>
-                <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)"><i
-                    class="fa fa-edit"></i></button>
+                <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)">
+                  <i class="fa fa-eye"></i>
+                </button>
+                <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)">
+                  <i class="fa fa-edit"></i>
+                </button>
               </td>
             </tr>
           </tbody>

@@ -2,7 +2,8 @@ import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 
-// * Services.
+// * Services
+import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
@@ -58,10 +59,13 @@ export class ProvidersComponent implements AfterViewInit {
     private router: Router,
     private providersService: ProvidersService,
     private providersAreaService: ProvidersAreaService,
-    private dataTableService: DataTableService
+    private dataTableService: DataTableService,
+    private messageService: MessageService
   ) {}
 
   ngAfterViewInit(): void {
+    this.messageService.showLoading();
+
     const providersData$ = this.providersService.getAll();
     const areasData$ = this.providersAreaService.getAll();
 
@@ -82,28 +86,48 @@ export class ProvidersComponent implements AfterViewInit {
 
         this.areas$ = [...this.areas$];
         this.setData();
+        this.messageService.closeLoading();
+      },
+      (error) => {
+        const [providersError, areasError] = error;
+
+        if (providersError)
+          this.messageService.showMessage(
+            "No se han podido cargar los proveedores.",
+            1
+          );
+
+        if (areasError)
+          this.messageService.showMessage(
+            "No se han podido cargar los rubros.",
+            1
+          );
+
+        this.messageService.closeLoading();
       }
     );
   }
 
-  view(id) {
+  public view(id: number): void {
     this.providersService.setMode("View");
     this.router.navigate([`providers/providers/edit/${id}`]);
   }
 
-  edit(id) {
+  public edit(id: number): void {
     this.providersService.setMode("Edit");
     this.router.navigate([`providers/providers/edit/${id}`]);
   }
 
-  refreshSearch() {
-    //   this.stateId = null;
-    //   this.businessName = null;
-    //   this.areaId = null;
-    //   this.selectedCritical = 0;
+  public clear(): void {
+    this.selectedStates = 0;
+    this.businessName = "";
+    this.selectedAreas = null;
+    this.selectedCritical = 0;
   }
 
   public search(): void {
+    this.messageService.showLoading();
+
     this.providersService
       .getByParams({
         statusId: this.selectedStates === 0 ? null : this.selectedStates,
@@ -119,6 +143,7 @@ export class ProvidersComponent implements AfterViewInit {
         error: (err: any) => {},
         complete: () => {
           this.setData();
+          this.messageService.closeLoading();
         },
       });
   }
@@ -175,17 +200,13 @@ export class ProvidersComponent implements AfterViewInit {
     });
   }
 
-  initGrid() {
-    var columns = [0, 1, 2, 3, 4, 5, 6];
-
-    var params = {
+  private initGrid(): void {
+    this.dataTableService.destroy("#dataTable");
+    this.dataTableService.initialize({
       selector: "#dataTable",
-      columns: columns,
+      columns: [0, 1, 2, 3, 4, 5, 6],
       title: "Proveedores",
       withExport: true,
-    };
-
-    this.dataTableService.destroy(params.selector);
-    this.dataTableService.initialize(params);
+    });
   }
 }
