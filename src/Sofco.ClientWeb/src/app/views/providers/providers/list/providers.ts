@@ -37,6 +37,8 @@ export class ProvidersComponent implements OnInit {
   dataBackup = [];
   backupProviderAreas = [];
 
+  public selectedCritical: number = 0;
+
   constructor(
     private router: Router,
     private providersService: ProvidersService,
@@ -107,6 +109,7 @@ export class ProvidersComponent implements OnInit {
     this.stateId = null;
     this.businessName = null;
     this.areaId = null;
+    this.selectedCritical = 0;
   }
 
   search() {
