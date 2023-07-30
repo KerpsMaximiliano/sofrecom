@@ -43,20 +43,16 @@ export class ProvidersComponent implements AfterViewInit {
   // Lista de areas (select | Rubro).
   public areas$: IProvidersArea[] = [];
 
-  states = [
-    { id: 0, text: "Todos" },
-    { id: 1, text: "Activo" },
-    { id: 2, text: "Inactivo" },
-  ];
-  stateId: number = 0;
-  businessName: string;
-  areas = [];
-  areaId = [];
-  data = [];
-  dataBackup = [];
-  backupProviderAreas = [];
-
+  /**
+   * Configuración de valores en el inicio de la vista, 'filter'.
+   */
+  public selectedStates: number = 0;
+  public businessName: string;
+  public selectedAreas: [];
   public selectedCritical: number = 0;
+
+  // dataTable.
+  public data = [];
 
   constructor(
     private router: Router,
@@ -64,55 +60,6 @@ export class ProvidersComponent implements AfterViewInit {
     private providersAreaService: ProvidersAreaService,
     private dataTableService: DataTableService
   ) {}
-
-  // ngOnInit(): void {
-  // this.providersArea.getAll().subscribe((d) => {
-  //   d.data.forEach((providerArea) => {
-  //     if (providerArea.active) {
-  //       this.areas.push(providerArea);
-  //       this.areas = [...this.areas];
-  //     }
-  //   });
-  // });
-  // forkJoin([
-  //   this.providersService.getAll(),
-  //   this.providersArea.getAll(),
-  // ]).subscribe((res) => {
-  //   this.backupProviderAreas = res[1].data;
-  //   res[0].data.forEach((provider) => {
-  //     let areas = [];
-  //     provider.providersAreaProviders.forEach((p) => {
-  //       areas.push(
-  //         res[1].data.find((prov) => prov.id == p.providerAreaId).description
-  //       );
-  //     });
-  //     let model = {
-  //       id: provider.id,
-  //       name: provider.name,
-  //       providerArea: null,
-  //       providerAreaId: null,
-  //       CUIT: provider.cuit,
-  //       ingresosBrutos:
-  //         provider.ingresosBrutos != null
-  //           ? this.grossIncome[provider.ingresosBrutos - 1]
-  //           : "",
-  //       condicionIVA:
-  //         provider.condicionIVA != null
-  //           ? this.ivaConditions[provider.condicionIVA - 1]
-  //           : "",
-  //       active: provider.active,
-  //     };
-  //     if (areas.length > 0) {
-  //       model.providerArea = areas;
-  //       //model.providerAreaId = area.id
-  //     }
-  //     this.data.push(model);
-  //     this.data = [...this.data];
-  //   });
-  //   this.dataBackup = this.data;
-  //   this.initGrid();
-  // });
-  // }
 
   ngAfterViewInit(): void {
     const providersData$ = this.providersService.getAll();
@@ -150,54 +97,29 @@ export class ProvidersComponent implements AfterViewInit {
   }
 
   refreshSearch() {
-    this.stateId = null;
-    this.businessName = null;
-    this.areaId = null;
-    this.selectedCritical = 0;
+    //   this.stateId = null;
+    //   this.businessName = null;
+    //   this.areaId = null;
+    //   this.selectedCritical = 0;
   }
 
-  search() {
+  public search(): void {
     this.providersService
       .getByParams({
-        statusId: this.stateId == 0 ? null : this.stateId,
+        statusId: this.selectedStates === 0 ? null : this.selectedStates,
         businessName: this.businessName,
-        providersArea: this.areaId,
+        providersArea: this.selectedAreas,
       })
-      .subscribe((d) => {
-        this.data = [];
-        d.data.forEach((prov) => {
-          let areas = [];
-          prov.providersAreaProviders.forEach((p) => {
-            areas.push(
-              this.backupProviderAreas.find(
-                (provider) => provider.id == p.providerAreaId
-              ).description
-            );
-          });
-          let model = {
-            id: prov.id,
-            name: prov.name,
-            providerArea: null,
-            providerAreaId: null,
-            CUIT: prov.cuit,
-            ingresosBrutos:
-              prov.ingresosBrutos != null
-                ? this.grossIncome[prov.ingresosBrutos - 1]
-                : "",
-            condicionIVA:
-              prov.condicionIVA != null
-                ? this.ivaConditions[prov.condicionIVA - 1]
-                : "",
-            active: prov.active,
-          };
-          if (areas.length > 0) {
-            model.providerArea = areas;
-            //model.providerAreaId = area.id
-          }
-          this.data.push(model);
-          this.data = [...this.data];
-        });
-        this.initGrid();
+      .subscribe({
+        next: (res: any) => {
+          this.providers$ = Array.isArray(res.data)
+            ? (res.data as IProviders[])
+            : [res.data as IProviders];
+        },
+        error: (err: any) => {},
+        complete: () => {
+          this.setData();
+        },
       });
   }
 
