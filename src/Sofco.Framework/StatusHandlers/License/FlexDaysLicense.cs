@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Internal;
 using Sofco.Core.DAL;
 using Sofco.Domain.Utils;
 using System;
