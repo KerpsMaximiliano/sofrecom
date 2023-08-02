@@ -956,6 +956,38 @@
             "pendingHours": "Heures en attente de chargement"
         }
     }, 
+    "providers": {
+        "title": "Fournisseurs",
+        "search": "Recherche de fournisseurs",
+        "providersList": "Liste des fournisseurs",
+        "add": "Ajouter",
+        "grid": {
+            "status": "Statut",
+            "businessName": "Raison sociale",
+            "sector": "Secteur",
+            "critical": "Critique",
+            "id": "Id",
+            "cuit": "CUIT",
+            "grossIncome": "Revenu brut",
+            "iva": "Condition IVA",
+            "address": "Adresse",
+            "street": "Rue",
+            "locality": "Localité",
+            "zipCode": "Code postal",
+            "province": "Province",
+            "country": "Pays",
+            "contact": "Contact",
+            "contactName": "Nom et prénom",
+            "phone": "Téléphone",
+            "email": "E-mail",
+            "web": "Site web",
+            "comments": "Commentaires",
+            "providerNumber": "Numéro de fournisseur",
+            "startDate": "Date de début",
+            "endDate": "Date de fin",
+            "billing": "Facturation"
+        }
+    },
     "months":{
         "january":"Janvier",
         "february":"Février",

@@ -1,3 +1,4 @@
+import { MessageService } from 'app/services/common/message.service';
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { IVAConditions } from "app/models/enums/IVAConditions";
@@ -71,7 +72,8 @@ export class ProvidersComponent implements OnInit{
         private router: Router,
         private providersService: ProvidersService,
         private providersArea: ProvidersAreaService,
-        private dataTableService: DataTableService
+        private dataTableService: DataTableService,
+        private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
@@ -81,7 +83,7 @@ export class ProvidersComponent implements OnInit{
                     this.areas.push(providerArea);
                     this.areas = [...this.areas]
                 }
-            })
+            });
         });
         forkJoin([
             this.providersService.getAll(),
@@ -95,12 +97,10 @@ export class ProvidersComponent implements OnInit{
     }
 
     view(id) {
-        this.providersService.setMode("View");
-        this.router.navigate([`providers/providers/edit/${id}`]);
+        this.router.navigate([`providers/providers/detail/${id}`]);
     }
 
     edit(id) {
-        this.providersService.setMode("Edit");
         this.router.navigate([`providers/providers/edit/${id}`])
     }
 
@@ -111,12 +111,13 @@ export class ProvidersComponent implements OnInit{
 
     }
 
-    search() {
-
+    search() {        
+    this.messageService.showLoading();
         this.providersService.getByParams({statusId: this.stateId == 0 ? null : this.stateId, businessName: this.businessName, providersArea: this.areaId}).subscribe(d => {
             this.data = [];
             d.data.forEach(this.setData.bind(this));
             this.initGrid();
+            this.messageService.closeLoading();
         })
     }
 
