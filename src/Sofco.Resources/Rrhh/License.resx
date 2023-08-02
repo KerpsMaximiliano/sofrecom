@@ -231,7 +231,19 @@
   <data name="WrongCertificateMonthQuantity" xml:space="preserve">
     <value>rrhh/license.wrongCertificateMonthQuantity</value>
   </data>
-	<data name="periodBefore" xml:space="preserve">
+  <data name="periodBefore" xml:space="preserve">
     <value>rrhh/license.periodBefore</value>
+  </data>
+  <data name="BirthdayDaysTakenExceeded" xml:space="preserve">
+    <value>rrhh/license.birthdayDaysTakenExceeded</value>
+  </data>
+  <data name="InvalidBirthdayDaysMonth" xml:space="preserve">
+    <value>rrhh/license.invalidBirthdayDaysMonth</value>
+  </data>
+  <data name="FlexDaysTakenExceeded" xml:space="preserve">
+    <value>rrhh/license.flexDaysTakenExceeded</value>
+  </data>
+  <data name="PaternityDaysTakenExceeded" xml:space="preserve">
+    <value />
   </data>
 </root>

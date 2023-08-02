@@ -21,8 +21,8 @@ namespace Sofco.Service.Implementations.Rrhh
         }
 
         public ICollection<LicenseType> GetOptions()
-        {
-            return unitOfWork.LicenseTypeRepository.GetAllReadOnly();
+        {            
+            return unitOfWork.LicenseTypeRepository.GetAllActivesReadOnly();
         }
 
         public Response UpdateLicenseTypeDays(int typeId, int value)
