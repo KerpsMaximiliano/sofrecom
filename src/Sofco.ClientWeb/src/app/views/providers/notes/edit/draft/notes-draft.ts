@@ -171,6 +171,7 @@ export class NotesDraftComponent implements OnInit{
         this.workflowId = this.currentNote.workflowId;
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
+        debugger;
     }
 
 

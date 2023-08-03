@@ -12,7 +12,8 @@ import { environment } from "environments/environment";
 
 @Component({
     selector: 'notes',
-    templateUrl: './notes.html'
+    templateUrl: './notes.html',
+    styleUrls: ['./notes.scss']
 })
 
 export class NotesComponent implements OnInit, AfterViewInit{
@@ -67,6 +68,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
     }
 
     inicializar() {
+        // this.messageService.showLoading();
         this.analyticService.getByCurrentUserRequestNote().subscribe(d => {
             this.analiticas = d.data;
         });
@@ -80,6 +82,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
             analyticId: null
         };
         setTimeout(() => {
+            this.messageService.showLoading();
             this.requestNoteService.getAll(json).subscribe(d=>{
                 d.forEach(note => {
                     // if(note.statusId <= 12) {
@@ -116,12 +119,14 @@ export class NotesComponent implements OnInit, AfterViewInit{
             });
         });
         this.providerService.getAll().subscribe(d => {
+            this.messageService.showLoading();
             d.data.forEach(provider => {
                 if(provider.active == true) {
                     this.providers.push(provider);
                     this.providers = [...this.providers]
                 }
             })
+            this.messageService.closeLoading();
         });
         this.collapse();
     }
@@ -248,6 +253,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
           let el: HTMLElement = document.getElementsByClassName('sorting_asc')[0] as HTMLElement;
           el.click()
         }, 501);
+        this.messageService.closeLoading();
     }
 
     changeTab(tab?: number) {
