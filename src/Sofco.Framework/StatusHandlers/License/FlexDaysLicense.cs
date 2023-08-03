@@ -1,7 +1,9 @@
-﻿using Sofco.Core.DAL;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using Sofco.Core.DAL;
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Sofco.Framework.StatusHandlers.License
@@ -13,6 +15,8 @@ namespace Sofco.Framework.StatusHandlers.License
             var licenseType = unitOfWork.LicenseTypeRepository.GetSingle(x => x.Id == domain.TypeId);
             var employee = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);
             var flexDaysAllowTogether = unitOfWork.SettingRepository.GetByKey("FlexDaysAllowTogether");
+            var holidays = unitOfWork.HolidayRepository.Get(domain.StartDate.Year, domain.StartDate.Month);
+            var licensesTaken = unitOfWork.LicenseRepository.GetByEmployee(employee.Id).Where(x => x.StartDate.Month == domain.StartDate.Month);
 
             //Item 1 = Working Days
             //Item 2 = Total Days 
@@ -24,6 +28,26 @@ namespace Sofco.Framework.StatusHandlers.License
             }
             else
             {
+                if (holidays.Any(x => x.Date.Date == domain.StartDate.Date.AddDays(1)))
+                {
+                    response.AddError(Resources.Rrhh.License.StartDateAfterHoliday);
+                }
+
+                if (holidays.Any(x => x.Date.Date == domain.StartDate.Date.AddDays(-1)))
+                {
+                    response.AddError(Resources.Rrhh.License.StartDateBeforeHoliday);
+                }
+
+                if(licensesTaken.Any(x => x.StartDate.Date == domain.StartDate.Date.AddDays(1)))
+                {
+                    response.AddError(Resources.Rrhh.License.StartDateAfterLicense);
+                }
+
+                if (licensesTaken.Any(x => x.EndDate.Date == domain.StartDate.Date.AddDays(-1)))
+                {
+                    response.AddError(Resources.Rrhh.License.StartDateBeforeLicense);
+                }
+
                 if (response.HasErrors()) return;
 
                 domain.DaysQuantity = tupla.Item1;
@@ -34,6 +58,8 @@ namespace Sofco.Framework.StatusHandlers.License
                     response.AddWarning(Resources.Rrhh.License.FlexDaysTakenExceeded);
                 }
             }
+
+            
         }
     }
 }

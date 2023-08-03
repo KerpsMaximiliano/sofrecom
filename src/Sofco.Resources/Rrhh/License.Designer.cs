@@ -340,7 +340,7 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a .
+        ///   Busca una cadena traducida similar a rrhh/license.paternityDaysTakenExceeded.
         /// </summary>
         public static string PaternityDaysTakenExceeded {
             get {
@@ -399,6 +399,42 @@ namespace Sofco.Resources.Rrhh {
         public static string SectorRequired {
             get {
                 return ResourceManager.GetString("SectorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateAfterHoliday.
+        /// </summary>
+        public static string StartDateAfterHoliday {
+            get {
+                return ResourceManager.GetString("StartDateAfterHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateAfterLicense.
+        /// </summary>
+        public static string StartDateAfterLicense {
+            get {
+                return ResourceManager.GetString("StartDateAfterLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateBeforeHoliday.
+        /// </summary>
+        public static string StartDateBeforeHoliday {
+            get {
+                return ResourceManager.GetString("StartDateBeforeHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateBeforeLicense.
+        /// </summary>
+        public static string StartDateBeforeLicense {
+            get {
+                return ResourceManager.GetString("StartDateBeforeLicense", resourceCulture);
             }
         }
         
