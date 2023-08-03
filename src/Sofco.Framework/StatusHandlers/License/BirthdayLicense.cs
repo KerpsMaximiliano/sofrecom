@@ -24,8 +24,11 @@ namespace Sofco.Framework.StatusHandlers.License
             }
             else
             {
-                if(employee.Birthday.Value.Month != domain.StartDate.Month)
-                    response.AddError(Resources.Rrhh.License.InvalidBirthdayDaysMonth);
+                if (domain.StartDate.Year >= 2024)
+                {
+                    if (employee.Birthday.Value.Month != domain.StartDate.Month)
+                        response.AddError(Resources.Rrhh.License.InvalidBirthdayDaysMonth);
+                }
 
                 if (response.HasErrors()) return;
 
