@@ -813,7 +813,10 @@
                 "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
             },
-            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar"
+            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar",
+            "paternity":"Días por paternidad",
+            "birthday":"Día de cumpleaños",
+            "Flex":"Días flex"
         },
         "closeDate": {
             "title": "Fechas de Cierre",
