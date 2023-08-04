@@ -270,6 +270,22 @@ namespace Sofco.DAL.Repositories.AllocationManagement
             context.Database.ExecuteSqlCommand("UPDATE app.Employees SET ExamDaysTaken = 0");
         }
 
+        public void ResetAllPaternityDays()
+        {
+            context.Database.ExecuteSqlCommand("UPDATE app.Employees SET PaternityDaysTaken = 0");            
+        }
+
+        public void ResetAllBirthdayDays()
+        {
+            context.Database.ExecuteSqlCommand("UPDATE app.Employees SET BirthdayDaysTaken = 0");
+        }
+
+        public void ResetAllFlexDays()
+        {
+            context.Database.ExecuteSqlCommand("UPDATE app.Employees SET FlexDaysTaken = 0");
+        }
+
+
         public IList<EmployeeCategory> GetEmployeeCategories(int employeeId)
         {
             return context.EmployeeCategories
