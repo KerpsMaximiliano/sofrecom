@@ -107,9 +107,9 @@ namespace Sofco.Framework.StatusHandlers.License
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }            
 
-            if (license.TypeId == 19)
+            if (license.TypeId == 20)
             {
-                license.Employee.BirthdayDaysTaken += license.DaysQuantity;
+                license.Employee.FlexDaysTaken += license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
         }
