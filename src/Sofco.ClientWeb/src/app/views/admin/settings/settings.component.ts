@@ -82,9 +82,17 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   save(item) {
     this.loading = true;
-    this.serviceSubscrip = this.service.save(item).subscribe(
-      d => { this.settings = d.data; this.loading = false; this.saveResponseHandler(); },
-      err => this.loading = false);
+    this.serviceSubscrip = this.service.saveItem(item).subscribe(
+      (res) => {
+        this.messageService.closeLoading();
+        this.messageService.succes('ADMIN.settings.saveSuccess');
+        this.loading = false;
+      },
+      (error) => {
+        this.messageService.closeLoading();
+        this.messageService.showError('Ha ocurrido un error al guardar los datos.');
+      }
+    );
   }
 
   updateLicenseType(item) {
