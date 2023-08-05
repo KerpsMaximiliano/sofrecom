@@ -140,6 +140,8 @@ export class NotesComponent implements OnInit, AfterViewInit {
             this.dateTo.getMonth() + 1
           }/${this.dateTo.getDate()}`;
 
+    this.messageService.showLoading();
+
     this.requestNoteService.getAll(json).subscribe((d) => {
       this.notes = [];
       this.notesInProcess = [];
@@ -173,6 +175,8 @@ export class NotesComponent implements OnInit, AfterViewInit {
       } else {
         this.tabOne.nativeElement.click();
       }
+
+      this.messageService.closeLoading();
     });
   }
 
