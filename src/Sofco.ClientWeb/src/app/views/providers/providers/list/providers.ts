@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 
-// * Services
+// * Services.
 import { MessageService } from "app/services/common/message.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { ProvidersService } from "app/services/admin/providers.service";
@@ -88,7 +88,7 @@ export class ProvidersComponent implements AfterViewInit {
         this.setData();
         this.messageService.closeLoading();
       },
-      (error) => {
+      (error: any) => {
         const [providersError, areasError] = error;
 
         if (providersError)
@@ -140,7 +140,10 @@ export class ProvidersComponent implements AfterViewInit {
             ? (res.data as IProviders[])
             : [res.data as IProviders];
         },
-        error: (err: any) => {},
+        error: (err: any) => {
+          // ! Sin manejo de errores.
+          this.messageService.closeLoading();
+        },
         complete: () => {
           this.setData();
           this.messageService.closeLoading();
