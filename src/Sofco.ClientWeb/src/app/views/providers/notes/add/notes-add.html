@@ -13,6 +13,29 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
+        <div class="col-sm-12 row">
+            <div class="pull-left" style="margin-left: 2rem;">
+                <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/notes']">
+                    <i class="fa fa-arrow-left"></i>       Volver
+                </button>
+                <button class="btn btn-primary btn-outline dim" type="button" (click)="saveNote(false)">Guardar 
+                </button>
+                
+            </div>
+            <div class="pull-right" style="margin-left: 2rem;">
+                <button class="btn btn-sm btn-success btn-outline dim" (click)="sendDraft()"> 
+                    Enviar       <i class="fa fa-arrow-right"></i>
+            </button>
+            </div>
+            <div class="btn-right">
+                <div class="btn-right">
+                    <workflow (onSaveSuccess)="onTransitionSuccess()" #workflow (click)="workflowClick($event)" id="workflow"></workflow>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        
         <div class="col-sm-9">
             <div class="ibox">
                 <div class="ibox-title">
@@ -213,18 +236,6 @@
                         </div>
                     </form>
                 </div>
-                    <div class="panel-footer">
-                         <button class="btn btn-sm btn-primary" [routerLink]="['/providers/notes']"> 
-                                <i class="fa fa-arrow-left"></i> {{ 'ACTIONS.back' | translate}}
-                            </button>
-                         <button class="btn btn-sm btn-success" type="button" (click)="saveNote(false)">Guardar 
-                            </button>
-                        <div class="btn-right">
-                            <button class="btn btn-sm btn-success btn-outline" (click)="sendDraft()"> 
-                                    Enviar       <i class="fa fa-arrow-right"></i>
-                            </button>
-                      </div>
-                    </div>
             </div>
         </div>
 <!-- Uploader -->
