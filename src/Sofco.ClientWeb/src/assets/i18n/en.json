@@ -764,7 +764,10 @@
 			"delegate": {
                 "viewTitle": "Delegate License Authorization",
                 "delegateAction": "Delegate"
-            }
+            },
+			"paternity":"Paternity days",
+            "birthday":"Birthday day",
+            "Flex":"Flex days"
 		}
 	},
 	"ACTIONS": {
