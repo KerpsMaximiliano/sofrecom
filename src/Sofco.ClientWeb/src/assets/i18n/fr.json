@@ -119,6 +119,7 @@
         },
         "settings": { 
             "title":"Configuration",
+            "generalSettings":"Paramétrage général",
             "licenseTitle":"Paramètres de Congé",
             "saveSuccess":"Données mises à jour avec succès",
             "AllocationManagement_Months":"Gestion des ressources - Affectation - Mois à montrer",
@@ -132,7 +133,14 @@
             "jobsSettingTitle":"Paramètres des Jobs",
             "LicenseCertificatePendingDayOfMonth":"Notification des certificats manquants (jour du mois).",
             "WorkingHoursPerDaysMax":"Top journée de travail",
-            "ValidatePeriodCloseMonth": "Valider fermeture de mois"
+            "ValidatePeriodCloseMonth": "Valider fermeture de mois",
+            "JobRecursosSinAsignacionDia":"Emploi de ressource SANS affectation (jour du mois)",
+            "JobRecursosSinAsignacionDestinatarios":"Emploi ressource SANS affectation (destinataires)",
+            "grid": {
+                "license": "Congé",
+                "days": "Jours de congé",
+                "value":"Valeur"
+            }
         }
     }, 
     "billing": { 
@@ -728,7 +736,10 @@
             "delegate": {
                 "viewTitle": "Déléguer Autorisation Congé",
                 "delegateAction": "Déléguer"
-            }
+            },
+            "paternity": "Jours de paternité",
+            "birthday": "Jour d'anniversaire",
+            "Flex": "Jours flexibles"
         } 
     }, 
     "ACTIONS": {
@@ -948,6 +959,38 @@
             "pendingHours": "Heures en attente de chargement"
         }
     }, 
+    "providers": {
+        "title": "Fournisseurs",
+        "search": "Recherche de fournisseurs",
+        "providersList": "Liste des fournisseurs",
+        "add": "Ajouter",
+        "grid": {
+            "status": "Statut",
+            "businessName": "Raison sociale",
+            "sector": "Secteur",
+            "critical": "Critique",
+            "id": "Id",
+            "cuit": "CUIT",
+            "grossIncome": "Revenu brut",
+            "iva": "Condition IVA",
+            "address": "Adresse",
+            "street": "Rue",
+            "locality": "Localité",
+            "zipCode": "Code postal",
+            "province": "Province",
+            "country": "Pays",
+            "contact": "Contact",
+            "contactName": "Nom et prénom",
+            "phone": "Téléphone",
+            "email": "E-mail",
+            "web": "Site web",
+            "comments": "Commentaires",
+            "providerNumber": "Numéro de fournisseur",
+            "startDate": "Date de début",
+            "endDate": "Date de fin",
+            "billing": "Facturation"
+        }
+    },
     "months":{
         "january":"Janvier",
         "february":"Février",

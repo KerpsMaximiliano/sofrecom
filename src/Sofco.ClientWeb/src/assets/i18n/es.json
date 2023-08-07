@@ -119,6 +119,7 @@
         },
         "settings": {
             "title": "Configuración",
+            "generalSettings":"Configuración general",
             "licenseTitle": "Configuración de licencias",
             "saveSuccess": "Datos actualizados exitosamente",
             "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar",
@@ -130,7 +131,7 @@
             "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
             "StartDateHolidays": "Fecha de inicio período vacacional",
             "jobsSettingTitle": "Parámetros de Jobs",
-            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
+            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (día del mes)",
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
             "CloseMonth": "Dia del cierre del mes",
             "AdvancementAmmountAPesos": "Monto A Pesos",
@@ -141,7 +142,18 @@
             "AdvancementAmmountBEuros": "Monto C Euros",
             "WorkTimeReportByHours": "¿Insumido vs Previsto calculado por horas?",
             "ValidatePeriodCloseMonth": "Validar fecha de cierre",
-            "AdvancementCashAmount": "Monto tope adelanto en efectivo"
+            "AdvancementCashAmount": "Monto tope adelanto en efectivo",
+            "JobRecursosSinAsignacionDia": "Job de Recursos SIN Asignación (día del mes)",
+            "JobRecursosSinAsignacionDestinatarios":"Job de Recursos SIN Asignación (destinatarios)",
+            "TareaPrecargaHorasDefault":"Tarea Pre-carga Horas",
+            "FlexDaysAllowTogether": "Días Flex",
+            "PaternityDaysAllowTogether": "Días por Paternidad",
+            "BirthdayDaysAllowTogether": "Día de Cumpleaños",
+            "grid": {
+                "license": "Licencia",
+                "days": "Días de Licencia",
+                "value":"Valor"
+            }
         },
         "state": {
             "admin": "Administración de Estados",
@@ -801,7 +813,10 @@
                 "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
             },
-            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar"
+            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar",
+            "paternity":"Días por paternidad",
+            "birthday":"Día de cumpleaños",
+            "Flex":"Días flex"
         },
         "closeDate": {
             "title": "Fechas de Cierre",
@@ -837,7 +852,8 @@
         "close": "Cerrar",
         "back": "Volver",
 		"reabrir": "Reabrir",
-        "REABRIR": "Reabrir",        "approve": "Aprobar",
+        "REABRIR": "Reabrir",        
+        "approve": "Aprobar",
         "reject": "Rechazar",
         "sendToDaf": "Enviar a DAF",
         "annulment": "Anular",
@@ -1089,6 +1105,39 @@
         "automaticHours": {
             "title": "Carga Automática de Horas"
         }
+    },
+    "providers": {
+        "title": "Proveedores",
+        "search":"Búsqueda de Proveedores",
+        "providersList":"Listado de Proveedores",
+        "add":"Agregar",
+        "grid": {
+            "status":"Estado",
+            "businessName":"Razón Social",
+            "sector":"Rubro",
+            "critical":"Crítico",
+            "id":"Id",
+            "cuit":"CUIT",
+            "grossIncome":"Ingresos Brutos",
+            "iva":"Condición IVA",
+            "address":"Dirección",
+            "street":"Calle",
+            "locality":"Localidad",
+            "zipCode":"Código Postal",
+            "province":"Provincia",
+            "country":"País",
+            "contact":"Contacto",
+            "contactName":"Nombre y Apellido",
+            "phone":"Teléfono",
+            "email":"E-mail",
+            "web":"Sitio Web",
+            "comments":"Comentarios",
+            "providerNumber":"Número de Proveedor",
+            "startDate":"Fecha Alta",
+            "endDate":"Fecha Baja",
+            "billing":"Facturación"
+        }
+
     },
     "months": {
         "january": "Enero",
