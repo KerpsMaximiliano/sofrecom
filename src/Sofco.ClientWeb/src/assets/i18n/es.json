@@ -119,6 +119,7 @@
         },
         "settings": {
             "title": "Configuración",
+            "generalSettings":"Configuración general",
             "licenseTitle": "Configuración de licencias",
             "saveSuccess": "Datos actualizados exitosamente",
             "AllocationManagement_Months": "Gestión de recursos - Asignación - Meses a mostrar",
@@ -130,7 +131,7 @@
             "StartDateUpdateHolidays": "Fecha proceso actualización días VAP",
             "StartDateHolidays": "Fecha de inicio período vacacional",
             "jobsSettingTitle": "Parámetros de Jobs",
-            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (dia del mes).",
+            "LicenseCertificatePendingDayOfMonth": "Notificación de certificados faltantes (día del mes)",
             "WorkingHoursPerDaysMax": "Tope jornada laboral",
             "CloseMonth": "Dia del cierre del mes",
             "AdvancementAmmountAPesos": "Monto A Pesos",
@@ -141,7 +142,18 @@
             "AdvancementAmmountBEuros": "Monto C Euros",
             "WorkTimeReportByHours": "¿Insumido vs Previsto calculado por horas?",
             "ValidatePeriodCloseMonth": "Validar fecha de cierre",
-            "AdvancementCashAmount": "Monto tope adelanto en efectivo"
+            "AdvancementCashAmount": "Monto tope adelanto en efectivo",
+            "JobRecursosSinAsignacionDia": "Job de Recursos SIN Asignación (día del mes)",
+            "JobRecursosSinAsignacionDestinatarios":"Job de Recursos SIN Asignación (destinatarios)",
+            "TareaPrecargaHorasDefault":"Tarea Pre-carga Horas",
+            "FlexDaysAllowTogether": "Días Flex",
+            "PaternityDaysAllowTogether": "Días por Paternidad",
+            "BirthdayDaysAllowTogether": "Día de Cumpleaños",
+            "grid": {
+                "license": "Licencia",
+                "days": "Días de Licencia",
+                "value":"Valor"
+            }
         },
         "state": {
             "admin": "Administración de Estados",
@@ -801,7 +813,10 @@
                 "viewTitle": "Delegar Autorizar Licencia",
                 "delegateAction": "Delegar"
             },
-            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar"
+            "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar",
+            "paternity":"Días por paternidad",
+            "birthday":"Día de cumpleaños",
+            "Flex":"Días flex"
         },
         "closeDate": {
             "title": "Fechas de Cierre",

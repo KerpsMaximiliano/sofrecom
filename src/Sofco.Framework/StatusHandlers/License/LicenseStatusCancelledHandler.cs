@@ -73,6 +73,24 @@ namespace Sofco.Framework.StatusHandlers.License
                 license.Employee.ExamDaysTaken -= license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
+
+            if (license.TypeId == 18)
+            {
+                license.Employee.PaternityDaysTaken -= license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
+            }
+
+            if (license.TypeId == 19)
+            {
+                license.Employee.BirthdayDaysTaken -= license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
+            }            
+
+            if (license.TypeId == 20)
+            {
+                license.Employee.FlexDaysTaken -= license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
+            }
         }
         private void DeleteWorkTimeByLicense(Domain.Models.Rrhh.License license, IUnitOfWork unitOfWork)
         {

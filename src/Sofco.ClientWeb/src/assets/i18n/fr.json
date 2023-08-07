@@ -119,6 +119,7 @@
         },
         "settings": { 
             "title":"Configuration",
+            "generalSettings":"Paramétrage général",
             "licenseTitle":"Paramètres de Congé",
             "saveSuccess":"Données mises à jour avec succès",
             "AllocationManagement_Months":"Gestion des ressources - Affectation - Mois à montrer",
@@ -132,7 +133,14 @@
             "jobsSettingTitle":"Paramètres des Jobs",
             "LicenseCertificatePendingDayOfMonth":"Notification des certificats manquants (jour du mois).",
             "WorkingHoursPerDaysMax":"Top journée de travail",
-            "ValidatePeriodCloseMonth": "Valider fermeture de mois"
+            "ValidatePeriodCloseMonth": "Valider fermeture de mois",
+            "JobRecursosSinAsignacionDia":"Emploi de ressource SANS affectation (jour du mois)",
+            "JobRecursosSinAsignacionDestinatarios":"Emploi ressource SANS affectation (destinataires)",
+            "grid": {
+                "license": "Congé",
+                "days": "Jours de congé",
+                "value":"Valeur"
+            }
         }
     }, 
     "billing": { 
@@ -728,7 +736,10 @@
             "delegate": {
                 "viewTitle": "Déléguer Autorisation Congé",
                 "delegateAction": "Déléguer"
-            }
+            },
+            "paternity": "Jours de paternité",
+            "birthday": "Jour d'anniversaire",
+            "Flex": "Jours flexibles"
         } 
     }, 
     "ACTIONS": {
