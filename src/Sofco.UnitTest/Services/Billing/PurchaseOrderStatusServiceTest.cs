@@ -140,7 +140,7 @@ namespace Sofco.UnitTest.Services.Billing
             var model = new PurchaseOrderAdjustmentModel
             {
                 Items = new List<PurchaseOrderAmmountDetailModel> {
-                   new PurchaseOrderAmmountDetailModel { Adjustment = 999999999999 }
+                   new PurchaseOrderAmmountDetailModel { Adjustment = 99999999999999 }
                 }
             };
 
@@ -159,7 +159,7 @@ namespace Sofco.UnitTest.Services.Billing
             var model = new PurchaseOrderAdjustmentModel
             {
                 Items = new List<PurchaseOrderAmmountDetailModel> {
-                    new PurchaseOrderAmmountDetailModel { Adjustment = 99999999999, CurrencyId = 1}
+                    new PurchaseOrderAmmountDetailModel { Adjustment = 9999999999999, CurrencyId = 1}
                 }
             };
 
