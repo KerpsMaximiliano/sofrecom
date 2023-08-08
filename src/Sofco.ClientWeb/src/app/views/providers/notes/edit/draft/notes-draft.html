@@ -17,12 +17,17 @@
     <div class="row">
         <div class="col-sm-9">
             <div class="ibox">
-                <div class="ibox-title">
-                    <h1>Borrador</h1>
-                </div>
                 <div class="ibox-content">
                     <form class="form-horizontal" [formGroup]="formNota">
                         <div class="form-group">
+                            <label class="col-sm-3 control-label text-left">Número de pedido: {{draftId}}</label>
+                            <div>
+                                <label class="col-md-3 text-right control-label badge badge-info badgeLabel">
+                                    Borrador</label>
+                            </div>
+                            </div>
+                            <hr>
+                            <div class="form-group">
                             <label class="col-sm-3 control-label text-left">Rubro: </label>
                             <div class="col-sm-9">
                                 <div style="display: flex;">
