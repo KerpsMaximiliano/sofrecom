@@ -146,9 +146,9 @@
             "JobRecursosSinAsignacionDia": "Job de Recursos SIN Asignación (día del mes)",
             "JobRecursosSinAsignacionDestinatarios":"Job de Recursos SIN Asignación (destinatarios)",
             "TareaPrecargaHorasDefault":"Tarea Pre-carga Horas",
-            "FlexDaysAllowTogether": "Días Flex",
-            "PaternityDaysAllowTogether": "Días por Paternidad",
-            "BirthdayDaysAllowTogether": "Día de Cumpleaños",
+            "FlexDaysAllowTogether": "Máximo de dias flex consecutivos",
+            "PaternityDaysAllowTogether": "Máximo de dias de paternidad consecutivos",
+            "BirthdayDaysAllowTogether": "Máximo de dias de cumpleaños consecutivos",
             "grid": {
                 "license": "Licencia",
                 "days": "Días de Licencia",
