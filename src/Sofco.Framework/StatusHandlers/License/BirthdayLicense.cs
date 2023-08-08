@@ -30,6 +30,15 @@ namespace Sofco.Framework.StatusHandlers.License
                         response.AddError(Resources.Rrhh.License.InvalidBirthdayDaysMonth);
                 }
 
+                if (domain.StartDate.Year == 2023)
+                {
+                    if (employee.Birthday.Value.Month >= 6)
+                    {
+                        if (employee.Birthday.Value.Month != domain.StartDate.Month)
+                            response.AddError(Resources.Rrhh.License.InvalidBirthdayDaysMonth);
+                    }
+                }
+
                 if (response.HasErrors()) return;
 
                 domain.DaysQuantity = tupla.Item1;
