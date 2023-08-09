@@ -170,6 +170,7 @@
     },
     "billing":{
         "title": "Aseg. Ingresos y Costos",
+        "list": "Listado de Ordenes de Compra",
         "customer":{
             "title": "Gestión Facturación",
             "client": "Cliente",
