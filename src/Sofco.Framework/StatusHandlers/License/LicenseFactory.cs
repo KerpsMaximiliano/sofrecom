@@ -12,9 +12,9 @@
                 case 7: return new ExamLicense();
                 case 13: return new OthersLicense();
                 case 14: return new SpecialLicense();
-                case 18: return new PaternityDaysLicense();
-                case 19: return new BirthdayLicense();
-                case 20: return new FlexDaysLicense();
+                case 16: return new PaternityDaysLicense();
+                case 17: return new BirthdayLicense();
+                case 18: return new FlexDaysLicense();
                 case 2:
                 case 3:
                 case 4:
@@ -25,8 +25,8 @@
                 case 11:
                 case 15:
                 //Licencias Nuevas
-                case 21:
-                case 22:
+                case 19:
+                case 20:
                 case 12: return new CommonLicense();
                 
                 default: return null;
