@@ -739,7 +739,8 @@
             },
             "paternity": "Jours de paternité",
             "birthday": "Jour d'anniversaire",
-            "Flex": "Jours flexibles"
+            "Flex": "Jours flexibles",
+            "cannotStartAHoliday":"La licence ne peut pas commencer les jours fériés."
         } 
     }, 
     "ACTIONS": {

@@ -817,7 +817,8 @@
             "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar",
             "paternity":"Días por paternidad",
             "birthday":"Día de cumpleaños",
-            "Flex":"Días flex"
+            "Flex":"Días flex",
+            "cannotStartAHoliday":"La Licencia no puede iniciar en días feriados."
         },
         "closeDate": {
             "title": "Fechas de Cierre",
