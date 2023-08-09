@@ -258,4 +258,7 @@
   <data name="StartDateBeforeLicense" xml:space="preserve">
     <value>rrhh/license.startDateBeforeLicense</value>
   </data>
+  <data name="CannotStartAHoliday" xml:space="preserve">
+    <value>rrhh/license.cannotStartAHoliday</value>
+  </data>
 </root>

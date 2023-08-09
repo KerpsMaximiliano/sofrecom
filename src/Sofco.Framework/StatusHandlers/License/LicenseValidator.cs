@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sofco.Core.DAL;
+using Sofco.Domain.Models.WorkTimeManagement;
+using Spire.Pdf.Exporting.XPS.Schema;
 
 namespace Sofco.Framework.StatusHandlers.License
 {
     public class LicenseValidator
     {
-        protected Tuple<int, int> GetNumberOfWorkingDays(DateTime start, DateTime stop, IUnitOfWork unitOfWork)
+        protected Tuple<int, int> GetNumberOfWorkingDays(DateTime start, DateTime stop, IUnitOfWork unitOfWork, List<Holiday> holidays)
         {
-            var holidays = unitOfWork.HolidayRepository.Get(start.Year, start.Month);
+            //var holidays = unitOfWork.HolidayRepository.Get(start.Year, start.Month);
 
             if (start.Month != stop.Month)
                 holidays.AddRange(unitOfWork.HolidayRepository.Get(stop.Year, stop.Month));
