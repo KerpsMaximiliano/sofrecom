@@ -39,15 +39,15 @@ namespace Sofco.Framework.StatusHandlers.License
                     }
                 }
 
+                if (employee.BirthdayDaysTaken + tupla.Item1 > licenseType.Days)
+                {
+                    response.AddError(Resources.Rrhh.License.BirthdayDaysTakenExceeded);
+                }
+
                 if (response.HasErrors()) return;
 
                 domain.DaysQuantity = tupla.Item1;
-                domain.DaysQuantityByLaw = tupla.Item2;
-
-                if (employee.BirthdayDaysTaken + tupla.Item1 > licenseType.Days)
-                {
-                    response.AddWarning(Resources.Rrhh.License.BirthdayDaysTakenExceeded);
-                }
+                domain.DaysQuantityByLaw = tupla.Item2;                
             }
         }
     }
