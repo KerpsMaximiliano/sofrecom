@@ -32,7 +32,7 @@ namespace Sofco.Framework.StatusHandlers.License
 
                 if (domain.StartDate.Year == 2023)
                 {
-                    if (employee.Birthday.Value.Month >= 6)
+                    if (employee.Birthday.Value.Month > 8)
                     {
                         if (employee.Birthday.Value.Month != domain.StartDate.Month)
                             response.AddError(Resources.Rrhh.License.InvalidBirthdayDaysMonth);
