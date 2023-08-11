@@ -44,5 +44,6 @@
     "startDateAfterLicense": "La licencia no puede comenzar seguido a otra licencia.",
     "startDateBeforeHoliday":"La licencia no puede comenzar antes de un día feriado.",
     "startDateBeforeLicense": "La licencia no puede comenzar antes de otra licencia.",
-    "invalidBirthdayDaysMonth":"La licencia no puede cargarse en la fecha seleccionada."
+    "invalidBirthdayDaysMonth":"La licencia no puede cargarse en la fecha seleccionada.",
+    "cannotStartAHoliday":"La licencia no puede generarse en un día feriado"
 }

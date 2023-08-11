@@ -40,5 +40,6 @@
 	"startDateAfterHoliday": "Le congé ne peut pas commencer immédiatement après un jour férié.",
 	"startDateAfterLicense": "Le congé ne peut pas commencer immédiatement après une autre licence.",
 	"startDateBeforeHoliday": "Le congé ne peut pas commencer avant un jour férié.",
-	"startDateBeforeLicense": "Le congé ne peut pas commencer avant une autre licence."
+	"startDateBeforeLicense": "Le congé ne peut pas commencer avant une autre licence.",
+	"cannotStartAHoliday":"Le congé ne peut pas ne peut pas commencer des vacances"
 }

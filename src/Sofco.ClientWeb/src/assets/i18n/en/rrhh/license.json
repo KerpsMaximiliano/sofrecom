@@ -34,11 +34,14 @@
 	"licenseTypeValueRequired": "The value can not be less than or equal to 0",
 	"workTimeDateOverlap": "Cannot insert license with at same date of work time hours.",
 	"managerUpdatedRefreshNeeded": "Manager updated, please refresh login",
-	"birthdayDaysTakenExceeded": "Le nombre de jours d'anniversaire autorisés a été dépassé.",
-	"flexDaysTakenExceeded": "Le nombre de jours flex autorisés a été dépassé.",
-	"paternityDaysTakenExceeded": "Le nombre de jours de paternité autorisés a été dépassé.",
-	"startDateAfterHoliday": "Le congé ne peut pas commencer immédiatement après un jour férié.",
-	"startDateAfterLicense": "Le congé ne peut pas commencer immédiatement après une autre licence.",
-	"startDateBeforeHoliday": "Le congé ne peut pas commencer avant un jour férié.",
-	"startDateBeforeLicense": "Le congé ne peut pas commencer avant une autre licence."
+	"birthdayDaysTakenExceeded": "The allowed number of birthday days has been exceeded.",
+	"flexDaysTakenExceeded": "The allowed number of flex days has been exceeded.",
+	"paternityDaysTakenExceeded": "The allowed number of paternity days has been exceeded.",
+	"startDateAfterHoliday": "The license cannot start immediately after a holiday.",
+	"startDateAfterLicense": "The license cannot start immediately after another license.",
+	"startDateBeforeHoliday": "The license cannot start before a holiday.",
+	"startDateBeforeLicense": "The license cannot start before another license.",
+	"invalidBirthdayDaysMonth": "The license cannot be scheduled on the selected date.",
+	"cannotStartAHoliday": "The license cannot be scheduled on a holiday."
+	
 }
