@@ -30,30 +30,30 @@ dt {
     border: 1px solid red;
 }
 .badgeLabel{
-    font-size: 13px;
+  font-size: 14px;
     text-align: center;
-    left: 50%;
+    margin-right: 28px;
     width: auto;
   }
 
   .badgeClosed{
-    font-size: 13px;
-    font-weight: bold;
+    font-size: 15px;
     text-align: center;
-    left: 56%;
-  }
+    margin-right: 28px;
+    width: auto;
+}
  
   .badgeRejected{
-    font-size: 13px;
-    font-weight: bold;
+    font-size: 15px;
     text-align: center;
-    left: 57%;
+    margin-right: 28px;
+    width: auto;
   }
 
   .lastStatus{
     font-size: 11px;
-    left: 38%;
-    margin-top: 30px;
+    left: 48%;
+    text-align: right;
   }
 
   .space {

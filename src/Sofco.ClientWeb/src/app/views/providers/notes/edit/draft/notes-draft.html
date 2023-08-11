@@ -20,9 +20,9 @@
                 <div class="ibox-content">
                     <form class="form-horizontal" [formGroup]="formNota">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label text-left">Número de pedido: {{draftId}}</label>
+                            <label class="col-sm-4 control-label text-left">Número de nota de pedido: {{draftId}}</label>
                             <div>
-                                <label class="col-md-3 text-right control-label badge badge-info badgeLabel">
+                                <label class="col-md-3 pull-right text-right label label-gray badgeLabel">
                                     Borrador</label>
                             </div>
                             </div>
@@ -63,7 +63,7 @@
                                 </span>
                             </div>
                             <div class="col-sm-2">
-                                <button type="button" class="btn btn-success btn-circle btn-outline" style="margin-top: 2.2rem;"
+                                <button type="button" class="btn btn-success btn-circle btn-outline" title="Agregar producto" style="margin-top: 2.2rem;"
                                 (click)="agregarProductoServicio()"><i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -117,7 +117,7 @@
                                 </span>
                             </div>
                             <div class="col-sm-2">
-                                <button type="button" class="btn btn-success btn-outline btn-circle" style="margin-top: 2.2rem;"
+                                <button type="button" class="btn btn-success btn-outline btn-circle" title="Agregar analítica" style="margin-top: 2.2rem;"
                                 (click)="agregarAnalitica()"> <i class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -216,7 +216,6 @@
                                 </label>
                             </div>
                         </div>
-                        <hr>
                     </form>
                 </div>
             </div>
@@ -249,18 +248,20 @@
     <div class="row" *ngIf="travelFormShow">
         <div class="col-sm-12">
             <div class="ibox">
+                <div class="ibox-title">
+                    <label class="h4">{{ 'notes.grid.travelItinerary' | translate}}</label>
+                </div>
                 <div class="ibox-content">
-                    <h1>Ficha del Viaje</h1>
-                    <div class="form-group">
-                        <h3 style="margin-left: 8rem;" class="mt-3">Pasajeros</h3>
-                    </div>
                     <form class="form-horizontal mt-3" [formGroup]="formViaje">
                         <div class="form-group" [formGroup]="formParticipanteViaje">
+                        <div class="col-sm-2">
+                            <label class="paddingLabel">{{ 'notes.grid.passenger' | translate}}</label>
+                         </div>
                             <div class="col-sm-4">
                                 <label>Nombre</label>
                                 <ng-select [items]="participants" bindLabel="name" bindValue="name" formControlName="name" (change)="travelChange($event)"></ng-select>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-2">
                                 <label>Fecha de Nacimiento</label>
                                 <!--<date-picker [(date)]="travelBirthday" (dateChange)="dateChange(1, $event)"></date-picker>-->
                                 <input type="text" class="form-control" [value]="participanteViajeSeleccionadoFecha" disabled>
@@ -270,8 +271,8 @@
                                 <!--<input type="text" class="form-control" formControlName="cuit">-->
                                 <input type="text" class="form-control" [value]="participanteViajeSeleccionadoCuit" disabled>
                             </div>
-                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem;"
-                                (click)="agregarParticipanteViaje()">Agregar       <i class="fa fa-plus"></i></button>
+                            <button type="button" class="col-sm-1 btn btn-success btn-outline btn-circle"
+                                (click)="agregarParticipanteViaje()" title="Agregar pasajero"> <i class="fa fa-plus"></i></button>
                         </div>
                         <div class="form-group">
                             <span *ngIf="formParticipanteViajeError" style="color: red;">
@@ -325,7 +326,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Ciudad del destino</label>
+                            <label class="col-sm-2 control-label text-left">Ciudad de destino</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" formControlName="destination">
                                 <span *ngIf="!formViaje.get('destination')?.valid && (formViaje.get('destination')?.touched || formViaje.get('destination')?.dirty)" style="color: red;">
@@ -365,11 +366,15 @@
     <div class="row" *ngIf="trainingFormShow">
         <div class="col-sm-12">
             <div class="ibox">
+                <div class="ibox-title">
+                    <label class="h4">
+                        {{ 'notes.grid.trainingData' | translate }}
+                    </label>
+                </div>
                 <div class="ibox-content">
-                    <h1 class="text-left">Datos de la Capacitación</h1>
                     <form class="form-horizontal mt-3" [formGroup]="formCapacitacion">
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Nombre del curso</label>
+                            <label class="col-sm-2 control-label text-left">Nombre del curso:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="name">
                                 <span *ngIf="!formCapacitacion.get('name')?.valid && (formCapacitacion.get('name')?.touched || formCapacitacion.get('name')?.dirty)" style="color: red;">
@@ -378,7 +383,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Tema de la capacitación</label>
+                            <label class="col-sm-2 control-label text-left">Tema de la capacitación:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="subject">
                                 <span *ngIf="!formCapacitacion.get('subject')?.valid && (formCapacitacion.get('subject')?.touched || formCapacitacion.get('subject')?.dirty)" style="color: red;">
@@ -387,7 +392,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Lugar</label>
+                            <label class="col-sm-2 control-label text-left">Lugar:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="location">
                                 <span *ngIf="!formCapacitacion.get('location')?.valid && (formCapacitacion.get('location')?.touched || formCapacitacion.get('location')?.dirty)" style="color: red;">
@@ -396,7 +401,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Fecha de la capacitación</label>
+                            <label class="col-sm-2 control-label text-left">Fecha de la capacitación:</label>
                             <div class="col-sm-9">
                                 <date-picker [(date)]="trainingDate" (dateChange)="dateChange(4, $event)"></date-picker>
                                 <span *ngIf="!formCapacitacion.get('date')?.valid && (formCapacitacion.get('date')?.touched || formCapacitacion.get('date')?.dirty)" style="color: red;">
@@ -405,7 +410,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Duración</label>
+                            <label class="col-sm-2 control-label text-left">Duración:</label>
                             <div class="col-sm-9">
                                 <input type="text" class="form-control" formControlName="duration">
                                 <span *ngIf="!formCapacitacion.get('duration')?.valid && (formCapacitacion.get('duration')?.touched || formCapacitacion.get('duration')?.dirty)" style="color: red;">
@@ -414,7 +419,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label text-left">Monto aproximado del curso</label>
+                            <label class="col-sm-2 control-label text-left">Monto aproximado del curso:</label>
                             <div class="col-sm-9">
                                 <input type="number" class="form-control" formControlName="ammount">
                                 <span *ngIf="!formCapacitacion.get('ammount')?.valid && (formCapacitacion.get('ammount')?.touched || formCapacitacion.get('ammount')?.dirty)" style="color: red;">
@@ -425,10 +430,14 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <h3 style="margin-left: 8rem;">Participantes</h3>
-                        </div>
+                        </div> -->
                         <div class="form-group" [formGroup]="formParticipanteCapacitacion">
+                            <div class="col-sm-2">
+                                <label class="paddingLabel text-left">{{ 'notes.grid.participant' | translate }}</label>
+
+                            </div>
                             <div class="col-sm-5">
                                 <label>Nombre</label>
                                 <ng-select [items]="filteredParticipants" bindLabel="name" bindValue="name" formControlName="name" (change)="trainingChange($event)"></ng-select>
@@ -443,7 +452,7 @@
                                     El campo es requerido.
                                 </span>
                             </div>
-                            <button type="button" class="col-sm-1 btn btn-success" style="margin-top: 2.2rem;" (click)="agregarParticipanteCapacitacion()">Agregar       <i
+                            <button type="button" class="col-sm-1 btn btn-success btn-circle btn-outline" style="margin-top: 2.2rem;" (click)="agregarParticipanteCapacitacion()" title="Agregar participante"> <i
                                 class="fa fa-plus"></i></button>
                         </div>
                         <div class="form-group">

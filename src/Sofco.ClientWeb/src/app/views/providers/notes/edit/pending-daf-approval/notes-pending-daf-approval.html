@@ -19,14 +19,14 @@
                 <div class="ibox-content">
                     <form class="form-horizontal" [formGroup]="formNota">
                         <div class="form-group">
-                            <div class="col-sm-9">
-                                <label class="col-md-6 control-label text-left">Número de pedido: {{requestNoteId}}</label>
+                            <div>
+                                <label class="col-md-6 control-label text-left">Número de nota de pedido: {{requestNoteId}}</label>
                             </div>
                             <div>
 
-                                <label *ngIf="closed" class="col-sm-2 text-right control-label badge badge-secondary badgeClosed">Cerrada</label> <label *ngIf="closed" class="col-sm-3 lastStatus">Último estado: Pendiente Aprobación DAF</label>
-                                <label *ngIf="rejected" class="col-sm-2 text-center control-label badge badge-danger badgeRejected">Rechazada</label> <label *ngIf="rejected" class="col-sm-3 lastStatus">Último estado: Pendiente Aprobación DAF</label>
-                                <label *ngIf="!closed && !rejected" class="col-md-3 text-right control-label badge badge-warning badgeLabel">Pendiente Aprobación DAF</label>
+                                <label *ngIf="closed" class="col-sm-2 pull-right text-right label label-success badgeClosed">Cerrada</label> <label *ngIf="closed" class="col-md-6 lastStatus">Último estado: <br> Pendiente Aprobación DAF</label>
+                                <label *ngIf="rejected" class="col-sm-2 pull-right text-right label label-danger badgeRejected">Rechazada</label> <label  *ngIf="rejected" class="col-md-6 lastStatus">Último estado: <br> Pendiente Aprobación DAF</label>
+                                <label *ngIf="!closed && !rejected" class="col-md-4 pull-right text-right label label-warning badgeLabel">Pendiente Aprobación DAF</label>
                             </div>
                         </div>
                         <hr>

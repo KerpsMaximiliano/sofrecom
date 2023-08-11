@@ -87,30 +87,27 @@ input[type="number"] {
   }
 
   .badgeLabel{
-    font-size: 13px;
-    left: 22%;
+    font-size: 14px;
     width: auto;
     text-align: center;
+    margin-right: 28px;
   }
 
   .badgeClosed{
-    font-size: 13px;
-    font-weight: bold;
-    padding: 5px 50px 5px 0px;
-    left: 30%;
+    font-size: 15px;
+    width: auto;
+    margin-right: 28px;
   }
  
   .badgeRejected{
-    font-size: 13px;
-    font-weight: bold;
-    padding: 5px 38px 5px 0px;
-    left: 30%;
+    font-size: 15px;
+    width: auto;
+    margin-right: 28px;
   }
   .lastStatus{
     font-size: 11px;
-    left: 13%;
-    margin-top: 30px;
-
+    left: 48%;
+    text-align: right;
   }
 
   .space {
