@@ -19,11 +19,11 @@
                 <div class="ibox-content">
                     <form class="form-horizontal" [formGroup]="formNota">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label text-left">Número de pedido: {{requestNoteId}}</label>
+                            <label class="col-md-6 control-label text-left">Número de nota de pedido: {{requestNoteId}}</label>
                             <div>
-                                <label *ngIf="closed" class="col-sm-2 text-right control-label badge badge-secondary badgeClosed" >Cerrada</label> <label *ngIf="closed"  class="col-sm-3 lastStatus">Último estado: Pendiente Generación SAP</label>
-                                <label *ngIf="rejected" class="col-sm-2 text-right control-label badge badge-danger badgeRejected">Rechazada</label> <label *ngIf="rejected" class="col-sm-3 lastStatus">Último estado: Pendiente Generación SAP</label>
-                                <label *ngIf="!closed && !rejected" class="col-md-3 text-right control-label badge badge-warning badgeLabel">
+                                <label *ngIf="closed" class="col-sm-2 pull-right text-right label label-success badgeClosed" >Cerrada</label> <label *ngIf="closed"  class="col-md-6 lastStatus">Último estado: <br> Pendiente Generación SAP</label>
+                                <label *ngIf="rejected" class="col-sm-2 pull-right text-right label label-danger badgeRejected">Rechazada</label> <label *ngIf="rejected" class="col-md-6 lastStatus">Último estado: <br> Pendiente Generación SAP</label>
+                                <label *ngIf="!closed && !rejected" class="col-md-3 pull-right text-right label label-warning badgeLabel">
                                 Pendiente Generación SAP</label>
                             </div>
                         </div>

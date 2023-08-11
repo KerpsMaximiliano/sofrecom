@@ -37,22 +37,22 @@ namespace Sofco.Framework.StatusHandlers.License
             {
                 if (holidays.Any(x => x.Date.Date == domain.StartDate.Date.AddDays(1)))
                 {
-                    response.AddError(Resources.Rrhh.License.StartDateAfterHoliday);
+                    response.AddError(Resources.Rrhh.License.StartDateBeforeHoliday);
                 }
 
                 if (holidays.Any(x => x.Date.Date == domain.StartDate.Date.AddDays(-1)))
                 {
-                    response.AddError(Resources.Rrhh.License.StartDateBeforeHoliday);
+                    response.AddError(Resources.Rrhh.License.StartDateAfterHoliday);
                 }
 
                 if(licensesTaken.Any(x => x.StartDate.Date == domain.StartDate.Date.AddDays(1)))
                 {
-                    response.AddError(Resources.Rrhh.License.StartDateAfterLicense);
+                    response.AddError(Resources.Rrhh.License.StartDateBeforeLicense);
                 }
 
                 if (licensesTaken.Any(x => x.EndDate.Date == domain.StartDate.Date.AddDays(-1)))
                 {
-                    response.AddError(Resources.Rrhh.License.StartDateBeforeLicense);
+                    response.AddError(Resources.Rrhh.License.StartDateAfterLicense); 
                 }
 
                 if (response.HasErrors()) return;

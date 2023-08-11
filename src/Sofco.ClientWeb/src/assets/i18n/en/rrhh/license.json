@@ -33,5 +33,12 @@
 	"datesOverlaped": "The date of the license that you want to load coincides with some date of another license already loaded in the system",
 	"licenseTypeValueRequired": "The value can not be less than or equal to 0",
 	"workTimeDateOverlap": "Cannot insert license with at same date of work time hours.",
-	"managerUpdatedRefreshNeeded": "Manager updated, please refresh login"
+	"managerUpdatedRefreshNeeded": "Manager updated, please refresh login",
+	"birthdayDaysTakenExceeded": "Le nombre de jours d'anniversaire autorisés a été dépassé.",
+	"flexDaysTakenExceeded": "Le nombre de jours flex autorisés a été dépassé.",
+	"paternityDaysTakenExceeded": "Le nombre de jours de paternité autorisés a été dépassé.",
+	"startDateAfterHoliday": "Le congé ne peut pas commencer immédiatement après un jour férié.",
+	"startDateAfterLicense": "Le congé ne peut pas commencer immédiatement après une autre licence.",
+	"startDateBeforeHoliday": "Le congé ne peut pas commencer avant un jour férié.",
+	"startDateBeforeLicense": "Le congé ne peut pas commencer avant une autre licence."
 }
