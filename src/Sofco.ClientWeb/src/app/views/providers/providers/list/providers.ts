@@ -163,7 +163,6 @@ export class ProvidersComponent implements AfterViewInit {
           this.messageService.closeLoading();
         },
       });
-
   }
 
   /**
@@ -172,9 +171,7 @@ export class ProvidersComponent implements AfterViewInit {
    */
   private setData(): void {
     this.data = [];
-    this.providers$.forEach((provider: IProviders) => {
-      this.reviewProvider(provider);
-    });
+    this.providers$.forEach((provider: IProviders) => this.reviewProvider(provider));
     this.data = [...this.data];
     this.initGrid();
   }
@@ -186,15 +183,9 @@ export class ProvidersComponent implements AfterViewInit {
    */
   private reviewProvider(provider: IProviders): void {
     switch (this.selectedCritical) {
-      case 1:
-        this.criticalArea(provider);
-        break;
-      case 2:
-        this.notCriticalArea(provider);
-        break;
-      default:
-        this.allArea(provider);
-        break;
+      case 1: this.criticalArea(provider); break;
+      case 2: this.notCriticalArea(provider); break;
+      default: this.allArea(provider); break;
     }
   }
 
@@ -205,23 +196,17 @@ export class ProvidersComponent implements AfterViewInit {
    * @returns Retorna si no existe un área coincidente con la del proveedor.
    */
   private notCriticalArea(provider: IProviders): void {
-    let areasProviders = [];
-
+    if (this.hasCriticalArea(provider)) return;
+    let areas = [];
     provider.providersAreaProviders.forEach(
       (element: IProvidersAreaProvider) => {
-        let area: IProvidersArea = this.criticalAreas.find(
+        let area: IProvidersArea = this.notCriticalAreas.find(
           (a) => a.id == element.providerAreaId
         );
-        if (!area) {
-          let areaNoCritical: IProvidersArea = this.notCriticalAreas.find(
-            (a) => a.id == element.providerAreaId
-          )
-          if (areaNoCritical) areasProviders.push(areaNoCritical.description);
-        }
+        if (area) areas.push(area.description);
       }
     );
-    if (!areasProviders.length) return;
-    this.setDataTable(provider, areasProviders);
+    if (areas.length) this.setDataTable(provider, areas);
   }
 
   /**
@@ -232,22 +217,19 @@ export class ProvidersComponent implements AfterViewInit {
    * @returns Retorna si no existe un área coincidente con la del proveedor.
    */
   private criticalArea(provider: IProviders): void {
-    let areasProviders = [];
+    if (!this.hasCriticalArea(provider)) return;
+    let areas = [];
     provider.providersAreaProviders.forEach(
       (element: IProvidersAreaProvider) => {
-        let area: IProvidersArea = this.criticalAreas.find(
+        let area: IProvidersArea = this.areas$.find(
           (a) => a.id == element.providerAreaId
         );
         if (area) {
-          let areaCritical: IProvidersArea = this.areas$.find(
-            (a) => a.id == element.providerAreaId
-          )
-          if (areaCritical) areasProviders.push(areaCritical.description);
+          areas.push(area.description);
         }
       }
     );
-    if (!areasProviders.length) return;
-    this.setDataTable(provider, areasProviders);
+    if (areas.length) this.setDataTable(provider, areas);
   }
 
   /**
@@ -257,19 +239,31 @@ export class ProvidersComponent implements AfterViewInit {
    * @returns Retorna si no existe un área coincidente con la del proveedor.
    */
   private allArea(provider: IProviders): void {
-    let areasProviders: string[] = [];
+    let areas: string[] = [];
     provider.providersAreaProviders.forEach(
       (element: IProvidersAreaProvider) => {
         let area: IProvidersArea = this.areas$.find(
           (a) => a.id == element.providerAreaId
         )
-        if (area) {
-          areasProviders.push(area.description);
-        }
+        if (area) areas.push(area.description);
       }
     );
-    if (!areasProviders.length) return;
-    this.setDataTable(provider, areasProviders);
+    if (areas.length) this.setDataTable(provider, areas);
+  }
+
+  /**
+   * Comprueba si un proveedor tiene al menos un área crítica.
+   * @param provider Proveedor.
+   * @returns Boolean: true = Tiene áreas críticas || false = No tiene áreas críticas.
+   */
+  private hasCriticalArea(provider: IProviders): boolean {
+    for (const element of provider.providersAreaProviders) {
+      const area: IProvidersArea = this.criticalAreas.find(
+        (a) => a.id === element.providerAreaId
+      );
+      if (area) return true; // Si se encuentra un área crítica, el proveedor tiene áreas críticas
+    }
+    return false; // Si no se encontraron áreas críticas, el proveedor no tiene áreas críticas
   }
 
   /**
@@ -278,17 +272,19 @@ export class ProvidersComponent implements AfterViewInit {
    * @param areas Lista de áreas que coinciden con la/s del proveedor.
    */
   private setDataTable(provider: IProviders, areas: string[]): void {
+    let ingresosBrutos: string = '';
+    if (provider.ingresosBrutos) ingresosBrutos = this.grossIncome[provider.ingresosBrutos - 1];
+
+    let condicionIVA: string = '';
+    if (provider.condicionIVA) condicionIVA = this.ivaConditions[provider.condicionIVA - 1];
+
     this.data.push({
       id: provider.id,
       name: provider.name,
       providerArea: areas.length ? areas : null,
       cuit: provider.cuit,
-      ingresosBrutos: provider.ingresosBrutos
-        ? this.grossIncome[provider.ingresosBrutos - 1]
-        : "",
-      condicionIVA: provider.condicionIVA
-        ? this.ivaConditions[provider.condicionIVA - 1]
-        : "",
+      ingresosBrutos: ingresosBrutos,
+      condicionIVA: condicionIVA,
     });
   }
 
@@ -297,12 +293,14 @@ export class ProvidersComponent implements AfterViewInit {
    * 2. Construye el servicio para la grilla (tabla).
    */
   private initGrid(): void {
-    this.dataTableService.destroy("#dataTable");
-    this.dataTableService.initialize({
+    let config = {
       selector: "#dataTable",
       columns: [0, 1, 2, 3, 4, 5, 6],
       title: "Proveedores",
       withExport: true,
-    });
+    };
+
+    this.dataTableService.destroy(config.selector);
+    this.dataTableService.initialize(config);
   }
 }
