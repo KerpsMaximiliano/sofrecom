@@ -61,8 +61,15 @@ export class ProvidersComponent implements AfterViewInit {
     private providersAreaService: ProvidersAreaService,
     private dataTableService: DataTableService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
+  /**
+   * Realiza dos peticiones:
+   * ? providers$: Todos los proveedores.
+   * ? areas$: Todas las áreas.
+   *    > criticalAreas: Todas las áreas criticas.
+   *    > notCriticalAreas: Todas las áreas no criticas.
+   */
   ngAfterViewInit(): void {
     this.messageService.showLoading();
 
@@ -83,7 +90,7 @@ export class ProvidersComponent implements AfterViewInit {
               : this.notCriticalAreas.push(area);
           }
         });
-
+        // ! Actualiza el valor de 'areas$' para reflejar sus valores en el select 'Rubro'.
         this.areas$ = [...this.areas$];
         this.setData();
         this.messageService.closeLoading();
@@ -118,6 +125,9 @@ export class ProvidersComponent implements AfterViewInit {
     this.router.navigate([`providers/providers/edit/${id}`]);
   }
 
+  /**
+   * Limpia el filtro.
+   */
   public clear(): void {
     this.selectedStates = 0;
     this.businessName = "";
@@ -125,6 +135,10 @@ export class ProvidersComponent implements AfterViewInit {
     this.selectedCritical = 0;
   }
 
+  /**
+   * Realiza busqueda de provedores según el 'Estado', 'Razón Social' y 'Rubro'.
+   * Posterior a la busqueda (exitosa) filtra los provedores según si son o no 'Críticos'.
+   */
   public search(): void {
     this.messageService.showLoading();
 
@@ -149,8 +163,13 @@ export class ProvidersComponent implements AfterViewInit {
           this.messageService.closeLoading();
         },
       });
+
   }
 
+  /**
+   * Recorre la lista de provedores, invoca a la función 'reviewProvider(provider)',
+   * actualiza 'data' y genera la grilla (tabla).
+   */
   private setData(): void {
     this.data = [];
     this.providers$.forEach((provider: IProviders) => {
@@ -160,39 +179,109 @@ export class ProvidersComponent implements AfterViewInit {
     this.initGrid();
   }
 
+  /**
+   * Recibé un proveedor y determina según el valor de 'selectedCritical',
+   * la función de filtrado.
+   * @param provider Proveedor.
+   */
   private reviewProvider(provider: IProviders): void {
     switch (this.selectedCritical) {
       case 1:
-        this.reviewArea(provider, this.criticalAreas);
+        this.criticalArea(provider);
         break;
       case 2:
-        this.reviewArea(provider, this.notCriticalAreas);
+        this.notCriticalArea(provider);
         break;
       default:
-        this.reviewArea(provider, this.areas$);
+        this.allArea(provider);
         break;
     }
   }
 
-  private reviewArea(provider: IProviders, areas: IProvidersArea[]): void {
+  /**
+   * Determina si el proveedor tiene algún área critica, si no la tiene,
+   * añade al proveedor a la lista de proveedores.
+   * @param provider Proveedor.
+   * @returns Retorna si no existe un área coincidente con la del proveedor.
+   */
+  private notCriticalArea(provider: IProviders): void {
+    let areasProviders = [];
+
+    provider.providersAreaProviders.forEach(
+      (element: IProvidersAreaProvider) => {
+        let area: IProvidersArea = this.criticalAreas.find(
+          (a) => a.id == element.providerAreaId
+        );
+        if (!area) {
+          let areaNoCritical: IProvidersArea = this.notCriticalAreas.find(
+            (a) => a.id == element.providerAreaId
+          )
+          if (areaNoCritical) areasProviders.push(areaNoCritical.description);
+        }
+      }
+    );
+    if (!areasProviders.length) return;
+    this.setDataTable(provider, areasProviders);
+  }
+
+  /**
+   * Determina si el proveedor tiene algún área critica, si la tiene
+   * busca todas las áreas que coinciden con las del proveedor y
+   * añade al proveedor a la lista de proveedores.
+   * @param provider Proveedor.
+   * @returns Retorna si no existe un área coincidente con la del proveedor.
+   */
+  private criticalArea(provider: IProviders): void {
     let areasProviders = [];
     provider.providersAreaProviders.forEach(
       (element: IProvidersAreaProvider) => {
-        let area: IProvidersArea = areas.find(
+        let area: IProvidersArea = this.criticalAreas.find(
           (a) => a.id == element.providerAreaId
         );
+        if (area) {
+          let areaCritical: IProvidersArea = this.areas$.find(
+            (a) => a.id == element.providerAreaId
+          )
+          if (areaCritical) areasProviders.push(areaCritical.description);
+        }
+      }
+    );
+    if (!areasProviders.length) return;
+    this.setDataTable(provider, areasProviders);
+  }
+
+  /**
+   * Busca todas las coincidencias respecto a las áreas de un proveedor y
+   * añade al proveedor a la lista de proveedores.
+   * @param provider Proveedor.
+   * @returns Retorna si no existe un área coincidente con la del proveedor.
+   */
+  private allArea(provider: IProviders): void {
+    let areasProviders: string[] = [];
+    provider.providersAreaProviders.forEach(
+      (element: IProvidersAreaProvider) => {
+        let area: IProvidersArea = this.areas$.find(
+          (a) => a.id == element.providerAreaId
+        )
         if (area) {
           areasProviders.push(area.description);
         }
       }
     );
-
     if (!areasProviders.length) return;
+    this.setDataTable(provider, areasProviders);
+  }
 
+  /**
+   * Recibé un proveedor y su/s área/s y lo añade a la lista de proveedores.
+   * @param provider Proveedor.
+   * @param areas Lista de áreas que coinciden con la/s del proveedor.
+   */
+  private setDataTable(provider: IProviders, areas: string[]): void {
     this.data.push({
       id: provider.id,
       name: provider.name,
-      providerArea: areasProviders.length ? areasProviders : null,
+      providerArea: areas.length ? areas : null,
       cuit: provider.cuit,
       ingresosBrutos: provider.ingresosBrutos
         ? this.grossIncome[provider.ingresosBrutos - 1]
@@ -203,6 +292,10 @@ export class ProvidersComponent implements AfterViewInit {
     });
   }
 
+  /**
+   * 1. Destruye el servicio (si existiese) de la grilla (tabla).
+   * 2. Construye el servicio para la grilla (tabla).
+   */
   private initGrid(): void {
     this.dataTableService.destroy("#dataTable");
     this.dataTableService.initialize({
