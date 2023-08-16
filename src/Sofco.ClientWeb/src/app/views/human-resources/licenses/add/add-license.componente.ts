@@ -1,6 +1,6 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 
 // * Services.
 import { MenuService } from "../../../../services/admin/menu.service";
@@ -28,6 +28,10 @@ declare var $: any;
   styleUrls: ["./add-license.component.scss"],
 })
 export class AddLicenseComponent implements OnInit, OnDestroy {
+  private timeZoneSubscription: Subscription | undefined;
+  private currentTimeZone: string =
+    Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   @ViewChild("selectedFile") selectedFile: any;
 
   addSubscrip: Subscription;
@@ -66,8 +70,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     "ACTIONS.cancel"
   );
 
-  @ViewChild("startDate") startDate;
-  @ViewChild("endDate") endDate;
+  public startDate: Date;
+  public endDate: Date;
 
   constructor(
     private licenseService: LicenseService,
@@ -80,6 +84,8 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.subscribeToTimeZoneChanges();
+
     var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);
     var dataJson = JSON.parse(data);
     if (dataJson) this.fromProfile = dataJson.fromProfile;
@@ -101,6 +107,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     if (this.getSectorsSubscrip) this.getSectorsSubscrip.unsubscribe();
     if (this.deleteFileSubscrip) this.deleteFileSubscrip.unsubscribe();
     if (this.userSubscrip) this.userSubscrip.unsubscribe();
+    if (this.timeZoneSubscription) this.timeZoneSubscription.unsubscribe();
   }
 
   public back(): void {
@@ -112,12 +119,10 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   public add(): void {
     this.messageService.showLoading();
 
-    // Restable la hora, minutos y segundos a 00:00:00.000.
-    if (this.model.startDate)
-      this.model.startDate = this.dateFormatter(this.model.startDate);
-    if (this.model.endDate) {
-      this.model.endDate = this.dateFormatter(this.model.endDate);
-    }
+    if (this.startDate)
+      this.model.startDate = this.setDateGMT(new Date(this.startDate));
+    if (this.endDate)
+      this.model.endDate = this.setDateGMT(new Date(this.endDate));
 
     this.addSubscrip = this.licenseService.add(this.model).subscribe(
       (res) => {
@@ -313,17 +318,34 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Cambia la hora, minutos y segundos de una fecha con formato: ISO 8601 y devuelve la nueva fecha.
-   * @param date Licencia desde/hasta con formato: ISO 8601 UTF.
-   * @returns Licencia desde/hasta con formato: ISO 8601 c/UTF = 00:00:00.000.
+   * Configura la fecha y hora del usuario restando la diferencia horaria (GMT).
+   * @param date: representa la fecha seleccionada por el usuario con el horario UTC-0.
+   * @returns Date: representa la hora del usuario menos el GMT del usuario.
    */
-  private dateFormatter(date: Date): Date {
-    let format = new Date(date);
+  public setDateGMT(date: Date): Date {
+    return new Date(
+      date.setHours(date.getHours() - date.getTimezoneOffset() / 60)
+    );
+  }
 
-    format.setHours(0, 0, 0, 0);
+  private subscribeToTimeZoneChanges(): void {
+    this.timeZoneSubscription = new Observable<string>((observer) => {
+      observer.next(this.currentTimeZone);
+      const intervalId = setInterval(() => {
+        const newTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (newTimeZone !== this.currentTimeZone) {
+          observer.next(newTimeZone);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }).subscribe((newTimeZone) => {
+      this.currentTimeZone = newTimeZone;
+      this.handleTimeZoneChange(newTimeZone);
+    });
+  }
 
-    console.log(format);
-
-    return format;
+  private handleTimeZoneChange(newTimeZone: string): void {
+    if (this.startDate) this.startDate = new Date(this.startDate);
+    if (this.endDate) this.endDate = new Date(this.endDate);
   }
 }
