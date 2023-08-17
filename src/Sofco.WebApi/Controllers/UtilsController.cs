@@ -106,5 +106,13 @@ namespace Sofco.WebApi.Controllers
         {
             return Ok(utilsService.GetEmployeeProfiles());
         }
+
+        [HttpGet("provincies")]
+        public IActionResult GetProvinciesActives()
+        {
+            var provincies = utilsService.GetProvinces();
+
+            return Ok(provincies.Select(x => new Option { Id = x.Id, Text = x.Text }).OrderBy(x => x.Text));
+        }
     }
 }

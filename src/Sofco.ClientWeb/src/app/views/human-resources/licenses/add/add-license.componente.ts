@@ -4,10 +4,10 @@ import { Observable, Subscription } from "rxjs";
 
 // * Services.
 import { MenuService } from "../../../../services/admin/menu.service";
+import { MessageService } from "../../../../services/common/message.service";
 import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { AuthService } from "../../../../services/common/auth.service";
 import { UserInfoService } from "../../../../services/common/user-info.service";
-import { MessageService } from "../../../../services/common/message.service";
 import { LicenseService } from "../../../../services/human-resources/licenses.service";
 
 // * Interfaces.
@@ -16,6 +16,7 @@ import { License } from "../../../../models/rrhh/license";
 // * Others.
 import { Cookie } from "ng2-cookies/ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
+import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
 
 // * Components.
 import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
@@ -34,6 +35,9 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
   @ViewChild("selectedFile") selectedFile: any;
 
+  private today: Date = new Date();
+
+  maxDate: NgbDateStruct;
   addSubscrip: Subscription;
   getEmployeesSubscrip: Subscription;
   getManagersSubscrip: Subscription;
@@ -70,8 +74,10 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     "ACTIONS.cancel"
   );
 
-  public startDate: Date;
-  public endDate: Date;
+  @ViewChild("startDate") startDate: any;
+  @ViewChild("endDate") endDate: any;
+  public sDate: Date; // ? starDate.
+  public eDate: Date; // ? endDate.
 
   constructor(
     private licenseService: LicenseService,
@@ -119,10 +125,9 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   public add(): void {
     this.messageService.showLoading();
 
-    if (this.startDate)
-      this.model.startDate = this.setDateGMT(new Date(this.startDate));
-    if (this.endDate)
-      this.model.endDate = this.setDateGMT(new Date(this.endDate));
+    if (this.sDate)
+      this.model.startDate = this.setDateGMT(new Date(this.sDate));
+    if (this.eDate) this.model.endDate = this.setDateGMT(new Date(this.eDate));
 
     this.addSubscrip = this.licenseService.add(this.model).subscribe(
       (res) => {
@@ -184,6 +189,33 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     } else {
       this.model.employeeId = "0";
       this.model.typeId = 0;
+    }
+  }
+
+  public validateLimit(): void {
+    const convertTypeId = this.model.typeId.toString();
+    const year = this.today.getFullYear();
+    const month = this.today.getMonth();
+    const lastDayOfYear = new Date(year, 11, 31);
+    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+    if (convertTypeId === "19") {
+      if (year === 2023) {
+        this.startDate.bsConfig.minDate = this.today;
+        this.endDate.bsConfig.minDate = this.today;
+        if (!this.startDate.bsConfig.hasOwnProperty("maxDate")) {
+          this.startDate.bsConfig.maxDate = new Date(
+            lastDayOfYear.toISOString().slice(0, 10)
+          );
+          this.endDate.bsConfig.maxDate = new Date(
+            lastDayOfYear.toISOString().slice(0, 10)
+          );
+        }
+      } else {
+        this.startDate.bsConfig.minDate = this.today;
+        this.startDate.bsConfig.maxDate = new Date(year, month, lastDayOfMonth);
+        this.endDate.bsConfig.minDate = this.today;
+        this.endDate.bsConfig.maxDate = new Date(year, month, lastDayOfMonth);
+      }
     }
   }
 
@@ -252,7 +284,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     this.userSubscrip = this.employeeService
       .getInfo(this.model.employeeId)
       .subscribe(
-        (response) => {
+        (response: any) => {
           this.messageService.closeLoading();
 
           if (response.data) {
@@ -303,7 +335,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   private getLicenceTypes(): void {
     this.getLicenseTypeSubscrip = this.licenseService
       .getLicenceTypes()
-      .subscribe((data: any) => {
+      .subscribe((data) => {
         this.licensesTypesOptions = data;
         this.licensesTypes = data.optionsWithPayment;
         this.model.typeId = 0;
@@ -345,7 +377,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   }
 
   private handleTimeZoneChange(newTimeZone: string): void {
-    if (this.startDate) this.startDate = new Date(this.startDate);
-    if (this.endDate) this.endDate = new Date(this.endDate);
+    if (this.sDate) this.sDate = new Date(this.sDate);
+    if (this.eDate) this.eDate = new Date(this.eDate);
   }
 }

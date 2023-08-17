@@ -100,7 +100,7 @@ namespace Sofco.Framework.Managers
 
             mails.AddRange(GetOperationMails(purchaseOrder));
 
-            mails.AddRange(GetGafMails());
+            //mails.AddRange(GetGafMails()); // 2023-08-17
 
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
 
@@ -110,12 +110,13 @@ namespace Sofco.Framework.Managers
                 if (analytic.Manager != null) mails.Add(analytic.Manager.Email);
             }
 
-            var humanResourceManager = unitOfWork.UserRepository.Get(emailConfig.HumanResourceMangerId);
-            var humanResourceProjectLeader = unitOfWork.UserRepository.Get(emailConfig.HumanResourceProjectLeaderId);
+            //var humanResourceManager = unitOfWork.UserRepository.Get(emailConfig.HumanResourceMangerId); // 2023-08-17
+            //var humanResourceProjectLeader = unitOfWork.UserRepository.Get(emailConfig.HumanResourceProjectLeaderId); // 2023-08-17
+
             var generalDirector = unitOfWork.UserRepository.Get(appSetting.GeneralDirectorUserId);
 
-            if (humanResourceManager != null) mails.Add(humanResourceManager.Email);
-            if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email);
+            //if (humanResourceManager != null) mails.Add(humanResourceManager.Email); // 2023-08-17
+            //if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email); // 2023-08-17
             if (generalDirector != null) mails.Add(generalDirector.Email);
 
             return mails;

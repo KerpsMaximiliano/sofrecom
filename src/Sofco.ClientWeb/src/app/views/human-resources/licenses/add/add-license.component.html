@@ -4,8 +4,8 @@
 
     <ol class="breadcrumb">
       <li><a [routerLink]="['/']">{{ 'HOME.TITLE' | translate }}</a></li>
-      <li>{{ 'rrhh.title' | translate }}</li>
-      <li>{{ 'rrhh.licenses' | translate }}</li>
+      <li>{{'rrhh.title' | translate }}</li>
+      <li>{{'rrhh.licenses' | translate }}</li>
       <li class="active"><strong>{{ 'rrhh.license.add' | translate }}</strong></li>
     </ol>
   </div>
@@ -13,8 +13,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
   <div class="alert alert-gaps-warning" style="margin-bottom: 10px" *ngIf="missingManager">
-    <i class="fa fa-warning"></i>
-    {{ 'rrhh.license.missingManager' | translate }}
+    <i class="fa fa-warning"></i> {{ 'rrhh.license.missingManager' | translate }}
   </div>
 
   <div class="row">
@@ -33,7 +32,7 @@
           </div>
 
           <div class="form-group" *ngIf="model.authorizerId > 0">
-            <label style="font-size: 15px">{{ 'rrhh.license.authorizer' | translate }}: </label>
+            <label style="font-size: 15px">{{'rrhh.license.authorizer' | translate }}: </label>
             <span style="font-size: 14px">{{ model.authorizerDesc }}</span>
           </div>
 
@@ -51,15 +50,15 @@
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
-                <label class="control-label">{{ 'rrhh.license.startDate' | translate }}</label>
-                <date-picker [(date)]="startDate"></date-picker>
+                <label class="control-label">{{'rrhh.license.startDate' | translate }}</label>
+                <date-picker #startDate [(date)]="sDate"></date-picker>
               </div>
             </div>
 
             <div class="col-sm-6">
               <div class="form-group">
                 <label class="control-label">{{'rrhh.license.endDate' | translate }}</label>
-                <date-picker [(date)]="endDate"></date-picker>
+                <date-picker #endDate [(date)]="eDate"></date-picker>
               </div>
             </div>
           </div>
@@ -74,8 +73,15 @@
             </div>
           </div>
 
-          <select-two [label]="'rrhh.license.reason'" [(value)]="model.typeId" [options]="licensesTypes">
-          </select-two>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <select-two [label]="'rrhh.license.reason'" [(value)]="model.typeId" [options]="licensesTypes"
+                  (valueChange)="validateLimit()">
+                </select-two>
+              </div>
+            </div>
+          </div>
 
           <div class="form-group" [hidden]="model.typeId != 13 && model.typeId != 14">
             <label class="control-label">{{ 'rrhh.license.comments' | translate }}</label>
@@ -106,15 +112,16 @@
             <div class="col-sm-3">
               <div class="form-group m-t-lg">
                 <icheck [(checked)]="model.final">
-                  <label class="control-label">{{ 'rrhh.license.final' | translate }}</label>
+                  <label class="control-label">{{'rrhh.license.final' | translate }}</label>
                 </icheck>
               </div>
             </div>
           </div>
         </div>
+
         <div class="ibox-footer">
           <button (click)="back()" *ngIf="!menuService.userIsRrhh" class="btn btn-success" type="button">
-            <i class="fa fa-user"></i> {{ 'ACTIONS.viewProfile' | translate }}
+            <i class="fa fa-user"></i> {{'ACTIONS.viewProfile' | translate }}
           </button>
           <button (click)="add()" *ngIf="model.id == null && !missingManager" class="btn btn-primary" type="button">
             {{ 'ACTIONS.save' | translate }} <i class="fa fa-save"></i>
@@ -132,10 +139,7 @@
       <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
 
       <div class="uploader-margin-top">
-        <label *ngIf="uploader.getNotUploadedItems().length">
-          {{ 'billing.invoice.progress' | translate }}:
-        </label>
-
+        <label *ngIf="uploader.getNotUploadedItems().length">{{ 'billing.invoice.progress' | translate }}: </label>
         <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
           <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
         </div>
@@ -147,13 +151,13 @@
 
         <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()"
           [disabled]="!uploader.getNotUploadedItems().length">
-          <span class="fa fa-times"></span> {{ 'billing.invoice.quit' | translate }}
+          <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
         </button>
       </div>
 
       <div class="panel panel-primary m-t-lg" *ngIf="files.length > 0">
         <div class="panel-heading">
-          <i class="fa fa-info-circle"></i> {{ 'rrhh.license.attachments' | translate }}
+          <i class="fa fa-info-circle"></i> {{'rrhh.license.attachments' | translate }}
         </div>
 
         <div class="panel-body">

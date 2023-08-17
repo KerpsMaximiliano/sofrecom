@@ -129,7 +129,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateAmmount(Response response, IList<PurchaseOrderAmmountDetailModel> model)
         {
-            if (!model.Any() || model.Any(x => x.Enable && (x.Ammount < 0 || x.Ammount > 999999999)))
+            if (!model.Any() || model.Any(x => x.Enable && (x.Ammount < 0 || x.Ammount > 9999999999999)))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
             }
@@ -137,7 +137,7 @@ namespace Sofco.Framework.ValidationHelpers.Billing
 
         public static void ValidateAdjustmentAmmount(Response response, IList<PurchaseOrderAmmountDetailModel> details)
         {
-            if (details.Any(x => x.Adjustment < -999999999 || x.Adjustment > 999999999))
+            if (details.Any(x => x.Adjustment < -9999999999999 || x.Adjustment > 9999999999999))
             {
                 response.AddError(Resources.Billing.PurchaseOrder.AmmountRequired);
             }

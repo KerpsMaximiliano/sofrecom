@@ -93,6 +93,7 @@ namespace Sofco.DAL
         private IHealthInsuranceRepository healthInsuranceRepository;
         private IPrepaidHealthRepository prepaidHealthRepository;
         private IEmployeeProfileHistoryRepository employeeProfileHistoryRepository;
+        private IAnalyticsRenovationRepository analyticsRenovationRepository;
 
         #endregion
 
@@ -262,6 +263,7 @@ namespace Sofco.DAL
         public IPrepaidHealthRepository PrepaidHealthRepository => prepaidHealthRepository ?? (prepaidHealthRepository = new PrepaidHealthRepository(context));
         public IEmployeeProfileHistoryRepository EmployeeProfileHistoryRepository => employeeProfileHistoryRepository ?? (employeeProfileHistoryRepository = new EmployeeProfileHistoryRepository(context));
 
+        public IAnalyticsRenovationRepository AnalyticsRenovationRepository => analyticsRenovationRepository ?? (analyticsRenovationRepository = new AnalyticsRenovationRepository(context));
         #endregion
 
         #region HumanResource

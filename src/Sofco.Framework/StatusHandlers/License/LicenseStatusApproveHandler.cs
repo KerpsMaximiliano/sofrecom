@@ -50,6 +50,23 @@ namespace Sofco.Framework.StatusHandlers.License
                 {
                     response.AddError(Resources.Rrhh.License.ExamDaysTakenExceeded);
                 }
+
+                if (license.TypeId == 16 && license.Employee.PaternityDaysTaken + license.DaysQuantity > license.Type.Days)
+                {
+                    response.AddError(Resources.Rrhh.License.PaternityDaysTakenExceeded);
+                }
+
+                if (license.TypeId == 17 && license.Employee.BirthdayDaysTaken + license.DaysQuantity > license.Type.Days)
+                {
+                    response.AddError(Resources.Rrhh.License.BirthdayDaysTakenExceeded);
+                }
+
+                if (license.TypeId == 18 && license.Employee.FlexDaysTaken + license.DaysQuantity > license.Type.Days)
+                {
+                    response.AddError(Resources.Rrhh.License.FlexDaysTakenExceeded);
+                }
+
+                                
             }
         }
 
@@ -77,6 +94,24 @@ namespace Sofco.Framework.StatusHandlers.License
             if (license.TypeId == 7)
             {
                 license.Employee.ExamDaysTaken += license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
+            }
+
+            if (license.TypeId == 16)
+            {
+                license.Employee.PaternityDaysTaken += license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
+            }
+
+            if (license.TypeId == 17)
+            {
+                license.Employee.BirthdayDaysTaken += license.DaysQuantity;
+                unitOfWork.EmployeeRepository.Update(license.Employee);
+            }            
+
+            if (license.TypeId == 18)
+            {
+                license.Employee.FlexDaysTaken += license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
         }
