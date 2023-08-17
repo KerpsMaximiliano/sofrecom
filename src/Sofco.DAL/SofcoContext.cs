@@ -87,6 +87,7 @@ namespace Sofco.DAL
         public DbSet<PrepaidHealth> PrepaidHealths { get; set; }
         public DbSet<EmployeeEndNotification> EmployeeEndNotifications { get; set; }
         public DbSet<ReportPowerBi> ReportsPowerBi { get; set; }
+        public DbSet<AnalyticsRenovation> AnalyticsRenovations { get; set; }
 
         // Work Time Management
         public DbSet<WorkTime> WorkTimes { get; set; }
@@ -286,6 +287,7 @@ namespace Sofco.DAL
             builder.MapApplicant();
             builder.MapJobSearchApplicant();
             builder.MapRequestNote();
+            builder.MapAnalyticsRenovation();
         }
     }
 }
