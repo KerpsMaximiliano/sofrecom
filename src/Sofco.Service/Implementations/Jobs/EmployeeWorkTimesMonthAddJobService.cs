@@ -60,6 +60,7 @@ namespace Sofco.Service.Implementations.Jobs
                  notExecuteMessage = String.Format("{3} {0}-{1}-{2}", nextCloseDate.Day, nextCloseDate.Month, nextCloseDate.Year, DATENOTVALIDMESSAGE);
 
             return closeDate.Year == DateTime.Now.Year && closeDate.Month == DateTime.Now.Month && closeDate.Day == DateTime.Now.Day;
+
         }
         private List<DateTime> GetDaysBeetweenLastsCloses()
         {

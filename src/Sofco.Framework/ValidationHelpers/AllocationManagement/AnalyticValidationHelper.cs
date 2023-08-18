@@ -9,7 +9,8 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
 {
     public static class AnalyticValidationHelper
     {
-        public static Analytic Find(Response response, IUnitOfWork unitOfWork, int id)
+
+        public static Analytic Find(Response response, IUnitOfWork unitOfWork, int id, bool includeAllRefunds)
         {
             var analytic = unitOfWork.AnalyticRepository.GetSingle(x => x.Id == id);
 
@@ -24,10 +25,19 @@ namespace Sofco.Framework.ValidationHelpers.AllocationManagement
                 var opportunities = projects.Select(x => $"{x.OpportunityNumber} {x.OpportunityName}");
 
                 analytic.Proposal = string.Join(";", opportunities);
-                analytic.Refunds = unitOfWork.RefundRepository.GetRefundsByAnalytics(id);
+                if (includeAllRefunds)
+                    analytic.Refunds = unitOfWork.RefundRepository.GetRefundsByAnalytics(id);
+                else
+                    analytic.Refunds = unitOfWork.RefundRepository.GetPendingRefundsByAnalytic(id);
+
             }
 
             return analytic;
+        }
+
+        public static Analytic Find(Response response, IUnitOfWork unitOfWork, int id)
+        {
+            return Find(response, unitOfWork, id, true);
         }
 
         public static void Exist(Response response, IAnalyticRepository analyticRepository, int id)

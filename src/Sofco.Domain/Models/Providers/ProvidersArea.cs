@@ -12,6 +12,7 @@ namespace Sofco.Domain.Models.Providers
         public bool Critical { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public bool? RNAmmountReq { get; set; }
 
         public IList<RequestNote.RequestNote> RequestNotes { get; set; }
 

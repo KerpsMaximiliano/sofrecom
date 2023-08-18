@@ -31,7 +31,7 @@ export class AutomaticHoursComponent implements OnInit {
 
     ngOnInit(): void {
         this.settingsService.getAll().subscribe(d => {
-            this.setting = d.body.data.find(setting => setting.id == 27);
+            this.setting = d.body.data.find(setting => setting.key == 'TareaPrecargaHorasDefault');
             this.form.controls['task'].setValue(Number(this.setting.value));
         })
         this.automaticHoursService.getTasks().subscribe(d => {
@@ -45,7 +45,7 @@ export class AutomaticHoursComponent implements OnInit {
             return;
         };
         let model = {
-            id: 27,
+            id: this.setting.id,
             key: this.setting.key,
             category: this.setting.category,
             type: this.setting.type,
@@ -65,6 +65,19 @@ export class AutomaticHoursComponent implements OnInit {
             return;
         };
         this.automaticHoursService.runProcess().subscribe(d => {
+            this.messageService.showMessage("Proceso de carga de horas ejecutado", 0);
+        },
+        err => {
+            this.messageService.showMessage("Error al ejecutar el proceso", 1);
+        })
+    }
+
+    runMensual() {
+        if (this.form.invalid) {
+            this.markFormGroupTouched(this.form);
+            return;
+        };
+        this.automaticHoursService.runProcessMensual().subscribe(d => {
             this.messageService.showMessage("Proceso de carga de horas ejecutado", 0);
         },
         err => {

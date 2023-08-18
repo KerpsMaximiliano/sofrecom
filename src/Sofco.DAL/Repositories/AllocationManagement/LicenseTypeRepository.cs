@@ -9,7 +9,12 @@ namespace Sofco.DAL.Repositories.AllocationManagement
     public class LicenseTypeRepository : BaseRepository<LicenseType>, ILicenseTypeRepository
     {
         public LicenseTypeRepository(SofcoContext context) : base(context)
+        {            
+        }
+
+        public ICollection<LicenseType> GetAllActivesReadOnly()
         {
+            return context.LicenseTypes.Where(x => x.Active).ToList().AsReadOnly();
         }
     }
 }

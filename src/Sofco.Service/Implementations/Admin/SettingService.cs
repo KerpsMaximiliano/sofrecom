@@ -82,6 +82,8 @@ namespace Sofco.Service.Implementations.Admin
                 return response;
 
             unitOfWork.SettingRepository.Save(setting);
+            
+            settingData.ClearKeys();
 
             response.Data = setting;
 
@@ -126,28 +128,17 @@ namespace Sofco.Service.Implementations.Admin
         public IList<LicenseTypeSettingItem> GetLicenseTypes()
         {
             var list = new List<LicenseTypeSettingItem>();
-
-            var licenseTypes = unitOfWork.LicenseTypeRepository.GetAllReadOnly();
+                        
+            var licenseTypes = unitOfWork.LicenseTypeRepository.GetAllActivesReadOnly();
 
             foreach (var licenseType in licenseTypes)
             {
                 var item = new LicenseTypeSettingItem
                 {
                     TypeId = licenseType.Id,
-                    Value = licenseType.Days
+                    Value = licenseType.Days,
+                    Label = licenseType.LabelKey
                 };
-
-                switch (licenseType.Id)
-                {
-                    case 2: item.Label = "rrhh.license.personalFormalities"; break;
-                    case 5: item.Label = "rrhh.license.move"; break;
-                    case 7: item.Label = "rrhh.license.exam"; break;
-                    case 8: item.Label = "rrhh.license.marrige"; break;
-                    case 9: item.Label = "rrhh.license.maternite"; break;
-                    case 10: item.Label = "rrhh.license.born"; break;
-                    case 11: item.Label = "rrhh.license.deadParent"; break;
-                    case 15: item.Label = "rrhh.license.deadBrother"; break;
-                }
 
                 if (!string.IsNullOrWhiteSpace(item.Label))
                 {

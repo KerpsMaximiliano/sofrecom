@@ -98,6 +98,17 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
             return Ok(new AnalyticModel(response.Data));
         }
 
+        [HttpGet("onlyPendingRefunds/{id}")]
+        public IActionResult GetOnlyPendingRefunds(int id)
+        {
+            var response = analyticService.GetByIdWithOnlyPendingRefunds(id);
+
+            if (response.HasErrors())
+                return BadRequest(response);
+
+            return Ok(new AnalyticModel(response.Data));
+        }
+
         [HttpGet("title/{title}")]
         public IActionResult GetByTitle(string title)
         {
@@ -170,12 +181,13 @@ namespace Sofco.WebApi.Controllers.AllocationManagement
         [HttpPut("{id}/close")]
         public IActionResult Close(int id)
         {
-            var analityc= analyticService.GetByIdWhitRefund(id);
+            var analityc = analyticService.GetByIdWhitRefund(id);
             if (analityc.HasErrors())
                 return BadRequest(analityc);
 
-            var pendingRefund = analityc.Data.Refunds.Any(x => x.StatusId != 20);
-            if (pendingRefund)
+            var pendingrefunds = this.refundService.GetPendingByAnaliticId(id);
+
+            if (pendingrefunds.Data != null && pendingrefunds.Data.Count > 0)
                 return BadRequest(new AnalyticModel(analityc.Data));
 
             var response = analyticService.Close(id, AnalyticStatus.Close);

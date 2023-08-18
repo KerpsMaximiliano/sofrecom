@@ -249,5 +249,22 @@ namespace Sofco.DAL.Repositories.AdvancementAndRefund
                .AsReadOnly();
 
         }
+
+        public IList<Refund> GetPendingRefundsByAnalytic(int id)
+        {
+
+            // Rechazado/a
+            // Finalizado
+            // Pagado
+            var idsClosedRefunds = context.WorkflowStates.Where(x => x.Name == "Rechazado/a" 
+                || x.Name == "Finalizado" || x.Name == "Pagado").Select(x => x.Id).ToList();
+
+            return context.Refunds.Include(x => x.UserApplicant)
+               .Where(x => x.Analytic.Id == id && !idsClosedRefunds.Contains(x.StatusId))
+               .ToList()
+               .AsReadOnly();
+
+        }
+
     }
 }

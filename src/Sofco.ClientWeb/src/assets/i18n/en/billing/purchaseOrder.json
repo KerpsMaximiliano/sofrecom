@@ -14,7 +14,7 @@
 	"datesRequired": "Date from and to are required",
 	"endDateLessThanStartDate": "The date can not be less than date from",
 	"errorToSaveAnalytics": "An error occurred when relating analytics",
-	"ammountRequired": "Amounts can not be less than 0 nor more than 99,999,999",
+	"ammountRequired": "Amounts can not be less than 0 nor more than 99,999,999,999",
 	"draftSuccess": "The purchase order has been sent correctly to the Compliance area",
 	"complianceSuccess": "The purchase order has been sent correctly to the Commercial area",
 	"comercialSuccess": "The purchase order has been sent correctly to the Operative area",

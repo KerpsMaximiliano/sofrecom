@@ -81,5 +81,8 @@ namespace Sofco.Core.DAL.AllocationManagement
         IList<Employee> GetWithHolidaysPendingGreaterThen35();
         IList<Employee> GetOnTestPeriod(DateTime date);
         void UpdateOnTestPeriod(Employee item);
+        void ResetAllBirthdayDays();
+        void ResetAllFlexDays();
+        void ResetAllPaternityDays();
     }
 }
