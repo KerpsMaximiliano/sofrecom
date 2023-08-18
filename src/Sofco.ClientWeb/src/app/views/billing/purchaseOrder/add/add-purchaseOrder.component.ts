@@ -8,6 +8,7 @@ import * as FileSaver from "file-saver";
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { PurchaseOrderStatus } from "app/models/enums/purchaseOrderStatus";
 import { AuthService } from "../../../../services/common/auth.service";
+import { Router } from "@angular/router";
 
 declare var $: any;
 
@@ -45,7 +46,8 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
  
     constructor(private purchaseOrderService: PurchaseOrderService,
                 private authService: AuthService,
-                private messageService: MessageService){
+                private messageService: MessageService,
+                private router: Router){
     }
 
     ngOnInit(): void {
@@ -64,19 +66,18 @@ export class NewPurchaseOrderComponent implements OnInit, OnDestroy {
 
         this.form.model.clientExternalName = client ? client.text : '';
 
-        this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe(
-            response => {
-                // this.messageService.closeLoading();
-
-                // this.form.model.id = response.data.id;
-                // this.form.model.status = response.data.status;
-                // this.uploaderConfig();
-
-                // this.alertDisable = false;
-            },
-            err => {
+        this.addSubscrip = this.purchaseOrderService.add(this.form.model).subscribe({
+            next:(response) =>  {
                 this.messageService.closeLoading();
-            });
+            },
+            error: () => {
+                this.messageService.closeLoading();
+                this.messageService.showError('Error al crear la órden de compra.');
+            },
+            complete: () => {
+                this.router.navigate([`billing/purchaseOrders/query`]);
+            }
+        });
     }
 
     uploaderConfig(){

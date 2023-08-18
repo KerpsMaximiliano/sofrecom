@@ -146,9 +146,9 @@
             "JobRecursosSinAsignacionDia": "Job de Recursos SIN Asignación (día del mes)",
             "JobRecursosSinAsignacionDestinatarios":"Job de Recursos SIN Asignación (destinatarios)",
             "TareaPrecargaHorasDefault":"Tarea Pre-carga Horas",
-            "FlexDaysAllowTogether": "Días Flex",
-            "PaternityDaysAllowTogether": "Días por Paternidad",
-            "BirthdayDaysAllowTogether": "Día de Cumpleaños",
+            "FlexDaysAllowTogether": "Máximo de días flex consecutivos",
+            "PaternityDaysAllowTogether": "Máximo de días de paternidad consecutivos",
+            "BirthdayDaysAllowTogether": "Máximo de días de cumpleaños consecutivos",
             "grid": {
                 "license": "Licencia",
                 "days": "Días de Licencia",
@@ -170,6 +170,7 @@
     },
     "billing":{
         "title": "Aseg. Ingresos y Costos",
+        "list": "Listado de Ordenes de Compra",
         "customer":{
             "title": "Gestión Facturación",
             "client": "Cliente",
@@ -816,7 +817,8 @@
             "detailPeriodToBeRecovered": "Detalle del Periodo a Recuperar",
             "paternity":"Días por paternidad",
             "birthday":"Día de cumpleaños",
-            "Flex":"Días flex"
+            "Flex":"Días flex",
+            "cannotStartAHoliday":"La Licencia no puede iniciar en días feriados."
         },
         "closeDate": {
             "title": "Fechas de Cierre",
@@ -1136,6 +1138,63 @@
             "startDate":"Fecha Alta",
             "endDate":"Fecha Baja",
             "billing":"Facturación"
+        }
+
+    },
+    "notes": {
+        "title":"Notas de Pedido",
+        "list":"Litado de Notas de Pedido",
+        "search":"Búsqueda de Notas de Pedido",
+        "add":"Agregar",
+        "create":"Crear",
+        "addNote":"Agregar Nota de Pedido",
+        "travelForm":"Apartado de Viajes",
+        "trainingForm":"Apartado de Capacitaciones",
+        "grid": {
+            "userApplicant":"Solicitante",
+            "status":"Estado",
+            "provider":"Proveedor",
+            "analytic":"Analítica",
+            "dateFrom":"Fecha Desde",
+            "dateTo":"Fecha Hasta",
+            "number":"Número",
+            "processApproval":"Proceso de Aprobación",
+            "approve":"Aprobadas o Finalizadas",
+            "description":"Descripción:",
+            "createDate":"Fecha de creación",
+            "createBy":"Creado por",
+            "processApprovalList":"Listado de Notas de Pedido en Proceso de Aprobación",
+            "sector":"Rubro:",
+            "critical":"Crítico:",
+            "product":"Productos/Servicios/Material",
+            "quantity":"Cantidad",
+            "assigment": "% de Asignación",
+            "providers":"Proveedores:",
+            "proposalEvaluation":"Previsto en el presupuesto / Evaluación de propuesta:",
+            "evalprop":"Número Evalprop:",
+            "observations":"Observaciones:",
+            "travelItinerary":"Ficha del Viaje",
+            "passenger":"Pasajero:",
+            "name":"Nombre",
+            "birthday":"Fecha de Nacimiento",
+            "cuit":"CUIT / CUIL",
+            "departureDate":"Fecha de Salida:",
+            "returnDate":"Fecha de Regreso:",
+            "destination":"Ciudad de Destino:",
+            "transportation":"Medio de Transporte:",
+            "hotel":"Alojamiento:",
+            "itinerary":"Detalle del Itinerario:",
+            "trainingData":"Datos de la Capacitación",
+            "trainingName":"Nombre:",
+            "trainingSubject":"Tema:",
+            "location":"Lugar:",
+            "trainingDate":"Fecha:",
+            "duration":"Duración:",
+            "ammount":"Monto aproximado:",
+            "participant":"Participante:",
+            "proyect":"Proyecto / Sector",
+            "sectorName":"Sector"
+            
         }
 
     },

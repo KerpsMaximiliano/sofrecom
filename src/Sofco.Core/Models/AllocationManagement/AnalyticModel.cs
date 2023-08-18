@@ -37,6 +37,10 @@ namespace Sofco.Core.Models.AllocationManagement
             ServiceTypeId = domain.ServiceTypeId;
             Description = domain.Description;
             Refund = domain.Refunds;
+            CeCo = domain.CeCo;
+            CeBe = domain.CeBe;
+            Orden = domain.Orden;
+            ProvinceId = domain.ProvinceId;
 
             if (!string.IsNullOrWhiteSpace(domain.UsersQv))
             {
@@ -97,6 +101,14 @@ namespace Sofco.Core.Models.AllocationManagement
         public int TitleId { get; set; }
 
         public ICollection<Refund> Refund { get; set; }
+
+        public string CeCo { get; set; }
+
+        public string CeBe { get; set; }
+
+        public int? Orden { get; set; }
+
+        public int? ProvinceId { get; set; }
 
         public virtual Analytic CreateDomain()
         {

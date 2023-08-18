@@ -8,7 +8,7 @@
     "sectorRequired": "El sector es requerido",
     "typeRequired": "El motivo de la licencia es requerido",
     "saveSuccess": "Licencia ha sido cargada en el sistema exitosamente",
-    "daysWrong": "Las fechas ingresadas exceden la cantidad de dias permitidos de acuerdo al tipo de licencia seleccionada",
+    "daysWrong": "Las fechas ingresadas exceden la cantidad de días permitidos de acuerdo al tipo de licencia seleccionada",
     "examDaysTakenExceeded": "Se excedieron los dias por examen anuales",
     "examDescriptionRequired": "La asignatura a rendir es requerida",
     "commentsRequired": "Los comentarios son requeridos",
@@ -36,5 +36,14 @@
     "managerUpdatedRefreshNeeded": "El superior ha sido actualizado previamente, por favor efectue un nuevo login.",
     "detailPeriodRequired": "El detalle del periodo a recuperar es requerido",
     "reportWithoutEmpty": "No se han encontrado datos para el reporte en las fechas seleccionadas",
-    "periodBefore": "No se pueden cancelar licencias anteriores al período vigente"
+    "periodBefore": "No se pueden cancelar licencias anteriores al período vigente",
+    "birthdayDaysTakenExceeded":"Se ha excedido la cantidad de días de cumpleaños permitidos.",
+    "flexDaysTakenExceeded": "Se ha excedido la cantidad de días flex permitidos.",
+    "paternityDaysTakenExceeded": "Se ha excedido la cantidad de días por paternidad permitidos.",
+    "startDateAfterHoliday": "La licencia no puede comenzar seguido de un día feriado.",
+    "startDateAfterLicense": "La licencia no puede comenzar seguido a otra licencia.",
+    "startDateBeforeHoliday":"La licencia no puede comenzar antes de un día feriado.",
+    "startDateBeforeLicense": "La licencia no puede comenzar antes de otra licencia.",
+    "invalidBirthdayDaysMonth":"La licencia no puede cargarse en la fecha seleccionada.",
+    "cannotStartAHoliday":"La licencia no puede generarse en un día feriado"
 }

@@ -74,19 +74,19 @@ namespace Sofco.Framework.StatusHandlers.License
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 
-            if (license.TypeId == 18)
+            if (license.TypeId == 16)
             {
                 license.Employee.PaternityDaysTaken -= license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }
 
-            if (license.TypeId == 19)
+            if (license.TypeId == 17)
             {
                 license.Employee.BirthdayDaysTaken -= license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);
             }            
 
-            if (license.TypeId == 20)
+            if (license.TypeId == 18)
             {
                 license.Employee.FlexDaysTaken -= license.DaysQuantity;
                 unitOfWork.EmployeeRepository.Update(license.Employee);

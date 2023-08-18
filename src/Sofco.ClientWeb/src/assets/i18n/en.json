@@ -767,7 +767,8 @@
             },
 			"paternity":"Paternity days",
             "birthday":"Birthday day",
-            "Flex":"Flex days"
+            "Flex":"Flex days",
+			"cannotStartAHoliday":"The License cannot start on holidays."
 		}
 	},
 	"ACTIONS": {

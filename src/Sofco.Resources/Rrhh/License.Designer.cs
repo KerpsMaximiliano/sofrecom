@@ -106,6 +106,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.cannotStartAHoliday.
+        /// </summary>
+        public static string CannotStartAHoliday {
+            get {
+                return ResourceManager.GetString("CannotStartAHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.changeStatusError.
         /// </summary>
         public static string ChangeStatusError {

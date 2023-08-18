@@ -117,148 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApproveSuccess" xml:space="preserve">
-    <value>rrhh/license.approveSuccess</value>
-  </data>
-  <data name="AuthPendingSuccess" xml:space="preserve">
-    <value>rrhh/license.authPendingSuccess</value>
-  </data>
-  <data name="CancelledSuccess" xml:space="preserve">
-    <value>rrhh/license.cancelledSuccess</value>
-  </data>
-  <data name="CannotChangeStatus" xml:space="preserve">
-    <value>rrhh/license.cannotChangeStatus</value>
-  </data>
-  <data name="ChangeStatusError" xml:space="preserve">
-    <value>rrhh/license.changeStatusError</value>
-  </data>
-  <data name="CommentsRequired" xml:space="preserve">
-    <value>rrhh/license.commentsRequired</value>
-  </data>
-  <data name="DatesLessThanToday" xml:space="preserve">
-    <value>rrhh/license.datesLessThanToday</value>
-  </data>
-  <data name="DatesOverlaped" xml:space="preserve">
-    <value>rrhh/license.datesOverlaped</value>
-  </data>
-  <data name="DatesRequired" xml:space="preserve">
-    <value>rrhh/license.datesRequired</value>
-  </data>
-  <data name="DaysWrong" xml:space="preserve">
-    <value>rrhh/license.daysWrong</value>
-  </data>
-  <data name="DetailPeriodRequired" xml:space="preserve">
-    <value>rrhh/license.detailPeriodRequired</value>
-  </data>
-  <data name="EmployeeNotFound" xml:space="preserve">
-    <value>rrhh/license.employeeNotFound</value>
-  </data>
-  <data name="EmployeeRequired" xml:space="preserve">
-    <value>rrhh/license.employeeRequired</value>
-  </data>
-  <data name="EndDateLessThanStartDate" xml:space="preserve">
-    <value>rrhh/license.endDateLessThanStartDate</value>
-  </data>
-  <data name="ExamDaysTakenExceeded" xml:space="preserve">
-    <value>rrhh/license.examDaysTakenExceeded</value>
-  </data>
-  <data name="ExamDescriptionRequired" xml:space="preserve">
-    <value>rrhh/license.examDescriptionRequired</value>
-  </data>
-  <data name="ExamTypeRequired" xml:space="preserve">
-    <value>rrhh/license.examTypeRequired</value>
-  </data>
-  <data name="FileAdded" xml:space="preserve">
-    <value>rrhh/license.fileAdded</value>
-  </data>
-  <data name="GenerateWorkTimesError" xml:space="preserve">
-    <value>rrhh/license.generateWorkTimesError</value>
-  </data>
-  <data name="LicensePendingLessThan0" xml:space="preserve">
-    <value>rrhh/license.licensePendingLessThan0</value>
-  </data>
-  <data name="LicenseTypeNotFound" xml:space="preserve">
-    <value>rrhh/license.licenseTypeNotFound</value>
-  </data>
-  <data name="LicenseTypeUpdate" xml:space="preserve">
-    <value>rrhh/license.licenseTypeUpdate</value>
-  </data>
-  <data name="LicenseTypeValueRequired" xml:space="preserve">
-    <value>rrhh/license.licenseTypeValueRequired</value>
-  </data>
-  <data name="ManagerEqualsEmployee" xml:space="preserve">
-    <value>rrhh/license.managerEqualsEmployee</value>
-  </data>
-  <data name="ManagerNotFound" xml:space="preserve">
-    <value>rrhh/license.managerNotFound</value>
-  </data>
-  <data name="ManagerRequired" xml:space="preserve">
-    <value>rrhh/license.managerRequired</value>
-  </data>
-  <data name="ManagerUpdatedRefreshNeeded" xml:space="preserve">
-    <value>rrhh/license.managerUpdatedRefreshNeeded</value>
-  </data>
   <data name="NotFound" xml:space="preserve">
-    <value>rrhh/license.notFound</value>
-  </data>
-  <data name="PendingSuccess" xml:space="preserve">
-    <value>rrhh/license.pendingSuccess</value>
-  </data>
-  <data name="RejectSuccess" xml:space="preserve">
-    <value>rrhh/license.rejectSuccess</value>
-  </data>
-  <data name="ReportWithoutEmpty" xml:space="preserve">
-    <value>rrhh/license.reportWithoutEmpty</value>
+    <value>allocationManagement/analyticsRenovation.notFound</value>
   </data>
   <data name="SaveSuccess" xml:space="preserve">
-    <value>rrhh/license.saveSuccess</value>
-  </data>
-  <data name="SectorRequired" xml:space="preserve">
-    <value>rrhh/license.sectorRequired</value>
-  </data>
-  <data name="StartDateIsWeekend" xml:space="preserve">
-    <value>rrhh/license.startDateIsWeekend</value>
-  </data>
-  <data name="TypeRequired" xml:space="preserve">
-    <value>rrhh/license.typeRequired</value>
+    <value>allocationManagement/analyticsRenovation.saveSuccess</value>
   </data>
   <data name="UpdateSuccess" xml:space="preserve">
-    <value>rrhh/license.updateSuccess</value>
+    <value>allocationManagement/analyticsRenovation.updateSuccess</value>
   </data>
-  <data name="WorkTimeDateOverlap" xml:space="preserve">
-    <value>rrhh/license.workTimeDateOverlap</value>
-  </data>
-  <data name="WrongCertificateMonthQuantity" xml:space="preserve">
-    <value>rrhh/license.wrongCertificateMonthQuantity</value>
-  </data>
-  <data name="periodBefore" xml:space="preserve">
-    <value>rrhh/license.periodBefore</value>
-  </data>
-  <data name="BirthdayDaysTakenExceeded" xml:space="preserve">
-    <value>rrhh/license.birthdayDaysTakenExceeded</value>
-  </data>
-  <data name="InvalidBirthdayDaysMonth" xml:space="preserve">
-    <value>rrhh/license.invalidBirthdayDaysMonth</value>
-  </data>
-  <data name="FlexDaysTakenExceeded" xml:space="preserve">
-    <value>rrhh/license.flexDaysTakenExceeded</value>
-  </data>
-  <data name="PaternityDaysTakenExceeded" xml:space="preserve">
-    <value>rrhh/license.paternityDaysTakenExceeded</value>
-  </data>
-  <data name="StartDateAfterHoliday" xml:space="preserve">
-    <value>rrhh/license.startDateAfterHoliday</value>
-  </data>
-  <data name="StartDateAfterLicense" xml:space="preserve">
-    <value>rrhh/license.startDateAfterLicense</value>
-  </data>
-  <data name="StartDateBeforeHoliday" xml:space="preserve">
-    <value>rrhh/license.startDateBeforeHoliday</value>
-  </data>
-  <data name="StartDateBeforeLicense" xml:space="preserve">
-    <value>rrhh/license.startDateBeforeLicense</value>
-  </data>
-  <data name="CannotStartAHoliday" xml:space="preserve">
-    <value>rrhh/license.cannotStartAHoliday</value>
+  <data name="WrongDates" xml:space="preserve">
+    <value>allocationManagement/analyticsRenovation.wrongDates</value>
   </data>
 </root>

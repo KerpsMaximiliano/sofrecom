@@ -2,6 +2,7 @@
 using Sofco.Domain.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Sofco.Framework.StatusHandlers.License
@@ -13,10 +14,19 @@ namespace Sofco.Framework.StatusHandlers.License
             var licenseType = unitOfWork.LicenseTypeRepository.GetSingle(x => x.Id == domain.TypeId);
             var employee = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);
             var birthdayDaysAllowTogether = unitOfWork.SettingRepository.GetByKey("BirthdayDaysAllowTogether");
+            var holidays = unitOfWork.HolidayRepository.Get(domain.StartDate.Year, domain.StartDate.Month);
+
+            if (holidays.Any(x => x.Date.Date == domain.StartDate.Date))
+            {
+                response.AddError(Resources.Rrhh.License.CannotStartAHoliday);
+            }
+
+            if (response.HasErrors()) return;
+
 
             //Item 1 = Working Days
             //Item 2 = Total Days 
-            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate, unitOfWork);
+            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate, unitOfWork, holidays);
             
             if (tupla.Item1 > Convert.ToInt32(birthdayDaysAllowTogether.Value))
             {
@@ -30,15 +40,24 @@ namespace Sofco.Framework.StatusHandlers.License
                         response.AddError(Resources.Rrhh.License.InvalidBirthdayDaysMonth);
                 }
 
-                if (response.HasErrors()) return;
-
-                domain.DaysQuantity = tupla.Item1;
-                domain.DaysQuantityByLaw = tupla.Item2;
+                if (domain.StartDate.Year == 2023)
+                {
+                    if (employee.Birthday.Value.Month > 8)
+                    {
+                        if (employee.Birthday.Value.Month != domain.StartDate.Month)
+                            response.AddError(Resources.Rrhh.License.InvalidBirthdayDaysMonth);
+                    }
+                }
 
                 if (employee.BirthdayDaysTaken + tupla.Item1 > licenseType.Days)
                 {
-                    response.AddWarning(Resources.Rrhh.License.BirthdayDaysTakenExceeded);
+                    response.AddError(Resources.Rrhh.License.BirthdayDaysTakenExceeded);
                 }
+
+                if (response.HasErrors()) return;
+
+                domain.DaysQuantity = tupla.Item1;
+                domain.DaysQuantityByLaw = tupla.Item2;                
             }
         }
     }

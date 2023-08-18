@@ -65,6 +65,7 @@ namespace Sofco.Core.DAL
         IEmployeeEndNotificationRepository EmployeeEndNotificationRepository { get; }
         IHealthInsuranceRepository HealthInsuranceRepository { get; }
         IPrepaidHealthRepository PrepaidHealthRepository { get; }
+        IAnalyticsRenovationRepository AnalyticsRenovationRepository { get; }
 
         #endregion
 

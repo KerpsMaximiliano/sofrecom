@@ -55,7 +55,7 @@
         <div class="input-group m-b">
             <span class="input-group-addon addon-width">{{ item.currencyDescription }}</span> 
 
-            <input *ngIf="!(!item.enable || isReadOnly)" type="number" class="form-control" decimalFormat min="1" max="999999999" step=".01" [(ngModel)]="item.ammount">
+            <input *ngIf="!(!item.enable || isReadOnly)" type="number" class="form-control" decimalFormat min="1" max="99999999999" step=".01" [(ngModel)]="item.ammount">
             <input *ngIf="!item.enable || isReadOnly" type="text" class="form-control" [ngModel]="item.ammount | amountFormat" disabled>
 
             <span *ngIf="!item.enable && !isReadOnly" class="input-group-addon pointer bg-primary" (click)="item.enable = !item.enable"><i class="fa fa-check"></i></span> 
