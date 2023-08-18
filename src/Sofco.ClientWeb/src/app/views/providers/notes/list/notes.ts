@@ -23,6 +23,7 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 @Component({
   selector: "notes",
   templateUrl: "./notes.html",
+  styleUrls: ["./notes.scss"],
 })
 export class NotesComponent implements OnInit, AfterViewInit {
   private currentTab: number = 1;
@@ -43,11 +44,11 @@ export class NotesComponent implements OnInit, AfterViewInit {
   public providers = [];
   public providerId: number;
 
-  public dateSince;
-  public dateTo;
+  public dateSince: any;
+  public dateTo: any;
 
   public notes = [];
-  public noteId;
+  public noteId: any;
 
   public analiticas = [];
   public analyticId: number;
@@ -98,6 +99,14 @@ export class NotesComponent implements OnInit, AfterViewInit {
       : $("#search-icon")
           .toggleClass("fa-caret-up")
           .toggleClass("fa-caret-down");
+  }
+
+  public collapse(): void {
+    $("#collapseOne").hasClass("in")
+      ? $("#collapseOne").removeClass("in")
+      : $("#collapseOne").addClass("in");
+
+    this.changeIcon();
   }
 
   public search(): void {
@@ -178,6 +187,8 @@ export class NotesComponent implements OnInit, AfterViewInit {
 
       this.messageService.closeLoading();
     });
+
+    this.collapse();
   }
 
   public refreshSearch(): void {
@@ -250,7 +261,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
 
     setTimeout(() => {
       this.requestNoteService.getAll(json).subscribe((d) => {
-        d.forEach((note) => {
+        d.forEach((note: any) => {
           // ! Código muerto.
           // if(note.statusId <= 12) {
           //     note.status = this.states[note.statusId].text;
@@ -291,7 +302,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
     }, 500);
 
     this.employeeService.getEveryone().subscribe((d) => {
-      d.forEach((employee) => {
+      d.forEach((employee: any) => {
         if (employee.endDate == null && employee.isExternal == 0) {
           this.applicants.push(employee);
           this.applicants = [...this.applicants];
@@ -311,22 +322,25 @@ export class NotesComponent implements OnInit, AfterViewInit {
     this.collapse();
   }
 
-  private collapse(): void {
-    $("#collapseOne").hasClass("in")
-      ? $("#collapseOne").removeClass("in")
-      : $("#collapseOne").addClass("in");
-
-    this.changeIcon();
-  }
-
   private initGrid(): void {
-    this.dataTableService.destroy("#dataTable");
-    this.dataTableService.initialize({
+    var columns = [0, 1, 2, 3, 4, 5];
+
+    var params = {
       selector: "#dataTable",
-      columns: [0, 1, 2, 3, 4, 5],
+      columns: columns,
       title: "Notas",
       withExport: true,
-    });
+    };
+
+    this.dataTableService.destroy(params.selector);
+    this.dataTableService.initialize(params);
+    setTimeout(() => {
+      let el: HTMLElement = document.getElementsByClassName(
+        "sorting_asc"
+      )[0] as HTMLElement;
+      el.click();
+    }, 501);
+    this.messageService.closeLoading();
   }
 
   // ! Función no utilizada.

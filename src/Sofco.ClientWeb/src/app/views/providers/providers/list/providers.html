@@ -4,120 +4,139 @@
     <ol class="breadcrumb">
       <li><a [routerLink]="['/']"> Inicio </a></li>
       <li><a> Abastecimiento y Proveedores </a></li>
-      <li class="active"><strong> Búsqueda </strong></li>
+      <li class="active"><strong>{{ 'providers.title' | translate}}</strong></li>
     </ol>
   </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-  <div class="ibox">
-    <div class="ibox-content">
-      <div class="row">
-        <div class="col-sm-4">
-          <div class="form-group">
-            <label class="control-label"> Estado </label>
-            <ng-select [(ngModel)]="selectedStates" [multiple]="false" [searchable]="false" [clearable]="false">
-              <ng-option [value]="0"> Todos </ng-option>
-              <ng-option [value]="1"> Activo </ng-option>
-              <ng-option [value]="2"> Inactivo </ng-option>
-            </ng-select>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="form-group">
-            <label class="control-label"> Razón Social </label>
-            <input type="text" class="form-control" [(ngModel)]="businessName" />
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="form-group">
-            <label class="control-label"> Rubro </label>
-            <ng-select [items]="areas$" bindLabel="description" bindValue="id" [(ngModel)]="selectedAreas"
-              [multiple]="true" [placeholder]="areas$.length ? '' : 'No se han podido cargar las áreas'">
-            </ng-select>
-          </div>
-        </div>
-
-        <div class="col-sm-4">
-          <div class="form-group">
-            <label class="control-label"> Crítico </label>
-            <ng-select [(ngModel)]="selectedCritical" [multiple]="false" [searchable]="false" [clearable]="false">
-              <ng-option [value]="0"> Todos </ng-option>
-              <ng-option [value]="1"> Si </ng-option>
-              <ng-option [value]="2"> No </ng-option>
-            </ng-select>
-          </div>
-        </div>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h5 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
+            style="display: block">
+            <span>{{'providers.search' | translate }}</span>
+            <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
+          </a>
+        </h5>
       </div>
 
-      <div class="row">
-        <div class="panel-footer">
-          <button class="btn btn-success pull-left" routerLink="./add"> Nueva <i class="fa fa-plus"></i></button>
+      <div id="collapseOne" class="panel-collapse collapse in">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{ 'providers.grid.status' | translate }}</label>
+                <ng-select [(ngModel)]="selectedStates" [multiple]="false" [searchable]="false" [clearable]="false">
+                  <ng-option [value]="0"> Todos </ng-option>
+                  <ng-option [value]="1"> Activo </ng-option>
+                  <ng-option [value]="2"> Inactivo </ng-option>
+                </ng-select>
+              </div>
+            </div>
 
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{ 'providers.grid.businessName' | translate }}</label>
+                <input type="text" class="form-control" [(ngModel)]="businessName" />
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{ 'providers.grid.sector' | translate }}</label>
+                <ng-select [items]="areas$" bindLabel="description" bindValue="id" [(ngModel)]="selectedAreas"
+                  [multiple]="true" [placeholder]="areas$.length ? '' : 'No se han podido cargar las áreas'">
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{ 'providers.grid.critical' | translate }}</label>
+                <ng-select [(ngModel)]="selectedCritical" [multiple]="false" [searchable]="false" [clearable]="false">
+                  <ng-option [value]="0"> Todos </ng-option>
+                  <ng-option [value]="1"> Si </ng-option>
+                  <ng-option [value]="2"> No </ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-footer">
           <div class="text-right">
-            <button class="btn btn-warning" (click)="clear()">
-              {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i>
-            </button>
-            <button class="btn btn-success" (click)="search()">
+            <button class="btn btn-sm btn-success" (click)="search()">
               {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i>
+            </button>
+            <button class="btn btn-sm btn-warning" (click)="clear()">
+              {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i>
             </button>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="ibox">
-    <div class="ibox-content">
-      <div class="panel-body table-responsive">
-        <table class="table table-striped dataTable" role="grid" id="dataTable">
-          <thead>
-            <tr>
-              <th> Id </th>
-              <th> Razón social </th>
-              <th> Rubro </th>
-              <th> CUIT </th>
-              <th> Ing. Brutos </th>
-              <th> Condición IVA </th>
-              <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
-            </tr>
-          </thead>
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <div class="ibox float-e-margins">
+        <div class="ibox-title">
+          <label class="title">{{ 'providers.providersList' | translate }}</label>
+          <button class="btn btn-sm btn-primary pull-right" routerLink="./add">
+            {{ 'providers.add' | translate }} <i class="fa fa-plus"></i>
+          </button>
+        </div>
 
-          <tbody>
-            <tr *ngFor="let item of data">
-              <td>{{ item.id }} </td>
-              <td>{{ item.name }} </td>
-              <td>
-                <div *ngIf="areas$.length; else dataAreas">
-                  <div *ngIf="item.providerArea; else itemNoProviderArea">
-                    <div *ngFor="let area of item.providerArea">
-                      - {{ area }}.
+        <div class="ibox-content">
+          <div class="panel-body table-responsive">
+            <table class="table table-striped dataTable" role="grid" id="dataTable">
+              <thead>
+                <tr>
+                  <th>{{'providers.grid.id' | translate }}</th>
+                  <th>{{'providers.grid.businessName' | translate }}</th>
+                  <th>{{'providers.grid.sector' | translate }}</th>
+                  <th>{{'providers.grid.cuit' | translate }}</th>
+                  <th>{{'providers.grid.grossIncome' | translate }}</th>
+                  <th>{{'providers.grid.iva' | translate }}</th>
+                  <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let item of data">
+                  <td>{{ item.id }} </td>
+                  <td>{{ item.name }} </td>
+                  <td>
+                    <div *ngIf="areas$.length; else dataAreas">
+                      <div *ngIf="item.providerArea; else itemNoProviderArea">
+                        <div *ngFor="let area of item.providerArea">
+                          - {{ area }}.
+                        </div>
+                      </div>
+                      <ng-template #itemNoProviderArea>
+                        Sin rubro.
+                      </ng-template>
                     </div>
-                  </div>
-                  <ng-template #itemNoProviderArea>
-                    Sin rubro.
-                  </ng-template>
-                </div>
-                <ng-template #dataAreas>
-                  No se han podido cargar las áreas.
-                </ng-template>
-              </td>
-              <td>{{ item.cuit }}</td>
-              <td>{{ item.ingresosBrutos }}</td>
-              <td>{{ item.condicionIVA }}</td>
-              <td class="column-sm text-center">
-                <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)">
-                  <i class="fa fa-eye"></i>
-                </button>
-                <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)">
-                  <i class="fa fa-edit"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                    <ng-template #dataAreas>
+                      No se han podido cargar las áreas.
+                    </ng-template>
+                  </td>
+                  <td>{{ item.cuit }}</td>
+                  <td>{{ item.ingresosBrutos }}</td>
+                  <td>{{ item.condicionIVA }}</td>
+                  <td class="column-sm text-center">
+                    <button title="ver" class="btn btn-primary btn-xs" (click)="view(item.id)">
+                      <i class="fa fa-eye"></i>
+                    </button>
+                    <button title="editar" class="btn btn-warning btn-xs" (click)="edit(item.id)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>

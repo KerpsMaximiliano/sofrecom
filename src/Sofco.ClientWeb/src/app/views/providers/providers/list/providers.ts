@@ -18,6 +18,7 @@ import {
 @Component({
   selector: "providers",
   templateUrl: "./providers.html",
+  styleUrls: ["./providers.scss"],
 })
 export class ProvidersComponent implements AfterViewInit {
   private ivaConditions: string[] = [
@@ -61,7 +62,7 @@ export class ProvidersComponent implements AfterViewInit {
     private providersAreaService: ProvidersAreaService,
     private dataTableService: DataTableService,
     private messageService: MessageService
-  ) { }
+  ) {}
 
   /**
    * Realiza dos peticiones:
@@ -117,7 +118,7 @@ export class ProvidersComponent implements AfterViewInit {
 
   public view(id: number): void {
     this.providersService.setMode("View");
-    this.router.navigate([`providers/providers/edit/${id}`]);
+    this.router.navigate([`providers/providers/detail/${id}`]);
   }
 
   public edit(id: number): void {
@@ -133,6 +134,24 @@ export class ProvidersComponent implements AfterViewInit {
     this.businessName = "";
     this.selectedAreas = null;
     this.selectedCritical = 0;
+  }
+
+  public changeIcon(): void {
+    $("#collapseOne").hasClass("in")
+      ? $("#search-icon")
+          .toggleClass("fa-caret-down")
+          .toggleClass("fa-caret-up")
+      : $("#search-icon")
+          .toggleClass("fa-caret-up")
+          .toggleClass("fa-caret-down");
+  }
+
+  public collapse(): void {
+    $("#collapseOne").hasClass("in")
+      ? $("#collapseOne").removeClass("in")
+      : $("#collapseOne").addClass("in");
+
+    this.changeIcon();
   }
 
   /**
@@ -171,7 +190,9 @@ export class ProvidersComponent implements AfterViewInit {
    */
   private setData(): void {
     this.data = [];
-    this.providers$.forEach((provider: IProviders) => this.reviewProvider(provider));
+    this.providers$.forEach((provider: IProviders) =>
+      this.reviewProvider(provider)
+    );
     this.data = [...this.data];
     this.initGrid();
   }
@@ -183,9 +204,15 @@ export class ProvidersComponent implements AfterViewInit {
    */
   private reviewProvider(provider: IProviders): void {
     switch (this.selectedCritical) {
-      case 1: this.criticalArea(provider); break;
-      case 2: this.notCriticalArea(provider); break;
-      default: this.allArea(provider); break;
+      case 1:
+        this.criticalArea(provider);
+        break;
+      case 2:
+        this.notCriticalArea(provider);
+        break;
+      default:
+        this.allArea(provider);
+        break;
     }
   }
 
@@ -244,7 +271,7 @@ export class ProvidersComponent implements AfterViewInit {
       (element: IProvidersAreaProvider) => {
         let area: IProvidersArea = this.areas$.find(
           (a) => a.id == element.providerAreaId
-        )
+        );
         if (area) areas.push(area.description);
       }
     );
@@ -272,11 +299,13 @@ export class ProvidersComponent implements AfterViewInit {
    * @param areas Lista de áreas que coinciden con la/s del proveedor.
    */
   private setDataTable(provider: IProviders, areas: string[]): void {
-    let ingresosBrutos: string = '';
-    if (provider.ingresosBrutos) ingresosBrutos = this.grossIncome[provider.ingresosBrutos - 1];
+    let ingresosBrutos: string = "";
+    if (provider.ingresosBrutos)
+      ingresosBrutos = this.grossIncome[provider.ingresosBrutos - 1];
 
-    let condicionIVA: string = '';
-    if (provider.condicionIVA) condicionIVA = this.ivaConditions[provider.condicionIVA - 1];
+    let condicionIVA: string = "";
+    if (provider.condicionIVA)
+      condicionIVA = this.ivaConditions[provider.condicionIVA - 1];
 
     this.data.push({
       id: provider.id,

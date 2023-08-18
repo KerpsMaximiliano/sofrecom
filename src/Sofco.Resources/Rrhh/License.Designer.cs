@@ -19,7 +19,7 @@ namespace Sofco.Resources.Rrhh {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class License {
@@ -79,6 +79,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.birthdayDaysTakenExceeded.
+        /// </summary>
+        public static string BirthdayDaysTakenExceeded {
+            get {
+                return ResourceManager.GetString("BirthdayDaysTakenExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.cancelledSuccess.
         /// </summary>
         public static string CancelledSuccess {
@@ -93,6 +102,15 @@ namespace Sofco.Resources.Rrhh {
         public static string CannotChangeStatus {
             get {
                 return ResourceManager.GetString("CannotChangeStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.cannotStartAHoliday.
+        /// </summary>
+        public static string CannotStartAHoliday {
+            get {
+                return ResourceManager.GetString("CannotStartAHoliday", resourceCulture);
             }
         }
         
@@ -223,11 +241,29 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.flexDaysTakenExceeded.
+        /// </summary>
+        public static string FlexDaysTakenExceeded {
+            get {
+                return ResourceManager.GetString("FlexDaysTakenExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.generateWorkTimesError.
         /// </summary>
         public static string GenerateWorkTimesError {
             get {
                 return ResourceManager.GetString("GenerateWorkTimesError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.invalidBirthdayDaysMonth.
+        /// </summary>
+        public static string InvalidBirthdayDaysMonth {
+            get {
+                return ResourceManager.GetString("InvalidBirthdayDaysMonth", resourceCulture);
             }
         }
         
@@ -313,6 +349,15 @@ namespace Sofco.Resources.Rrhh {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.paternityDaysTakenExceeded.
+        /// </summary>
+        public static string PaternityDaysTakenExceeded {
+            get {
+                return ResourceManager.GetString("PaternityDaysTakenExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a rrhh/license.pendingSuccess.
         /// </summary>
         public static string PendingSuccess {
@@ -363,6 +408,42 @@ namespace Sofco.Resources.Rrhh {
         public static string SectorRequired {
             get {
                 return ResourceManager.GetString("SectorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateAfterHoliday.
+        /// </summary>
+        public static string StartDateAfterHoliday {
+            get {
+                return ResourceManager.GetString("StartDateAfterHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateAfterLicense.
+        /// </summary>
+        public static string StartDateAfterLicense {
+            get {
+                return ResourceManager.GetString("StartDateAfterLicense", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateBeforeHoliday.
+        /// </summary>
+        public static string StartDateBeforeHoliday {
+            get {
+                return ResourceManager.GetString("StartDateBeforeHoliday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a rrhh/license.startDateBeforeLicense.
+        /// </summary>
+        public static string StartDateBeforeLicense {
+            get {
+                return ResourceManager.GetString("StartDateBeforeLicense", resourceCulture);
             }
         }
         
