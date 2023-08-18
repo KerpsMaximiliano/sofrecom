@@ -1,17 +1,25 @@
 import { Component, OnDestroy, ViewChild, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { MessageService } from "../../../../services/common/message.service";
-import { Subscription } from "rxjs";
-import { FileUploader } from "ng2-file-upload";
-import { LicenseService } from "../../../../services/human-resources/licenses.service";
-import { EmployeeService } from "../../../../services/allocation-management/employee.service";
+import { Observable, Subscription } from "rxjs";
+
+// * Services.
 import { MenuService } from "../../../../services/admin/menu.service";
-import { License } from "../../../../models/rrhh/license";
-import { Cookie } from "ng2-cookies/ng2-cookies";
-import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
-import { UserInfoService } from "../../../../services/common/user-info.service";
+import { MessageService } from "../../../../services/common/message.service";
+import { EmployeeService } from "../../../../services/allocation-management/employee.service";
 import { AuthService } from "../../../../services/common/auth.service";
+import { UserInfoService } from "../../../../services/common/user-info.service";
+import { LicenseService } from "../../../../services/human-resources/licenses.service";
+
+// * Interfaces.
+import { License } from "../../../../models/rrhh/license";
+
+// * Others.
+import { Cookie } from "ng2-cookies/ng2-cookies";
+import { FileUploader } from "ng2-file-upload";
 import { NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+
+// * Components.
+import { Ng2ModalConfig } from "../../../../components/modal/ng2modal-config";
 
 declare var $: any;
 
@@ -21,10 +29,15 @@ declare var $: any;
   styleUrls: ["./add-license.component.scss"],
 })
 export class AddLicenseComponent implements OnInit, OnDestroy {
+  private timeZoneSubscription: Subscription | undefined;
+  private currentTimeZone: string =
+    Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   @ViewChild("selectedFile") selectedFile: any;
 
-  maxDate: NgbDateStruct;
+  private today: Date = new Date();
 
+  maxDate: NgbDateStruct;
   addSubscrip: Subscription;
   getEmployeesSubscrip: Subscription;
   getManagersSubscrip: Subscription;
@@ -35,7 +48,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
 
   public uploader: FileUploader = new FileUploader({ url: "" });
   public showUploader: boolean = false;
-  private today: Date = new Date();
 
   public model: License = new License();
 
@@ -62,20 +74,24 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     "ACTIONS.cancel"
   );
 
-  @ViewChild("startDate") startDate;
-  @ViewChild("endDate") endDate;
+  @ViewChild("startDate") startDate: any;
+  @ViewChild("endDate") endDate: any;
+  public sDate: Date; // ? starDate.
+  public eDate: Date; // ? endDate.
 
   constructor(
     private licenseService: LicenseService,
     private employeeService: EmployeeService,
-    private router: Router,
     private authService: AuthService,
-    private activatedRoute: ActivatedRoute,
     public menuService: MenuService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.subscribeToTimeZoneChanges();
+
     var data = <any>JSON.stringify(this.activatedRoute.snapshot.data);
     var dataJson = JSON.parse(data);
     if (dataJson) this.fromProfile = dataJson.fromProfile;
@@ -97,9 +113,113 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     if (this.getSectorsSubscrip) this.getSectorsSubscrip.unsubscribe();
     if (this.deleteFileSubscrip) this.deleteFileSubscrip.unsubscribe();
     if (this.userSubscrip) this.userSubscrip.unsubscribe();
+    if (this.timeZoneSubscription) this.timeZoneSubscription.unsubscribe();
   }
 
-  initUserInfo() {
+  public back(): void {
+    if (!this.menuService.userIsRrhh) {
+      this.router.navigate(["/profile/" + this.model.employeeId]);
+    }
+  }
+
+  public add(): void {
+    this.messageService.showLoading();
+
+    if (this.sDate)
+      this.model.startDate = this.setDateGMT(new Date(this.sDate));
+    if (this.eDate) this.model.endDate = this.setDateGMT(new Date(this.eDate));
+
+    this.addSubscrip = this.licenseService.add(this.model).subscribe(
+      (res) => {
+        this.messageService.closeLoading();
+        this.model.id = res.data.id;
+        this.model.managerId = res.data.managerId;
+        this.model.managerDesc = res.data.managerDesc;
+        this.updateStorage();
+        this.configUploader();
+      },
+      () => {
+        this.messageService.closeLoading();
+      }
+    );
+  }
+
+  public withPaymentChange(event: any): void {
+    if (!event) {
+      this.licensesTypes = this.licensesTypesOptions.optionsWithoutPayment;
+      this.model.typeId = 12;
+      this.model.parcial = false;
+      this.model.final = false;
+      this.model.examDescription = null;
+    } else {
+      this.licensesTypes = this.licensesTypesOptions.optionsWithPayment;
+      this.model.typeId = 1;
+      this.model.comments = null;
+    }
+  }
+
+  public clearSelectedFile(): void {
+    this.uploader.clearQueue();
+    this.selectedFile.nativeElement.value = "";
+  }
+
+  public openConfirmModal(fileId: any, index: any): void {
+    this.fileIdToDelete = fileId;
+    this.indexToDelete = index;
+    this.confirmModal.show();
+  }
+
+  public deleteFile(): void {
+    this.deleteFileSubscrip = this.licenseService
+      .deleteFile(this.fileIdToDelete)
+      .subscribe(
+        () => {
+          this.files.splice(this.indexToDelete, 1);
+        },
+        () => {},
+        () => this.confirmModal.hide()
+      );
+  }
+
+  public refresh(): void {
+    this.model = new License();
+
+    if (this.fromProfile) {
+      this.initUserInfo();
+    } else {
+      this.model.employeeId = "0";
+      this.model.typeId = 0;
+    }
+  }
+
+  public validateLimit(): void {
+    const convertTypeId = this.model.typeId.toString();
+    const year = this.today.getFullYear();
+    const month = this.today.getMonth();
+    const lastDayOfYear = new Date(year, 11, 31);
+    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+    if (convertTypeId === "19") {
+      if (year === 2023) {
+        this.startDate.bsConfig.minDate = this.today;
+        this.endDate.bsConfig.minDate = this.today;
+        if (!this.startDate.bsConfig.hasOwnProperty("maxDate")) {
+          this.startDate.bsConfig.maxDate = new Date(
+            lastDayOfYear.toISOString().slice(0, 10)
+          );
+          this.endDate.bsConfig.maxDate = new Date(
+            lastDayOfYear.toISOString().slice(0, 10)
+          );
+        }
+      } else {
+        this.startDate.bsConfig.minDate = this.today;
+        this.startDate.bsConfig.maxDate = new Date(year, month, lastDayOfMonth);
+        this.endDate.bsConfig.minDate = this.today;
+        this.endDate.bsConfig.maxDate = new Date(year, month, lastDayOfMonth);
+      }
+    }
+  }
+
+  private initUserInfo(): void {
     const userInfo = UserInfoService.getUserInfo();
 
     if (userInfo && userInfo.employeeId && userInfo.name) {
@@ -117,13 +237,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
-    if (!this.menuService.userIsRrhh) {
-      this.router.navigate(["/profile/" + this.model.employeeId]);
-    }
-  }
-
-  configUploader() {
+  private configUploader(): void {
     this.uploader = new FileUploader({
       url: this.licenseService.getUrlForImportFile(this.model.id),
       authToken: `Bearer ${Cookie.get("access_token")}`,
@@ -164,13 +278,13 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     };
   }
 
-  employeeChange() {
+  private employeeChange(): void {
     this.messageService.showLoading();
 
     this.userSubscrip = this.employeeService
       .getInfo(this.model.employeeId)
       .subscribe(
-        (response) => {
+        (response: any) => {
           this.messageService.closeLoading();
 
           if (response.data) {
@@ -184,7 +298,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
             this.checkMissingManager();
           }
         },
-        (error) => {
+        (error: any) => {
           this.messageService.closeLoading();
           this.model.managerId = null;
           this.model.managerDesc = null;
@@ -196,66 +310,19 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
       );
   }
 
-  validateLimit() {
-    const convertTypeId = this.model.typeId.toString();
-    const year = this.today.getFullYear();
-    const month = this.today.getMonth();
-    const lastDayOfYear = new Date(year, 11, 31);
-    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
-    if (convertTypeId === "19") {
-      if (year === 2023) {
-        this.startDate.bsConfig.minDate = this.today;
-        this.endDate.bsConfig.minDate = this.today;
-        if (!this.startDate.bsConfig.hasOwnProperty("maxDate")) {
-          this.startDate.bsConfig.maxDate = new Date(
-            lastDayOfYear.toISOString().slice(0, 10)
-          );
-          this.endDate.bsConfig.maxDate = new Date(
-            lastDayOfYear.toISOString().slice(0, 10)
-          );
-        }
-      } else {
-        this.startDate.bsConfig.minDate = this.today;
-        this.startDate.bsConfig.maxDate = new Date(year, month, lastDayOfMonth);
-        this.endDate.bsConfig.minDate = this.today;
-        this.endDate.bsConfig.maxDate = new Date(year, month, lastDayOfMonth);
-      }
-    }
+  private checkMissingManager(): void {
+    !this.model.managerId || this.model.managerId <= 0
+      ? (this.missingManager = true)
+      : (this.missingManager = false);
   }
 
-  checkMissingManager() {
-    if (!this.model.managerId || this.model.managerId <= 0) {
-      this.missingManager = true;
-    } else {
-      this.missingManager = false;
-    }
-  }
-
-  add() {
-    this.messageService.showLoading();
-
-    this.addSubscrip = this.licenseService.add(this.model).subscribe(
-      (res) => {
-        this.messageService.closeLoading();
-        this.model.id = res.data.id;
-        this.model.managerId = res.data.managerId;
-        this.model.managerDesc = res.data.managerDesc;
-        this.updateStorage();
-        this.configUploader();
-      },
-      () => {
-        this.messageService.closeLoading();
-      }
-    );
-  }
-
-  getEmployees() {
+  private getEmployees(): void {
     this.messageService.showLoading();
 
     this.getEmployeesSubscrip = this.employeeService.getAll().subscribe(
       (data) => {
         this.messageService.closeLoading();
-        this.resources = data.map((item) => {
+        this.resources = data.map((item: any) => {
           return { id: item.id, text: item.name };
         });
       },
@@ -265,7 +332,7 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
     );
   }
 
-  getLicenceTypes() {
+  private getLicenceTypes(): void {
     this.getLicenseTypeSubscrip = this.licenseService
       .getLicenceTypes()
       .subscribe((data) => {
@@ -275,58 +342,42 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
       });
   }
 
-  withPaymentChange(event) {
-    if (!event) {
-      this.licensesTypes = this.licensesTypesOptions.optionsWithoutPayment;
-      this.model.typeId = 12;
-      this.model.parcial = false;
-      this.model.final = false;
-      this.model.examDescription = null;
-    } else {
-      this.licensesTypes = this.licensesTypesOptions.optionsWithPayment;
-      this.model.typeId = 1;
-      this.model.comments = null;
-    }
-  }
-
-  clearSelectedFile() {
-    this.uploader.clearQueue();
-    this.selectedFile.nativeElement.value = "";
-  }
-
-  openConfirmModal(fileId, index) {
-    this.fileIdToDelete = fileId;
-    this.indexToDelete = index;
-    this.confirmModal.show();
-  }
-
-  deleteFile() {
-    this.deleteFileSubscrip = this.licenseService
-      .deleteFile(this.fileIdToDelete)
-      .subscribe(
-        () => {
-          this.files.splice(this.indexToDelete, 1);
-        },
-        () => {},
-        () => this.confirmModal.hide()
-      );
-  }
-
-  refresh() {
-    this.model = new License();
-
-    if (this.fromProfile) {
-      this.initUserInfo();
-    } else {
-      this.model.employeeId = "0";
-      this.model.typeId = 0;
-    }
-  }
-
-  updateStorage() {
+  private updateStorage(): void {
     const userInfo = UserInfoService.getUserInfo();
     userInfo.managerId = this.model.managerId;
     userInfo.managerDesc = this.model.managerDesc;
     UserInfoService.setUserInfo(userInfo);
+  }
+
+  /**
+   * Configura la fecha y hora del usuario restando la diferencia horaria (GMT).
+   * @param date: representa la fecha seleccionada por el usuario con el horario UTC-0.
+   * @returns Date: representa la hora del usuario menos el GMT del usuario.
+   */
+  public setDateGMT(date: Date): Date {
+    return new Date(
+      date.setHours(date.getHours() - date.getTimezoneOffset() / 60)
+    );
+  }
+
+  private subscribeToTimeZoneChanges(): void {
+    this.timeZoneSubscription = new Observable<string>((observer) => {
+      observer.next(this.currentTimeZone);
+      const intervalId = setInterval(() => {
+        const newTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        if (newTimeZone !== this.currentTimeZone) {
+          observer.next(newTimeZone);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }).subscribe((newTimeZone) => {
+      this.currentTimeZone = newTimeZone;
+      this.handleTimeZoneChange(newTimeZone);
+    });
+  }
+
+  private handleTimeZoneChange(newTimeZone: string): void {
+    if (this.sDate) this.sDate = new Date(this.sDate);
+    if (this.eDate) this.eDate = new Date(this.eDate);
   }
 }
