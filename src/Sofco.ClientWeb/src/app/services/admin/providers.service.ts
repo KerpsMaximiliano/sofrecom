@@ -38,9 +38,9 @@ export class ProvidersService {
         return this.http.post<any>(`${this.baseUrl}/providers`, provider, {observe: 'response'});
     }
 
-    public getMode() {
-        return this.mode;
-    }
+    // public getMode() {
+    //     return this.mode;
+    // }
 
     public setMode(mode: string) {
         this.mode = mode;

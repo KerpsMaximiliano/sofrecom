@@ -33,5 +33,15 @@
 	"datesOverlaped": "The date of the license that you want to load coincides with some date of another license already loaded in the system",
 	"licenseTypeValueRequired": "The value can not be less than or equal to 0",
 	"workTimeDateOverlap": "Cannot insert license with at same date of work time hours.",
-	"managerUpdatedRefreshNeeded": "Manager updated, please refresh login"
+	"managerUpdatedRefreshNeeded": "Manager updated, please refresh login",
+	"birthdayDaysTakenExceeded": "The allowed number of birthday days has been exceeded.",
+	"flexDaysTakenExceeded": "The allowed number of flex days has been exceeded.",
+	"paternityDaysTakenExceeded": "The allowed number of paternity days has been exceeded.",
+	"startDateAfterHoliday": "The license cannot start immediately after a holiday.",
+	"startDateAfterLicense": "The license cannot start immediately after another license.",
+	"startDateBeforeHoliday": "The license cannot start before a holiday.",
+	"startDateBeforeLicense": "The license cannot start before another license.",
+	"invalidBirthdayDaysMonth": "The license cannot be scheduled on the selected date.",
+	"cannotStartAHoliday": "The license cannot be scheduled on a holiday."
+	
 }

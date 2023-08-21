@@ -23,7 +23,16 @@ dt {
 }
 
 .w-2 {
-    min-width: 2rem;
+  height: 45px;
+  width: 20px;
+  position: fixed;
+  left: 45%;
+}
+
+.checkControl{
+  padding: 10px 0px 0px 0px;
+  margin-left: 1.5px;
+  margin-bottom: 13px;
 }
 
 .w-8 {
@@ -75,5 +84,94 @@ input[type="number"] {
   // Separa la pregunta del texto informativo
   p.ask {
     margin: .8rem auto 0;
+  }
+
+  .badgeLabel{
+    font-size: 14px;
+    width: auto;
+    text-align: center;
+    margin-right: 28px;
+  }
+
+  .badgeClosed{
+    font-size: 15px;
+    width: auto;
+    margin-right: 28px;
+  }
+ 
+  .badgeRejected{
+    font-size: 15px;
+    width: auto;
+    margin-right: 28px;
+  }
+  .lastStatus{
+    font-size: 11px;
+    left: 48%;
+    text-align: right;
+  }
+
+  .space {
+    padding: 25px 0px 0px 50px;
+    left: 10%;
+}
+
+.switchText{
+    padding: 16px 0px 0px 50px;
+    right: 10%;
+}
+
+/* Estilos para el checkbox */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    padding-left: 8px;
+  }
+  
+  /* Estilos para el input checkbox oculto */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+
+/* slider que simula el switch */
+.slider {
+    overflow: hidden;
+    position: absolute;
+    cursor: pointer;
+    background-color: #ccc;
+    border-radius: 34px;
+    -webkit-transition: .4s;
+    transition: .4s;
+    width: 40px;
+    height: 20px;
+  }
+  
+  /* slider cuando está seleccionado (activado) */
+  .slider:before {
+    left: 4px;
+    position: absolute;
+    content: "";
+    top: 2px;
+    left: 5px;
+    right: 50px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .4s; 
+    width: 16px;
+    height: 16px;
+  }
+  
+  /* checkbox cuando está activado */
+  input:checked + .slider {
+    background-color: #007bff;
+  }
+  
+  /* slider cuando está activado */
+  input:checked + .slider:before {
+    transform: translateX(15px);
   }
 /*#endregion Estilado del modal */

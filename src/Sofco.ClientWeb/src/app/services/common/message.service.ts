@@ -55,7 +55,7 @@ export class MessageService {
 
     showLoading(){
         swal({
-            title: 'Procesando !',
+            title: 'Procesando..',
             allowOutsideClick: false,
             onOpen: () => {
               swal.showLoading()

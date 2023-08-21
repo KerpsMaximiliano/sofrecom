@@ -1,4 +1,8 @@
-﻿namespace Sofco.Domain.Models.Billing
+﻿using Sofco.Domain.Models.AllocationManagement;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace Sofco.Domain.Models.Billing
 {
     public class Opportunity
     {
@@ -19,5 +23,7 @@
         public string ProjectManagerId { get; set; }
 
         public string ProjectManagerName { get; set; }
+
+        public ICollection<AnalyticsRenovation> AnalyticsRenovations { get; set; }
     }
 }

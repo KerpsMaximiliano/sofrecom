@@ -133,5 +133,11 @@ namespace Sofco.Domain.Models.AllocationManagement
         public string Nationality { get; set; }
 
         public bool OnTestPeriod { get; set; }
+
+        public int BirthdayDaysTaken { get; set; }
+
+        public int FlexDaysTaken { get; set; }
+
+        public int PaternityDaysTaken { get; set; }
     }
 }
