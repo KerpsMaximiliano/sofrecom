@@ -1,0 +1,62 @@
+.active {
+  .tab-warning {
+    border-color: #f8ac59 !important;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-top: 1px solid transparent !important;
+    border-top-color: #f8ac59 !important;
+  }
+
+  .tab-primary {
+    border-color: #1ab394 !important;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-top: 1px solid transparent !important;
+    border-top-color: #1ab394 !important;
+  }
+
+  .tab-link-warning {
+    background-color: #f8ac59 !important;
+    color: white !important;
+    font-size: 12px;
+  }
+
+  .tab-link-primary {
+    background-color: #1ab394 !important;
+    color: white !important;
+    font-size: 12px;
+  }
+}
+
+/* Modal de PMs Aprobadores */
+
+.analitic-managers-modal .managers {
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  background-color: #f8f8f8;
+}
+
+.analitic-managers-modal .managers:not(:last-of-type) {
+  margin-bottom: 0.5em;
+}
+
+.analitic-managers-modal .managers ul {
+  list-style: none;
+  padding: 0;
+}
+
+.analitic-managers-modal .managers ul > li {
+  background-color: rgba($color: #c0c0c0, $alpha: 0.3);
+  border-radius: 0.2em;
+  display: inline-block;
+  width: fit-content;
+  padding: 0.2em;
+}
+
+.analitic-managers-modal .approved {
+  background-color: #d8ffd8;
+}
+
+.analitic-managers-modal .pending-approval {
+  background-color: #ffffaf;
+}

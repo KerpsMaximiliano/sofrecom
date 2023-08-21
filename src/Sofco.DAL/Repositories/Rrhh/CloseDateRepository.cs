@@ -107,12 +107,30 @@ namespace Sofco.DAL.Repositories.Rrhh
         {
             var today = DateTime.UtcNow.Date;
 
+            // se quita el = en la comparación de la query para obtener el cierre anterior. el problema
+            // esta en que si quiero obtener el cierre "anterior" coincidiendo la fecha actual con el cierre actual,
+            // por el = me trae el cierre actual y no el anterior. Si es 22/7 el cierre y hoy es 22/7 a causa el =
+            // en lugar de traer 22/6, me trae 22/7 y eso estaba mal
+            // 18/7/2023 ticket 14211
+
             return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, x.Day).Date <= today)
                 .OrderByDescending(x => x.Year)
                 .ThenByDescending(x => x.Month)
                 .ThenByDescending(x => x.Day)
                 .Take(1)
                 .FirstOrDefault();
+        }
+
+        public IList<CloseDate> GetBeforeAndCurrent()
+        {
+            var today = DateTime.UtcNow.Date;
+
+            return context.CloseDates.Where(x => new DateTime(x.Year, x.Month, x.Day).Date <= today)
+                .OrderByDescending(x => x.Year)
+                .ThenByDescending(x => x.Month)
+                .ThenByDescending(x => x.Day)
+                .Take(2)
+                .ToList();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Sofco.Domain.Models.Providers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 
@@ -25,6 +26,7 @@ namespace Sofco.Core.Models.Providers
         public string Province { get; set; }
         public string ContactName { get; set; }
         public string Phone { get; set; }
+        [EmailAddress(ErrorMessage = "providers/providers.wrongEmail")]
         public string Email { get; set; }
         public string WebSite { get; set; }
         public string Comments { get; set; }

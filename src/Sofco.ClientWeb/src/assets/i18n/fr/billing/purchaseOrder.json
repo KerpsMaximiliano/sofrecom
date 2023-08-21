@@ -14,7 +14,7 @@
 	"datesRequired": "Date de et à sont requis",
 	"endDateLessThanStartDate": "La date ne peut être inférieure à la date de",
 	"errorToSaveAnalytics": "Une erreur est survenue lors de l'association des analyses",
-	"ammountRequired": "Les montants ne peuvent pas être inférieurs à 0 ni supérieurs à 99,999,999",
+	"ammountRequired": "Les montants ne peuvent pas être inférieurs à 0 ni supérieurs à 99,999,999,999",
 	"draftSuccess": "La commande d'achat a été envoyée correctement à la zone de conformité",
 	"complianceSuccess": "La commande d'achat a été envoyée correctement dans la zone commerciale",
 	"comercialSuccess": "La commande d'achat a été envoyée correctement dans la zone opérationnelle",

@@ -1,103 +1,223 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-12">
-        <h2>{{'ADMIN.settings.title' | translate }}</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a>
-            </li>
-            <li>
-                <a>{{'ADMIN.SHORT_TITLE' | translate }}</a>
-            </li>
-            <li class="active">
-                <strong>{{'ADMIN.settings.title' | translate }}</strong>
-            </li>
-        </ol>
-    </div>
+  <div class="col-lg-12">
+    <h2>{{ "ADMIN.settings.title" | translate }}</h2>
+    <ol class="breadcrumb">
+      <li>
+        <a [routerLink]="['/']">{{ "HOME.TITLE" | translate }}</a>
+      </li>
+      <li>
+        <a>{{ "ADMIN.SHORT_TITLE" | translate }}</a>
+      </li>
+      <li class="active">
+        <strong>{{ "ADMIN.settings.title" | translate }}</strong>
+      </li>
+    </ol>
+  </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
+  <div class="tabs-container m-b-md">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a class="tab-link-warning" data-toggle="tab" href="#tab-1">
+          {{ "ADMIN.settings.generalSettings" | translate }}
+        </a>
+      </li>
+      <li class="">
+        <a class="tab-link-success" data-toggle="tab" href="#tab-2">
+          {{ "ADMIN.settings.licenseTitle" | translate }}
+        </a>
+      </li>
+      <li class="">
+        <a class="tab-link-primary" data-toggle="tab" href="#tab-3">
+          {{ "ADMIN.settings.jobsSettingTitle" | translate }}
+        </a>
+      </li>
+    </ul>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>{{ 'ADMIN.settings.title' | translate }}</h5>
-                    <div class="ibox-tools">
-                        <button type="button" class="btn btn-primary" [disabled]="loading"
-                            (click)="save()"> {{ 'ACTIONS.save' | translate }} <i class="fa fa-save"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
-                    <spinner></spinner>
-                    <div class="form-group" *ngFor="let item of settings; let dataIndex = index">
-                        <label for="example-text-input" class="control-label">{{ 'ADMIN.settings.'+item.key | translate }}</label>
-                        <input class="form-control" [type]="item.type" [(ngModel)]="item.value" min="0" *ngIf="item.type != 'Boolean'">
-                        <select class="form-control" name="boolean+dataIndex" [(ngModel)]="item.value" *ngIf="item.type == 'Boolean'"> 
-                            <option [value]="true"> {{ 'ACTIONS.yes' | translate }} </option> 
-                            <option [value]="false"> {{ 'ACTIONS.no' | translate }} </option> 
-                        </select> 
-                    </div>
-                </div>
-            </div>
+    <div class="tab-content">
+      <div id="tab-1" class="tab-pane active">
+        <div class="panel-body tab-warning">
+          <table
+            class="table table-striped dataTable"
+            role="grid"
+            id="#settings"
+          >
+            <thead>
+              <tr>
+                <th class="column-xlg">
+                  {{ "ADMIN.settings.grid.license" | translate }}
+                </th>
+                <th class="column-sm daysTitle">
+                  {{ "ADMIN.settings.grid.days" | translate }}
+                </th>
+                <th class="column-xs text-right">
+                  {{ "ADMIN.action" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of settings; let dataIndex = index">
+                <td>
+                  <label for="example-text-input" class="control-label">{{
+                    "ADMIN.settings." + item.key | translate
+                  }}</label>
+                </td>
+                <td>
+                  <input
+                    class="btn dim btn-sm"
+                    [type]="item.type"
+                    [(ngModel)]="item.value"
+                    min="0"
+                    *ngIf="item.type != 'Boolean'"
+                  />
+
+                  <select
+                    class="form-control selectItem"
+                    name="boolean+dataIndex"
+                    [(ngModel)]="item.value"
+                    *ngIf="item.type == 'Boolean'"
+                  >
+                    <option [value]="true">
+                      {{ "ACTIONS.yes" | translate }}
+                    </option>
+                    <option [value]="false">
+                      {{ "ACTIONS.no" | translate }}
+                    </option>
+                  </select>
+                </td>
+                <td class="text-right">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-primary"
+                    [disabled]="loading"
+                    (click)="save(item)"
+                    title="Guardar configuración"
+                  >
+                    <i class="fa fa-save"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        
-        <div class="col-sm-6">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>{{ 'ADMIN.settings.licenseTitle' | translate }}</h5>
-                </div>
-                <div class="ibox-content">
-                    <div class="m-b-md" *ngFor="let item of licenseTypes">
-                        <label class="control-label">{{ item.label | translate }}</label>
-                        <div class="input-group">
-                            <input class="form-control" type="number" min="0" [(ngModel)]="item.value"> 
-                            <span class="input-group-btn"> 
-                                <button class="btn btn-primary" type="button" (click)="updateLicenseType(item)">{{ 'ACTIONS.update' | translate }}</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      </div>
+
+      <div id="tab-2" class="tab-pane">
+        <div class="panel-body tab-success">
+          <table
+            class="table table-striped dataTable"
+            role="grid"
+            id="#settings"
+          >
+            <thead>
+              <tr>
+                <th class="column-xlg">
+                  {{ "ADMIN.settings.grid.license" | translate }}
+                </th>
+                <th class="column-sm daysTitle">
+                  {{ "ADMIN.settings.grid.days" | translate }}
+                </th>
+                <th class="column-xs text-right">
+                  {{ "ADMIN.action" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of licenseTypes">
+                <td>
+                  <label class="control-label">{{
+                    item.label | translate
+                  }}</label>
+                </td>
+                <td>
+                  <input
+                    class="btn dim btn-sm"
+                    type="number"
+                    min="0"
+                    [(ngModel)]="item.value"
+                  />
+                </td>
+                <td class="text-right">
+                  <button
+                    class="btn btn-sm btn-primary"
+                    type="button"
+                    (click)="updateLicenseType(item)"
+                    title="Guardar configuración de licencia"
+                  >
+                    <i class="fa fa-save"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+      </div>
+
+      <div id="tab-3" class="tab-pane">
+        <div class="panel-body tab-primary">
+          <table
+            class="table table-striped dataTable"
+            role="grid"
+            id="#settings"
+            style="max-height: 400px; overflow: auto;"
+          >
+            <thead>
+              <tr>
+                <th class="column-xlg">
+                  {{ "ADMIN.settings.jobsSettingTitle" | translate }}
+                </th>
+                <th class="column-sm valueTitle">
+                  {{ "ADMIN.settings.grid.value" | translate }}
+                </th>
+                <th class="column-xs text-right">
+                  {{ "ADMIN.action" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of jobSettings">
+                <td>
+                  <label for="example-text-input" class="control-label">{{
+                    "ADMIN.settings." + item.key | translate
+                  }}</label>
+                </td>
+                <td>
+                  <input
+                    class="btn dim btn-sm"
+                    [type]="item.type"
+                    [(ngModel)]="item.value"
+                    min="0"
+                    *ngIf="item.id != 26"
+                  />
+                  <ng-select
+                placeholder="Seleccionar Usuario/s"
+                class="select"
+                [multiple]="true"
+                [closeOnSelect]="true"
+                [items]="usuarios"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="settingUsers"
+                *ngIf="item.id == 26"
+              >
+              </ng-select>
+                </td>
+                <td  class="text-right">
+                  <button
+                  class="btn btn-sm btn-primary"
+                  type="button"
+                  (click)="saveSetting(item)"
+                  title="Guardar parámetro"
+                >
+                <i class="fa fa-save"></i>
+                </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-
-
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>{{ 'ADMIN.settings.jobsSettingTitle' | translate }}</h5>
-                </div>
-                <div class="ibox-content" [ngClass]="(loading)?'sk-loading':''">
-                    <spinner></spinner>
-                    <div class="form-group">
-                        <label for="example-text-input" class="control-label">{{ 'ADMIN.settings.'+jobSettings[0].key | translate }}</label>
-                        <div class="input-group">
-                            <input class="form-control" [type]="jobSettings[0].type" [(ngModel)]="jobSettings[0].value" min="0">
-                            <span class="input-group-btn"> 
-                                <button class="btn btn-primary" type="button" (click)="saveSetting(jobSettings[0])">{{ 'ACTIONS.update' | translate }}</button>
-                            </span>
-                        </div>
-                        <label for="example-text-input" class="control-label">Job de Recursos SIN Asignación (día del mes)</label>
-                        <div class="input-group">
-                            <input class="form-control" [type]="jobSettings[1].type" [(ngModel)]="jobSettings[1].value" min="1" max="31">
-                            <span class="input-group-btn"> 
-                                <button class="btn btn-primary" type="button" (click)="saveSetting2(jobSettings[1].value)">{{ 'ACTIONS.update' | translate }}</button>
-                            </span>
-                        </div>
-                        <label for="example-text-input" class="control-label">Job de Recursos SIN Asignación (destinatarios)</label>
-                        <div class="input-group">
-                            <ng-select placeholder="Seleccionar Usuario/s" [multiple]="true" [closeOnSelect]="true" [items]="usuarios" bindLabel="name" bindValue="id" [(ngModel)]="settingUsers">
-                            </ng-select>
-                            <span class="input-group-btn"> 
-                                <button class="btn btn-primary" type="button" (click)="saveSetting3(settingUsers)">{{ 'ACTIONS.update' | translate }}</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+  </div>
 </div>

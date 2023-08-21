@@ -8,7 +8,8 @@ import { MessageService } from "app/services/common/message.service"
 
 @Component({
     selector: 'providers-add',
-    templateUrl: './providers-add.html'
+    templateUrl: './providers-add.html',
+    styleUrls: ['./providers-add.scss']
 })
 
 export class ProvidersAddComponent implements OnInit{
@@ -43,7 +44,7 @@ export class ProvidersAddComponent implements OnInit{
         country: new FormControl(null, [Validators.maxLength(20), Validators.required]),
         contactName: new FormControl(null, [Validators.maxLength(100), Validators.required]),
         phone: new FormControl(null, [Validators.maxLength(50), Validators.required, Validators.pattern("^[0-9]*$")]),
-        email: new FormControl(null, [Validators.maxLength(100), Validators.required, Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]),
+        email: new FormControl(null, [Validators.maxLength(100), Validators.required]),//Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]
         website: new FormControl(null, [Validators.maxLength(1000)]),
         comments: new FormControl(null, [Validators.maxLength(5000)])
     });
@@ -71,6 +72,7 @@ export class ProvidersAddComponent implements OnInit{
     save() {
         this.markFormGroupTouched(this.form)
         if(!this.form.valid) {
+            this.messageService.showMessage('Por favor, verifica el formulario.', 1 );
             return;
         }
         //let model = this.form.value;
@@ -102,7 +104,7 @@ export class ProvidersAddComponent implements OnInit{
         });
         this.providersService.post(model).subscribe(response=>{
             if(response.status == 200) {
-                this.messageService.showMessage("Proveedor guardado", 0);
+                this.messageService.showMessage("El proveedor fue creado exitosamente.", 0);
                 this.router.navigate([`providers/providers`]);
             }
         });
@@ -170,7 +172,7 @@ export class ProvidersAddComponent implements OnInit{
             this.form.get('phone').updateValueAndValidity();
             //Email
             this.form.get('email').clearValidators();
-            this.form.get('email').setValidators([Validators.maxLength(100), Validators.required, Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]);
+            this.form.get('email').setValidators([Validators.maxLength(100), Validators.required]);//Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
             this.form.get('email').updateValueAndValidity();
         } else {
             //CUIT
@@ -213,7 +215,7 @@ export class ProvidersAddComponent implements OnInit{
             this.form.get('phone').updateValueAndValidity();
             //Email
             this.form.get('email').clearValidators();
-            this.form.get('email').setValidators([Validators.maxLength(100), Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")]);
+            this.form.get('email').setValidators([Validators.maxLength(100)]);//Validators.pattern("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$")
             this.form.get('email').updateValueAndValidity();
         }
     }

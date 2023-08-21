@@ -119,6 +119,7 @@
         },
 		"settings": {
 			"title": "Configs",
+			"generalSettings":"Genral settings",
 			"licenseTitle": "Licenses's Configuration",
 			"saveSuccess": "Save successfully",
 			"AllocationManagement_Months": "Allocations - Months",
@@ -133,7 +134,14 @@
 			"LicenseCertificatePendingDayOfMonth": "Notification of certificates not delivered (day of the month).",
 			"WorkingHoursPerDaysMax": "Top working day",
 			"CloseMonth": "Day of the close of the month",
-			"ValidatePeriodCloseMonth": "Validate close month"
+			"ValidatePeriodCloseMonth": "Validate close month",
+			"JobRecursosSinAsignacionDia": "Resource Job WITHOUT Assignment (day of the month)",
+            "JobRecursosSinAsignacionDestinatarios":"Resource Job WITHOUT Assignment (recipients)",
+            "grid": {
+                "license": "License",
+                "days": "Days",
+                "value":"Value"
+            }
 		}
 	},
 	"billing":{
@@ -756,7 +764,11 @@
 			"delegate": {
                 "viewTitle": "Delegate License Authorization",
                 "delegateAction": "Delegate"
-            }
+            },
+			"paternity":"Paternity days",
+            "birthday":"Birthday day",
+            "Flex":"Flex days",
+			"cannotStartAHoliday":"The License cannot start on holidays."
 		}
 	},
 	"ACTIONS": {
@@ -986,6 +998,38 @@
             "registeredHours": "Registered Hours",
             "licenseHours": "License Hours",
             "pendingHours": "Pending Hours"
+        }
+	},
+	"providers": {
+        "title": "Providers",
+        "search":"Providers Search",
+        "providersList":"Providers List",
+        "add":"Add",
+        "grid": {
+            "status":"Status",
+            "businessName":"Business Name",
+            "sector":"Sector",
+            "critical":"Critical",
+            "id":"Id",
+            "cuit":"CUIT",
+            "grossIncome":"Gross Income",
+            "iva":"IVA Condition",
+            "address":"Address",
+            "street":"Street",
+            "locality":"Locality",
+            "zipCode":"Zip Code",
+            "province":"Province",
+            "country":"Country",
+            "contact":"Contact",
+            "contactName":"Name and Surname",
+            "phone":"Phone",
+            "email":"E-mail",
+            "web":"Website",
+            "comments":"Comments",
+            "providerNumber":"Provider Number",
+            "startDate":"Start Date",
+            "endDate":"End Date",
+            "billing":"Billing"
         }
 	},
 	"months": {

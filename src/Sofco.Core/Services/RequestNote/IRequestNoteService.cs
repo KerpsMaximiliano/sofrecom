@@ -25,5 +25,9 @@ namespace Sofco.Core.Services.RequestNote
         void SaveChanges(RequestNoteModel requestNote, int nextStatus);
 
         Response<IList<Option>> GetStates();
+        Response<IList<Option>> GetUnits();
+        Response<IList<Option>> GetCurrencies();
+
+
     }
 }

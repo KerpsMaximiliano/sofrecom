@@ -33,6 +33,7 @@ namespace Sofco.Domain.Models.AllocationManagement
         public string ServiceId { get; set; }
 
         public int? ActivityId { get; set; }
+
         public ImputationNumber Activity { get; set; }
 
         public DateTime StartDateContract { get; set; }
@@ -40,12 +41,15 @@ namespace Sofco.Domain.Models.AllocationManagement
         public DateTime EndDateContract { get; set; }
 
         public int SectorId { get; set; }
+
         public Sector Sector { get; set; }
 
         public int? ManagerId { get; set; }
+
         public User Manager { get; set; }
 
         public int? CommercialManagerId { get; set; }
+
         public User CommercialManager { get; set; }
 
         public string Proposal { get; set; }
@@ -53,28 +57,44 @@ namespace Sofco.Domain.Models.AllocationManagement
         public AnalyticStatus Status { get; set; }
 
         public int? SolutionId { get; set; }
+
         public Solution Solution { get; set; }
 
         public int? TechnologyId { get; set; }
+
         public Technology Technology { get; set; }
 
         public DateTime CreationDate { get; set; }
 
         public int? ClientGroupId { get; set; }
+
         public ClientGroup ClientGroup { get; set; }
 
         public int? ServiceTypeId { get; set; }
+
         public ServiceType ServiceType { get; set; }
 
         public string UsersQv { get; set; }
 
         public int? SoftwareLawId { get; set; }
-        
+
+        public bool? AutomaticChargeable { get; set; }
+
         public SoftwareLaw SoftwareLaw { get; set; }
 
         public string ClosedBy { get; set; }
 
         public DateTime? ClosedAt { get; set; }
+
+        public string CeCo { get; set; }
+
+        public string CeBe { get; set; }
+
+        public int? Orden { get; set; }
+
+        public int? ProvinceId { get; set; }
+        
+        public Province Province { get; set; }
 
         public ICollection<Allocation> Allocations { get; set; }
 
@@ -86,5 +106,7 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public ManagementReport.ManagementReport ManagementReport { get; set; }
         public ICollection<Applicant> Applicants { get; set; }
+
+        public ICollection<AnalyticsRenovation> AnalyticsRenovations { get; set; }
     }
 }

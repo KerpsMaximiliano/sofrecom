@@ -46,7 +46,8 @@ export class RequestNoteService {
             fromDate: '',
             toDate: '',
             providerId: '',
-            statusId: ''
+            statusId: '',
+            analyticId: ''
         };
         if(filters.id != undefined || filters.id != null) {
             finalFilters.startingSymbol = '?';
@@ -92,7 +93,15 @@ export class RequestNoteService {
                 finalFilters.statusId = `statusId=${filters.statusId}`;
             }
         };
-        return this.http.get<any>(`${this.baseUrl}/RequestNoteBorrador/GetAll/${finalFilters.startingSymbol}${finalFilters.id}${finalFilters.creationUserId}${finalFilters.fromDate}${finalFilters.toDate}${finalFilters.providerId}${finalFilters.statusId}`);
+        if(filters.analyticId != undefined || filters.analyticId != null) {
+            if(finalFilters.startingSymbol == '?') {
+                finalFilters.analyticId = `&analyticID=${filters.analyticId}`;
+            } else {
+                finalFilters.startingSymbol = '?';
+                finalFilters.analyticId = `analyticID=${filters.analyticId}`;
+            }
+        };
+        return this.http.get<any>(`${this.baseUrl}/RequestNoteBorrador/GetAll/${finalFilters.startingSymbol}${finalFilters.id}${finalFilters.creationUserId}${finalFilters.fromDate}${finalFilters.toDate}${finalFilters.providerId}${finalFilters.statusId}${finalFilters.analyticId}`);
     }
 
     public getHistories(id: number) {
