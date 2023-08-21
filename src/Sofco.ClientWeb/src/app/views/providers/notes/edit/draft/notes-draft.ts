@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -38,6 +38,7 @@ export class NotesDraftComponent implements OnInit{
     trainingFormShow: boolean = false;
 
     workflowId: number;
+    public draftId: number;
 
     mode: string;
 
@@ -156,7 +157,8 @@ export class NotesDraftComponent implements OnInit{
         private authService: AuthService,
         private router: Router,
         private builder: FormBuilder,
-        private workflowService: WorkflowService
+        private workflowService: WorkflowService,
+        private activatedRoute: ActivatedRoute
     ) {
         this.formAnaliticasTable = this.builder.group({
             analiticas: this.builder.array([])
@@ -171,6 +173,7 @@ export class NotesDraftComponent implements OnInit{
         this.workflowId = this.currentNote.workflowId;
         this.inicializar();
         this.userInfo = UserInfoService.getUserInfo();
+        this.draftId = this.activatedRoute.snapshot.params.id;
     }
 
 

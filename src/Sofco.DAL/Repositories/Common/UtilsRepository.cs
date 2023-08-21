@@ -95,7 +95,7 @@ namespace Sofco.DAL.Repositories.Common
 
         public IList<Province> GetProvinces()
         {
-            return Context.Provinces.ToList().AsReadOnly();
+            return Context.Provinces.Where(x => x.Active).ToList().AsReadOnly();
         }
 
         public IList<MonthsReturn> GetMonthsReturn()

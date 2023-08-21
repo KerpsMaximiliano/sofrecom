@@ -8,7 +8,8 @@ import { MessageService } from "app/services/common/message.service"
 
 @Component({
     selector: 'providers-add',
-    templateUrl: './providers-add.html'
+    templateUrl: './providers-add.html',
+    styleUrls: ['./providers-add.scss']
 })
 
 export class ProvidersAddComponent implements OnInit{
@@ -71,6 +72,7 @@ export class ProvidersAddComponent implements OnInit{
     save() {
         this.markFormGroupTouched(this.form)
         if(!this.form.valid) {
+            this.messageService.showMessage('Por favor, verifica el formulario.', 1 );
             return;
         }
         //let model = this.form.value;
@@ -102,7 +104,7 @@ export class ProvidersAddComponent implements OnInit{
         });
         this.providersService.post(model).subscribe(response=>{
             if(response.status == 200) {
-                this.messageService.showMessage("Proveedor guardado", 0);
+                this.messageService.showMessage("El proveedor fue creado exitosamente.", 0);
                 this.router.navigate([`providers/providers`]);
             }
         });
