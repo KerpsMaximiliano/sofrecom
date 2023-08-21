@@ -1,0 +1,44 @@
+input[type="checkbox"] {
+  margin-top: 0rem;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  height: 34px;
+}
+
+.table th,
+.table td {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left !important;
+  width: 100%;
+}
+
+.w-2 {
+  height: 25px;
+  width: 25px;
+}
+
+.w-critical {
+  min-width: 40px !important;
+}
+
+.w-rnAmmountReq {
+  min-width: 110px !important;
+}
+
+.w-date {
+  min-width: 70px !important;
+}
+
+.w-active {
+  min-width: 40px !important;
+}
+
+.w-action {
+  min-width: 100px !important;
+}

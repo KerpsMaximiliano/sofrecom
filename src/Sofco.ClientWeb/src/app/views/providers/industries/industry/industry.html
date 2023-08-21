@@ -1,0 +1,106 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-lg-12">
+    <h2> Rubros </h2>
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']"> Inicio </a></li>
+      <li><a [routerLink]="['/providers/industries']"> Rubros </a></li>
+      <li class="active"><strong>{{ mode }}</strong></li>
+    </ol>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <button class="btn btn-success" type="button" [routerLink]="['/providers/industries']"> <i
+      class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate}} </button>
+  <form class="ibox-content" [formGroup]="form">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label"> Nombre </label>
+            <input type="text" class="form-control" formControlName="description" required minlength="3" maxlength="51">
+            <span *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
+              {{ getErrorMessage(form.get("description")) }}
+            </span>
+          </div>
+        </div>
+
+        <div class=" col-md-4">
+          <div class="form-group">
+            <label class="control-label"> ¿Critico? </label>
+            <ng-select [multiple]="false" [searchable]="false" [clearable]="false" formControlName="critical"
+              *ngIf="edit; else noEditCritical" required>
+              <ng-option [value]="true"> Si </ng-option>
+              <ng-option [value]="false"> No </ng-option>
+            </ng-select>
+            <ng-template #noEditCritical>
+              <input class="form-control" formControlName="critical">
+            </ng-template>
+            <span *ngIf="form.get('critical')?.invalid && form.get('critical')?.touched">
+              {{ getErrorMessage(form.get("critical")) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label"> ¿Requiere monto en nota pedido? </label>
+            <ng-select [multiple]="false" [searchable]="false" [clearable]="false" formControlName="rnAmmountReq"
+              *ngIf="edit; else noEditRnAmmountReq" required>
+              <ng-option [value]="true"> Si </ng-option>
+              <ng-option [value]="false"> No </ng-option>
+            </ng-select>
+            <ng-template #noEditRnAmmountReq>
+              <input class="form-control" formControlName="rnAmmountReq">
+            </ng-template>
+            <span *ngIf="form.get('rnAmmountReq')?.invalid && form.get('rnAmmountReq')?.touched">
+              {{ getErrorMessage(form.get("rnAmmountReq")) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label"> Estado </label>
+            <ng-select [multiple]="false" [searchable]="false" [clearable]="false" formControlName="active"
+              *ngIf="edit; else noEditActive" #active>
+              <ng-option [value]="true"> Activo </ng-option>
+              <ng-option [value]="false"> Inactivo </ng-option>
+            </ng-select>
+            <ng-template #noEditActive>
+              <input class="form-control" formControlName="active">
+            </ng-template>
+            <span *ngIf="form.get('active')?.invalid && form.get('active')?.touched">
+              {{ getErrorMessage(form.get("active")) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="form-group">
+            <label class="control-label"> Fecha desde </label>
+            <date-picker [(date)]="startDate" *ngIf="edit; else noEditStartDate"></date-picker>
+            <ng-template #noEditStartDate>
+              <input class="form-control" [value]="startDate" disabled>
+            </ng-template>
+          </div>
+        </div>
+
+        <div class="col-md-4" *ngIf="form.get('active')?.value === false || form.get('active')?.value === 'Inactivo'">
+          <div class="form-group">
+            <label class="control-label"> Fecha hasta </label>
+            <date-picker [(date)]="endDate" *ngIf="edit; else noEditEndDate"></date-picker>
+            <ng-template #noEditEndDate>
+              <input class="form-control" [value]="endDate" disabled>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="button" (click)="confirm()">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>
