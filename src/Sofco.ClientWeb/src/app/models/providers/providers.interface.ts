@@ -3,8 +3,8 @@ export interface IProviders {
   name: string;
   userApplicantId: null;
   score: null;
-  startDate: string;
-  endDate: null;
+  startDate: Date;
+  endDate: Date;
   active: boolean;
   cuit: null | string;
   ingresosBrutos: number | null;

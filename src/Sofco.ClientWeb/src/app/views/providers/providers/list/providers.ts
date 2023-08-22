@@ -126,6 +126,14 @@ export class ProvidersComponent implements AfterViewInit {
     this.router.navigate([`providers/providers/edit/${id}`]);
   }
 
+  public down(id: number): void {
+    let provider: IProviders = this.providers$.find(
+      (provider: IProviders) => provider.id == id
+    );
+
+    if (provider) this.setProvider(provider);
+  }
+
   /**
    * Limpia el filtro.
    */
@@ -310,6 +318,7 @@ export class ProvidersComponent implements AfterViewInit {
     this.data.push({
       id: provider.id,
       name: provider.name,
+      active: provider.active,
       providerArea: areas.length ? areas : null,
       cuit: provider.cuit,
       ingresosBrutos: ingresosBrutos,
@@ -331,5 +340,51 @@ export class ProvidersComponent implements AfterViewInit {
 
     this.dataTableService.destroy(config.selector);
     this.dataTableService.initialize(config);
+  }
+
+  /**
+   * Modifica el estado de un proveedor y llama a la función updateDate().
+   * @param provider Proveedor que se desea modificar.
+   */
+  private setProvider(provider: IProviders): void {
+    this.messageService.showLoading();
+
+    provider.active
+      ? (provider.endDate = null)
+      : (provider.endDate = new Date());
+    provider.active = !provider.active;
+
+    this.providersService.edit(provider.id, provider).subscribe({
+      next: (res: any) => {
+        this.messageService.showMessage(
+          `El proveedor fue ${
+            !provider.active ? "deshabilitado" : "habilitado"
+          }`,
+          0
+        );
+        this.updateDate(provider.id);
+      },
+      error: (err: any) => {
+        this.messageService.showMessage(
+          `No se ha podido ${
+            provider.active ? "deshabilitar" : "habilitar"
+          } el proveedor. `,
+          0
+        );
+      },
+      complete: () => {
+        this.messageService.closeLoading();
+      },
+    });
+  }
+
+  /**
+   * Cambia el estado de un proveedor y actualiza la vista.
+   * @param id ID del proveedor al que se le cambia el estado.
+   */
+  updateDate(id: number): void {
+    let provider = this.data.findIndex((provider) => provider.id === id);
+    if (provider === -1) return;
+    this.data[provider].active = !this.data[provider].active;
   }
 }
