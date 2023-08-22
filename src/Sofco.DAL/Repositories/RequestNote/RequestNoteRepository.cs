@@ -72,12 +72,14 @@ namespace Sofco.DAL.Repositories.RequestNote
             if (filters.ToDate.HasValue)
                 filters.ToDate = filters.ToDate.Value.Date.AddDays(1);
 
+
             return this.context.RequestNote
                 .Where(n => !filters.Id.HasValue || n.Id == filters.Id.Value)
                 .Where(n => !filters.CreationUserId.HasValue || n.CreationUser.Email == emailUsuario)
                 .Where(n => !filters.StatusId.HasValue || n.StatusId == filters.StatusId)
                 .Where(n => !filters.FromDate.HasValue || n.CreationDate >= filters.FromDate)
                 .Where(n => !filters.ToDate.HasValue || n.CreationDate < filters.ToDate)
+                .Where(n => !filters.AnalyticID.HasValue || n.Analytics.Any(p => p.AnalyticId == filters.AnalyticID))
                 .Where(n => !filters.ProviderId.HasValue || n.Providers.Any(p=> p.ProviderId == filters.ProviderId))
                 //Provider? Quieren filtrar por todos o selected?
                 .Include(x => x.Status)

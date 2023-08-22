@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Sofco.Core.DAL;
 using Sofco.Domain.Utils;
 
@@ -11,10 +12,18 @@ namespace Sofco.Framework.StatusHandlers.License
             var licenseType = unitOfWork.LicenseTypeRepository.GetSingle(x => x.Id == domain.TypeId);
             var user = unitOfWork.EmployeeRepository.GetById(domain.EmployeeId);
             var examDaysAllowTogether = unitOfWork.SettingRepository.GetByKey("ExamDaysAllowTogether");
+            var holidays = unitOfWork.HolidayRepository.Get(domain.StartDate.Year, domain.StartDate.Month);
+
+            if (holidays.Any(x => x.Date.Date == domain.StartDate.Date))
+            {
+                response.AddError(Resources.Rrhh.License.CannotStartAHoliday);
+            }
+
+            if (response.HasErrors()) return;
 
             //Item 1 = Working Days
             //Item 2 = Total Days 
-            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate, unitOfWork);
+            var tupla = GetNumberOfWorkingDays(domain.StartDate, domain.EndDate, unitOfWork, holidays);
 
             if (string.IsNullOrWhiteSpace(domain.ExamDescription))
             {

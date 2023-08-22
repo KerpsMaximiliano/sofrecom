@@ -92,6 +92,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Allocation.resx</DependentUpon>
     </Compile>
+    <Compile Update="AllocationManagement\AnalyticsRenovation.Designer.cs">
+      <DependentUpon>AnalyticsRenovation.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Update="AllocationManagement\Analytic.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -310,6 +315,10 @@
     <EmbeddedResource Update="AllocationManagement\Allocation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Allocation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="AllocationManagement\AnalyticsRenovation.resx">
+      <LastGenOutput>AnalyticsRenovation.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="AllocationManagement\Analytic.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

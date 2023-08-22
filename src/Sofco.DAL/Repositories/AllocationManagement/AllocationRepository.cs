@@ -8,6 +8,7 @@ using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.Domain.DTO;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.AllocationManagement;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Information;
 
 namespace Sofco.DAL.Repositories.AllocationManagement
 {
@@ -331,6 +332,16 @@ namespace Sofco.DAL.Repositories.AllocationManagement
                             && ((x.StartDate.Month == startDate.Month && x.StartDate.Year == startDate.Year) 
                             || (x.StartDate.Month <= endDate.Month && x.StartDate.Year == endDate.Year)))
                 .ToList();
+        }
+
+        public IList<Allocation> GetAllocationsLiteBetweenDatesAndFullBillingPercentage(DateTime date)
+        {
+            return context.Allocations
+                  .Include(x => x.Analytic)
+                  .Include(x => x.Employee)
+                  .Where(x => (x.StartDate.Date <= date.Date
+                               && x.ReleaseDate.Date >= date.Date) && x.Employee.BillingPercentage ==100).AsNoTracking() 
+                  .ToList();
         }
     }
 }

@@ -8,5 +8,6 @@ export interface SearchFilters {
     fromDate?: string,
     toDate?: string,
     providerId?: number,
-    statusId?: number
+    statusId?: number,
+    analyticId?: number
 }

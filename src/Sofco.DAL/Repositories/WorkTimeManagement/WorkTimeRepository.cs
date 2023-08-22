@@ -4,6 +4,7 @@ using System.Linq;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Sofco.Common.Extensions;
+using Sofco.Core.DAL;
 using Sofco.Core.DAL.WorkTimeManagement;
 using Sofco.Core.Models.WorkTimeManagement;
 using Sofco.DAL.Repositories.Common;
@@ -42,6 +43,13 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
                 .ToList();
         }
 
+        public IList<WorkTime> GetLiteByEmployeeId(DateTime date, int employeeId)
+        {
+            return context.WorkTimes
+                .Where(x => x.EmployeeId == employeeId
+                            && x.Date.Date == date.Date)
+                .ToList();
+        }
         public IList<WorkTime> GetByEmployeeIds(DateTime startDate, DateTime endDate, List<int> employeeIds)
         {
             return context.WorkTimes
@@ -289,6 +297,14 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
             return context.WorkTimes.Where(x => x.Date.Date == worktimeDate.Date).ToList();
         }
 
+        public List<WorkTime> GetAddTrackedByEmployee(int employeeID)
+        {
+            return context.ChangeTracker.Entries<WorkTime>()
+                   .Where(e => e.State == EntityState.Added && e.Entity.EmployeeId== employeeID)
+                   .Select(e => e.Entity)
+                   .ToList();
+        }
+
         public decimal GetPendingHoursByEmployeeId(int employeeId)
         {
             return context.WorkTimes
@@ -348,5 +364,7 @@ namespace Sofco.DAL.Repositories.WorkTimeManagement
         {
             return context.WorkTimes.Any(x => x.Date.Month == monthDate.Month && x.Date.Year == monthDate.Year && x.EmployeeId == allocationEmployeeId && x.AnalyticId == allocationAnalyticId);
         }
+
+
     }
 }

@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { Ng2ModalComponent } from "app/components/modal/ng2modal.component";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { ProvidersAreaService } from "app/services/admin/providersArea.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
@@ -14,6 +15,18 @@ import { UserInfoService } from "app/services/common/user-info.service";
 import { WorkflowService } from "app/services/workflow/workflow.service";
 import { Cookie } from "ng2-cookies";
 import { FileUploader } from "ng2-file-upload";
+
+// Declaración de interfaces utilizadas
+declare interface ProviderArea {
+  active: boolean;
+  startDate: string;
+  critical: boolean;
+  description: string;
+  endDate: any;
+  id: number;
+  rnAmmountReq: boolean;
+}
+
 
 @Component({
     selector: 'notes-pending-purchase-approval',
@@ -34,11 +47,11 @@ export class NotesPendingPurchaseApproval {
     @ViewChild('selectedFile') selectedFile: any;
     public uploader: FileUploader = new FileUploader({
         url: this.requestNoteService.uploadDraftFiles(),
-        authToken: 'Bearer ' + Cookie.get('access_token'), 
+        authToken: 'Bearer ' + Cookie.get('access_token'),
     });
     public uploaderProviders: FileUploader = new FileUploader({
         url: this.requestNoteService.uploadDraftFiles(),
-        authToken: 'Bearer ' + Cookie.get('access_token'), 
+        authToken: 'Bearer ' + Cookie.get('access_token'),
     });
     travelFormShow: boolean = false;
     trainingFormShow: boolean = false;
@@ -58,6 +71,10 @@ export class NotesPendingPurchaseApproval {
     trainingFormError: boolean = false;
 
     providerAreas = [];
+    /** Registro de rubro anterior o inicial (para poder deshacer el cambio) */
+    protected previousProviderArea?: ProviderArea;
+    /** Registro de rubro nuevo (al que se busca cambiar) */
+    protected currentProviderArea?: ProviderArea;
     participanteViajeSeleccionado = null;
     participanteViajeSeleccionadoCuit = null;
     participanteViajeSeleccionadoFecha = null;
@@ -81,12 +98,23 @@ export class NotesPendingPurchaseApproval {
     travelReturnDate: string;
     trainingDate: string;
 
+    currencies: Array<{id: number, description: string}> = [{id: 1, description: '$'}, {id:2, description: 'u$s'}];
+    units: Array<{id: number, description: string}> = [
+        {id: 1, description: "Total"},
+        {id: 2, description: "Hora"},
+        {id: 3, description: "Diario"},
+        {id: 4, description: "Mensual"},
+        {id: 5, description: "Anual"}
+    ];
+
     comments = [];
 
     filesToUpload = [] as Array<any>;
     fileIdCounter = 0;
 
     mode: string;
+
+    ammountReq: boolean = true;
 
     //FORMS
     formNota: FormGroup = new FormGroup({
@@ -220,6 +248,7 @@ export class NotesPendingPurchaseApproval {
         this.travelFormShow = this.currentNote.travelSection;
         this.trainingFormShow = this.currentNote.trainingSection;
         this.providersAreaService.getAll().subscribe(d => {
+            this.ammountReq = d.data.find(rubro => rubro.id == this.currentNote.providerAreaId).rnAmmountReq;
             d.data.forEach(providerArea => {
                 if(providerArea.active) {
                     this.providerAreas.push(providerArea);
@@ -241,7 +270,7 @@ export class NotesPendingPurchaseApproval {
         this.analyticService.getByCurrentUserRequestNote().subscribe(d => {
             this.analiticas = d.data;
         });
-        
+
         this.providersService.getAll().subscribe(d => {
             this.allProviders = d.data;
         });
@@ -270,7 +299,10 @@ export class NotesPendingPurchaseApproval {
             });
             this.critical = (d.data.critical) ? "Si" : "No";
             this.formNota.get('id').disable();
-        });
+
+            // Inicializa el registro de la selección de rubro con el valor inicial del select, si es que tiene
+            this.previousProviderArea = d.data;
+          });
         this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[this.currentNote.providerAreaId]}).subscribe(d => {
             this.providers = d.data;
         });
@@ -324,16 +356,79 @@ export class NotesPendingPurchaseApproval {
         this.formNota.get('providerArea').enable();
     }
 
-    change(event) {
-        if(event != undefined) {
-            this.critical = (event.critical) ? "Si" : "No";
-            this.providers = [];
-            this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[event.id]}).subscribe(d => {
-                this.providers = d.data;
-            });
-        } else {
-            this.critical = null
-        }
+    /**
+     * Evento que regula el comportamiento del cambio de rubro en el select
+     * @param {ProviderArea} event Nuevo rubro selecionado
+     * @param {Ng2ModalComponent} alertModal Instancia del modal de advertencia para el cambio de rubro (requerida para mostrarlo y oculrtarlo)
+     */
+    change(event: ProviderArea, alertModal: Ng2ModalComponent) {
+      this.currentProviderArea = event;
+      // Si hay proveedores seleccionados abre el modal de alerta, sino cambia de rubro sin alertar
+      if(this.proveedoresSelected.length) {
+        alertModal.show();
+      } else {
+        this.providerAreaChange();
+      }
+    }
+
+    /**
+     * Método que procesa el cambio de rubrio, actualizando la lista de proveedores
+     */
+    providerAreaChange() {
+      // Actualización de registro de la selección de rubro al nuevo valor
+      this.previousProviderArea = this.currentProviderArea;
+
+      // Lógica previamente implementada en método change()
+      if(this.currentProviderArea != undefined) {
+        this.critical = (this.currentProviderArea.critical) ? "Si" : "No";
+        this.ammountReq = this.currentProviderArea.rnAmmountReq;
+        this.providers = [];
+        this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[this.currentProviderArea.id]}).subscribe(d => {
+            this.providers = d.data;
+        });
+        Object.keys(this.formProvidersGrid.controls).forEach(key => {
+            this.formProvidersGrid.get(key).clearValidators();
+            if(this.ammountReq) {
+                this.formProvidersGrid.get(key).setValidators(Validators.required);
+            }
+        });
+      } else {
+          this.critical = null
+      }
+
+      // Reestablece el select que agrega proveedores (evita que quede seleccionado el de otro rubro)
+      this.formNota.controls.providers.setValue(null);
+    }
+
+    /**
+     * Acción ejecutada al recibir el evento (accept) del alertModal, oculta el modal y
+     * reestablece la lista de proveedores seleccionados y el select para agregar proveedores
+     * @param {Ng2ModalComponent} alertModal Instancia del modal de advertencia para el cambio de rubro (requerida para mostrarlo y oculrtarlo)
+     */
+    alertModalAccept(alertModal: Ng2ModalComponent) {
+      // Cambia el rubro con la lógica utilizada anteriormente
+      this.providerAreaChange();
+
+      // Borra los proveedores de la lista
+      this.proveedoresSelected.splice(0).forEach((item) => {
+        this.formProvidersGrid.removeControl(`control${item.providerId}`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-currency`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-unit`);
+      });
+
+      // Oculta el modal
+      alertModal.hide();
+
+      // Sobreescribe el rubro, dado que se cambió
+      this.previousProviderArea = this.currentProviderArea;
+    }
+
+    /**
+     * Acción ejecutada al recibir el evento (close) del alertModal, oculta el modal y
+     * revierte el cambio en el select de rubro
+     */
+    alertModalCancel() {
+      this.formNota.get('providerArea').setValue(this.previousProviderArea.id);
     }
 
     openTravelModal() {
@@ -362,7 +457,7 @@ export class NotesPendingPurchaseApproval {
         if(this.uploader.queue.length > 0){
             this.uploader.queue[0].remove();
         }
-  
+
         this.selectedFile.nativeElement.value = '';
     }
 
@@ -425,7 +520,9 @@ export class NotesPendingPurchaseApproval {
                         fileId: search.fileId,
                         providerDescription: prov.providerDescription,
                         providerId: prov.providerId,
-                        ammount: this.formProvidersGrid.get(`control${prov.providerId}`).value
+                        ammount: this.formProvidersGrid.get(`control${prov.providerId}`).value,
+                        currencyID: this.formProvidersGrid.get(`control${prov.providerId}-currency`).value,
+                        unitID: this.formProvidersGrid.get(`control${prov.providerId}-unit`).value
                     });
             });
             this.currentNote.providersSelected = this.finalProviders;
@@ -460,7 +557,16 @@ export class NotesPendingPurchaseApproval {
             ammount: null
         });
         this.proveedoresSelected = [...this.proveedoresSelected];
-        this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null, Validators.required));
+        if(this.ammountReq) {
+            this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null, Validators.required));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-currency`, new FormControl(null, Validators.required));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-unit`, new FormControl(null, Validators.required));
+        } else {
+            this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-currency`, new FormControl(null));
+            this.formProvidersGrid.addControl(`control${busqueda.id}-unit`, new FormControl(null));
+        }
+
         this.formNota.get('providers').setValue(null);
     }
 
@@ -513,6 +619,8 @@ export class NotesPendingPurchaseApproval {
             }
         });
         this.formProvidersGrid.removeControl(`control${item.providerId}`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-currency`);
+        this.formProvidersGrid.removeControl(`control${item.providerId}-unit`);
         this.proveedoresSelected = [...this.proveedoresSelected];
     }
 
@@ -527,7 +635,7 @@ export class NotesPendingPurchaseApproval {
                 this.comments = d;
             });
         })
-        
+
     }
 
     deleteComment(item: any) {
@@ -536,6 +644,15 @@ export class NotesPendingPurchaseApproval {
                 this.comments = d;
             });
         })
+    }
+
+    /**
+     *
+     * @param {ProviderArea} providerArea Rubro que se desea imprimir en pantalla
+     * @returns {string} Si hay rubro su descripción (incluso si está vacía), en caso contrario el mensaje por defecto cuando no hay rubro
+     */
+    protected printProviderArea(providerArea?: ProviderArea): string {
+      return providerArea ? providerArea.description : "Sin rubro";
     }
 
 }

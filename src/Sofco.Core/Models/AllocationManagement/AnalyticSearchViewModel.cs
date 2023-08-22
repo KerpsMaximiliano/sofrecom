@@ -24,6 +24,10 @@ namespace Sofco.Core.Models.AllocationManagement
             Status = domain.Status;
             ManagerId = domain.ManagerId;
             SectorId = domain.SectorId;
+            CeCo = domain.CeCo;
+            CeBe = domain.CeBe;
+            Orden = domain.Orden;
+            ProvinceId = domain.ProvinceId;
 
             if (domain.ManagementReport != null && string.IsNullOrWhiteSpace(domain.ServiceId))
             {
@@ -63,5 +67,13 @@ namespace Sofco.Core.Models.AllocationManagement
         public int ManagementReportId { get; set; }
 
         public int SectorId { get; set; }
+
+        public string CeCo { get; set; }
+
+        public string CeBe { get; set; }
+
+        public int? Orden { get; set; }
+
+        public int? ProvinceId { get; set; }
     }
 }

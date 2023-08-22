@@ -52,5 +52,7 @@ namespace Sofco.Core.Services.AllocationManagement
         Response<Analytic> GetByTitle(string title);
 
         Response<List<Option>> GetByLoggedManagerId();
+
+        Response<Analytic> GetByIdWithOnlyPendingRefunds(int id);
     }
 }
