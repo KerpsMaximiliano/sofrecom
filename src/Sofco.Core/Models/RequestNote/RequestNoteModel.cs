@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Logical;
 using Sofco.Common.Settings;
 using Sofco.Domain.RequestNoteStates;
 using System;
@@ -122,7 +123,7 @@ namespace Sofco.Core.Models.RequestNote
                         Name = e.Employee?.Name
                     }).ToList()
                 }).FirstOrDefault();
-            HasReadPermissions = ValidateReadPermissions(permissions, userId);
+            HasReadPermissions = ValidateReadPermissions(permissions, userId, Analytics);
             HasEditPermissions = ValidateEditPermissions(permissions, userId);
 
         }
@@ -162,9 +163,17 @@ namespace Sofco.Core.Models.RequestNote
         public int StatusId { get; set; }
         public string StatusDescription { get; set; }
 
-        private bool ValidateReadPermissions(List<string> permissions, int userId)
+        private bool ValidateReadPermissions(List<string> permissions, int userId, List<Analytic> analytics)
         {
-            return CreationUserId == userId || permissions.Any(p => p == "NP_READONLY");
+            return CreationUserId == userId || permissions.Any(p => p == "NP_READONLY") || GetManagers(analytics).Any(p => p== userId);
+        }
+
+        private List<int> GetManagers(List<Analytic> analytics)
+        {
+            return analytics != null
+               ? analytics.Where(a => a?.ManagerId != null).Select(a => a.ManagerId.Value).ToList()
+               : new List<int>();
+
         }
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
