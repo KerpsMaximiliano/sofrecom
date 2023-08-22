@@ -49,6 +49,11 @@ namespace Sofco.WebApi.Controllers.Providers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] ProvidersModel model)
         {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors())
+                return BadRequest(errors);
+
             var response = providers.Put(id, model);
 
             return this.CreateResponse(response);
@@ -57,6 +62,12 @@ namespace Sofco.WebApi.Controllers.Providers
         [HttpPost]
         public IActionResult Post([FromBody] ProvidersModel model)
         {
+            var errors = this.GetErrors();
+
+            if (errors.HasErrors())
+                return BadRequest(errors);
+
+
             var response = providers.Post(model);
 
             return this.CreateResponse(response);

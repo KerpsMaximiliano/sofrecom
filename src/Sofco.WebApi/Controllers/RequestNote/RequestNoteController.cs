@@ -11,6 +11,7 @@ using Sofco.Core.Services.Workflow;
 using Sofco.Domain.DTO;
 using Sofco.Domain.DTO.NotaPedido;
 using Sofco.Domain.Utils;
+using Sofco.Service.Implementations.Common;
 using Sofco.Service.Implementations.RequestNote;
 using Sofco.WebApi.Extensions;
 using File = Sofco.Domain.Models.Common.File;
@@ -69,6 +70,17 @@ namespace Sofco.WebApi.Controllers.RequestNote
             var response = this._requestNoteService.Add(requestNote);
 
             return this.CreateResponse(response);
+        }
+
+        [HttpGet("GetUnits")]
+        public IActionResult GetUnits()
+        {
+            return Ok(_requestNoteService.GetUnits());
+        }
+        [HttpGet("GetCurrencies")]
+        public IActionResult GetCurrencies()
+        {
+            return Ok(_requestNoteService.GetCurrencies());
         }
 
         [HttpPost("UploadFiles")]

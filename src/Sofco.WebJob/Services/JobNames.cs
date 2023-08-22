@@ -41,5 +41,11 @@
         public const string LicenseGreater35 = "LicenseGreater35";
 
         public const string EmployeeTestPeriod = "EmployeeTestPeriod";
+
+        public const string EmployeeWorkTimesAdd = "EmployeeWorkTimesAdd";
+
+        public const string EmployeeWorkTimesMonthAdd = "EmployeeWorkTimesMonthAdd";
+
+
     }
 }

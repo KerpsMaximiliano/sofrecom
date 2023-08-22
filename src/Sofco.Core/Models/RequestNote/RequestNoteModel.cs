@@ -50,11 +50,13 @@ namespace Sofco.Core.Models.RequestNote
                     FileDescription = p.File?.FileName,
                     ProviderId = p.ProviderId,
                     ProviderDescription = p.Provider?.Name,
-                    Ammount = p.Price
+                    Ammount = p.Price,
+                    UnitID = p.UnitID,
+                    CurrencyID= p.CurrencyID
                 }).ToList();
                 //ProviderSelectedId = note.Providers.FirstOrDefault(p => p.IsSelected)?.ProviderId;
             }
-            //if (note.ProvidersSugg != null)
+            //if (note.ProvidersSugg ! = null)
             //{
             //    Providers = note.ProvidersSugg.Select(p => new Provider()
             //    {
@@ -220,6 +222,9 @@ namespace Sofco.Core.Models.RequestNote
         public int? FileId { get; set; }
         public string FileDescription { get; set; }
         public decimal? Ammount { get; set; }
+        public int? CurrencyID { get; set; }
+        public int? UnitID { get; set; }
+
     }
     public class File
     {

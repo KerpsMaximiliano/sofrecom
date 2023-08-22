@@ -1,166 +1,180 @@
 <div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-12">
-        <h2> {{'rrhh.license.addTitle' | translate }} </h2>
+  <div class="col-lg-12">
+    <h2>{{ 'rrhh.license.addTitle' | translate }}</h2>
 
-        <ol class="breadcrumb">
-            <li><a [routerLink]="['/']">{{'HOME.TITLE' | translate }}</a></li>
-            <li> {{'rrhh.title' | translate }} </li>
-            <li> {{'rrhh.licenses' | translate }} </li>
-            <li class="active"><strong> {{'rrhh.license.add' | translate }} </strong></li>
-        </ol>
-    </div>
+    <ol class="breadcrumb">
+      <li><a [routerLink]="['/']">{{ 'HOME.TITLE' | translate }}</a></li>
+      <li>{{'rrhh.title' | translate }}</li>
+      <li>{{'rrhh.licenses' | translate }}</li>
+      <li class="active"><strong>{{ 'rrhh.license.add' | translate }}</strong></li>
+    </ol>
+  </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="alert alert-gaps-warning" style="margin-bottom: 10px" *ngIf="missingManager">
-        <i class="fa fa-warning"></i>
-        {{'rrhh.license.missingManager' | translate }}
-    </div>
+  <div class="alert alert-gaps-warning" style="margin-bottom: 10px" *ngIf="missingManager">
+    <i class="fa fa-warning"></i> {{ 'rrhh.license.missingManager' | translate }}
+  </div>
 
-    <div class="row">
-        <div class="col-md-7 col-xs-12">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <div class="form-group" *ngIf="fromProfile == false">
-                        <select-two [label]="'rrhh.license.employee'" [(value)]="model.employeeId" [options]="resources"
-                            (valueChange)="employeeChange()"></select-two>
-                    </div>
+  <div class="row">
+    <div class="col-md-7 col-xs-12">
+      <div class="ibox">
+        <div class="ibox-content">
+          <div class="form-group" *ngIf="fromProfile == false">
+            <select-two [label]="'rrhh.license.employee'" [(value)]="model.employeeId" [options]="resources"
+              (valueChange)="employeeChange()">
+            </select-two>
+          </div>
 
-                    <div class="form-group" *ngIf="fromProfile == true">
-                        <label style="font-size: 15px"> {{'rrhh.license.employee' | translate }}: </label>
-                        <span style="font-size: 14px"> {{ userApplicantName }}</span>
-                    </div>
+          <div class="form-group" *ngIf="fromProfile == true">
+            <label style="font-size: 15px">{{ 'rrhh.license.employee' | translate }}: </label>
+            <span style="font-size: 14px">{{ userApplicantName }}</span>
+          </div>
 
-                    <div class="form-group" *ngIf="model.authorizerId > 0">
-                        <label style="font-size: 15px"> {{'rrhh.license.authorizer' | translate }}: </label>
-                        <span style="font-size: 14px"> {{ model.authorizerDesc }}</span>
-                    </div>
+          <div class="form-group" *ngIf="model.authorizerId > 0">
+            <label style="font-size: 15px">{{'rrhh.license.authorizer' | translate }}: </label>
+            <span style="font-size: 14px">{{ model.authorizerDesc }}</span>
+          </div>
 
-                    <div class="form-group">
-                        <label style="font-size: 15px"> {{'rrhh.license.manager' | translate }}: </label>
-                        <span style="font-size: 14px"> {{ model.managerDesc }}</span>
-                    </div>
+          <div class="form-group">
+            <label style="font-size: 15px">{{ 'rrhh.license.manager' | translate }}: </label>
+            <span style="font-size: 14px">{{ model.managerDesc }}</span>
+          </div>
 
 
-                    <div class="form-group">
-                        <label style="font-size: 15px"> {{'rrhh.license.sector' | translate }}: </label>
-                        <span style="font-size: 14px"> {{ model.sectorDesc }}</span>
-                    </div>
+          <div class="form-group">
+            <label style="font-size: 15px">{{ 'rrhh.license.sector' | translate }}: </label>
+            <span style="font-size: 14px">{{ model.sectorDesc }}</span>
+          </div>
 
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label">{{'rrhh.license.startDate' | translate }}</label>
-                                <date-picker #startDate [(date)]="model.startDate"></date-picker>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label">{{'rrhh.license.endDate' | translate }}</label>
-                                <date-picker #endDate [(date)]="model.endDate"></date-picker>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group">
-                                <icheck [(checked)]="model.withPayment" (checkedChange)="withPaymentChange($event)">
-                                    <label class="control-label">{{'rrhh.license.withPayment' | translate }}</label>
-                                </icheck>
-                            </div>
-                        </div>
-                    </div>
-
-                    <select-two [label]="'rrhh.license.reason'" [(value)]="model.typeId" [options]="licensesTypes">
-                    </select-two>
-
-                    <div class="form-group" [hidden]="model.typeId != 13 && model.typeId != 14">
-                        <label class="control-label">{{'rrhh.license.comments' | translate }}</label>
-                        <input type="text" class="form-control" maxlength="200" [(ngModel)]="model.comments">
-                    </div>
-
-                    <div class="form-group" [hidden]="model.typeId != 6">
-                        <label class="control-label">{{'rrhh.license.detailPeriodToBeRecovered' | translate }}</label>
-                        <textarea rows="3" class="form-control" maxlength="500" [(ngModel)]="model.comments"></textarea>
-                    </div>
-
-                    <div class="row" [hidden]="model.typeId != 7">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label">{{'rrhh.license.examDescription' | translate }}</label>
-                                <input type="text" maxlength="200" class="form-control"
-                                    [(ngModel)]="model.examDescription">
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group m-t-lg">
-                                <icheck [(checked)]="model.parcial">
-                                    <label class="control-label">{{'rrhh.license.parcial' | translate }}</label>
-                                </icheck>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group m-t-lg">
-                                <icheck [(checked)]="model.final">
-                                    <label class="control-label">{{'rrhh.license.final' | translate }}</label>
-                                </icheck>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ibox-footer">
-                    <button (click)="back()" *ngIf="!menuService.userIsRrhh" class="btn btn-success" type="button"> <i
-                            class="fa fa-user"></i> {{'ACTIONS.viewProfile' | translate }} </button>
-                    <button (click)="add()" *ngIf="model.id == null && !missingManager" class="btn btn-primary"
-                        type="button">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
-                    <button (click)="refresh()" *ngIf="model.id != null" class="btn btn-success" type="button">Cargar
-                        nueva <i class="fa fa-refresh"></i> </button>
-                </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label">{{'rrhh.license.startDate' | translate }}</label>
+                <date-picker #startDate [(date)]="sDate"></date-picker>
+              </div>
             </div>
+
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label">{{'rrhh.license.endDate' | translate }}</label>
+                <date-picker #endDate [(date)]="eDate"></date-picker>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <icheck [(checked)]="model.withPayment" (checkedChange)="withPaymentChange($event)">
+                  <label class="control-label">{{ 'rrhh.license.withPayment' | translate }}</label>
+                </icheck>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <select-two [label]="'rrhh.license.reason'" [(value)]="model.typeId" [options]="licensesTypes"
+                  (valueChange)="validateLimit()">
+                </select-two>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" [hidden]="model.typeId != 13 && model.typeId != 14">
+            <label class="control-label">{{ 'rrhh.license.comments' | translate }}</label>
+            <input type="text" class="form-control" maxlength="200" [(ngModel)]="model.comments">
+          </div>
+
+          <div class="form-group" [hidden]="model.typeId != 6">
+            <label class="control-label">{{ 'rrhh.license.detailPeriodToBeRecovered' | translate }}</label>
+            <textarea rows="3" class="form-control" maxlength="500" [(ngModel)]="model.comments"></textarea>
+          </div>
+
+          <div class="row" [hidden]="model.typeId != 7">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label">{{ 'rrhh.license.examDescription' | translate }}</label>
+                <input type="text" maxlength="200" class="form-control" [(ngModel)]="model.examDescription">
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <div class="form-group m-t-lg">
+                <icheck [(checked)]="model.parcial">
+                  <label class="control-label">{{ 'rrhh.license.parcial' | translate }}</label>
+                </icheck>
+              </div>
+            </div>
+
+            <div class="col-sm-3">
+              <div class="form-group m-t-lg">
+                <icheck [(checked)]="model.final">
+                  <label class="control-label">{{'rrhh.license.final' | translate }}</label>
+                </icheck>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="col-md-5 col-xs-12" *ngIf="model.id > 0">
-            <h3>{{'billing.solfac.import' | translate }}</h3>
-
-            <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
-
-            <div class="uploader-margin-top">
-                <label
-                    *ngIf="uploader.getNotUploadedItems().length">{{'billing.invoice.progress' | translate }}:</label>
-                <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
-                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-                </div>
-
-                <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
-                    [disabled]="!uploader.getNotUploadedItems().length || files.length >= 5">
-                    <span class="glyphicon glyphicon-upload"></span> {{'billing.invoice.import' | translate }}
-                </button>
-
-                <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()"
-                    [disabled]="!uploader.getNotUploadedItems().length">
-                    <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
-                </button>
-            </div>
-
-            <div class="panel panel-primary m-t-lg" *ngIf="files.length > 0">
-                <div class="panel-heading">
-                    <i class="fa fa-info-circle"></i> {{'rrhh.license.attachments' | translate }}
-                </div>
-                <div class="panel-body">
-                    <ul class="todo-list small-list">
-                        <li *ngFor="let file of files; let i = index">
-                            <span class="m-l-xs pointer">{{file.name}}</span>
-                            <a class="pull-right" (click)="openConfirmModal(file.id, i)"><i
-                                    class="check-link fa fa-times icon-danger margin-left-s"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+        <div class="ibox-footer">
+          <button (click)="back()" *ngIf="!menuService.userIsRrhh" class="btn btn-success" type="button">
+            <i class="fa fa-user"></i> {{'ACTIONS.viewProfile' | translate }}
+          </button>
+          <button (click)="add()" *ngIf="model.id == null && !missingManager" class="btn btn-primary" type="button">
+            {{ 'ACTIONS.save' | translate }} <i class="fa fa-save"></i>
+          </button>
+          <button (click)="refresh()" *ngIf="model.id != null" class="btn btn-success" type="button">
+            Cargar nueva <i class="fa fa-refresh"></i>
+          </button>
         </div>
+      </div>
     </div>
+
+    <div class="col-md-5 col-xs-12" *ngIf="model.id > 0">
+      <h3>{{ 'billing.solfac.import' | translate }}</h3>
+
+      <input #selectedFile type="file" ng2FileSelect [uploader]="uploader" />
+
+      <div class="uploader-margin-top">
+        <label *ngIf="uploader.getNotUploadedItems().length">{{ 'billing.invoice.progress' | translate }}: </label>
+        <div class="progress" *ngIf="uploader.getNotUploadedItems().length">
+          <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+        </div>
+
+        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
+          [disabled]="!uploader.getNotUploadedItems().length || files.length >= 5">
+          <span class="glyphicon glyphicon-upload"></span> {{ 'billing.invoice.import' | translate }}
+        </button>
+
+        <button type="button" class="btn btn-danger btn-s" (click)="clearSelectedFile()"
+          [disabled]="!uploader.getNotUploadedItems().length">
+          <span class="fa fa-times"></span> {{'billing.invoice.quit' | translate }}
+        </button>
+      </div>
+
+      <div class="panel panel-primary m-t-lg" *ngIf="files.length > 0">
+        <div class="panel-heading">
+          <i class="fa fa-info-circle"></i> {{'rrhh.license.attachments' | translate }}
+        </div>
+
+        <div class="panel-body">
+          <ul class="todo-list small-list">
+            <li *ngFor="let file of files; let i = index">
+              <span class="m-l-xs pointer">{{file.name}}</span>
+              <a class="pull-right" (click)="openConfirmModal(file.id, i)">
+                <i class="check-link fa fa-times icon-danger margin-left-s"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <ng2-modal [config]="confirmModalConfig" #confirmDeleteFileModal (accept)="deleteFile()">
-    <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
+  <h4>{{ 'ACTIONS.confirmBody' | translate }}</h4>
 </ng2-modal>

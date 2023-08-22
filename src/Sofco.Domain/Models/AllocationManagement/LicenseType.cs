@@ -15,6 +15,10 @@ namespace Sofco.Domain.Models.AllocationManagement
 
         public bool CertificateRequired { get; set; }
 
+        public bool Active { get; set; }
+
+        public string LabelKey { get; set; }
+
         public ICollection<License> Licenses { get; set; }
     }
 }

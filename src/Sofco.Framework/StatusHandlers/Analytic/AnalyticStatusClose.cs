@@ -33,20 +33,24 @@ namespace Sofco.Framework.StatusHandlers.Analytic
         {
             var recipients = new List<string>();
 
-            var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
-            //var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode);
+            //var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode); // 2023-08-17
+            var mailDaf = unitOfWork.GroupRepository.GetEmail(emailConfig.DafCode); // 2023-08-17
+            var mailGaf = unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode); // 2023-08-17
             var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
-            var mailCalidad = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
+            //var mailCalidad = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);// 2023-08-17
 
             //recipients.AddRange(new[] { mailPmo, mailRrhh, mailDaf, mailCalidad });
 
             recipients.AddRange(new[] {
-                mailPmo,
+                //mailPmo,// 2023-08-17
+                mailDaf, // 2023-08-17
+                mailGaf, // 2023-08-17
                 "mscovello@sofredigital.com.ar",
                 "fgiani@sofredigital.com.ar",
-                "NMiguez@sofredigital.com.ar",
+                "dacaruso@sofredigital.com.ar",// 2023-08-17
                 mailRrhh,
-                mailCalidad });
+                //mailCalidad // 2023-08-17
+            });
 
             var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
             var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);

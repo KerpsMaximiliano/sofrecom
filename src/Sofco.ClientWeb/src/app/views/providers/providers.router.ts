@@ -20,6 +20,7 @@ const PROVIDERS_ROUTER: Routes = [
             { path: "", component: ProvidersComponent, canActivate: [AuthGuard] },
             { path: "add", component: ProvidersAddComponent, canActivate: [AuthGuard] },
             { path: "edit/:id", component: ProvidersEditComponent, canActivate: [AuthGuard] },
+            { path: "detail/:id", component: ProvidersEditComponent, canActivate: [AuthGuard] },
             { path: "notes/add", component: NotesAddComponent, canActivate: [AuthGuard] },
         ]
     },

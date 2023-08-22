@@ -6,23 +6,25 @@
                 <a [routerLink]="['/']">Inicio</a>
             </li>
             <li>
-                <a [routerLink]="['/providers/providers']">Abastecimiento y Proveedores</a>
+                <a [routerLink]="['/providers/providers']">{{'providers.title' | translate}}</a>
             </li>
             <li class="active">
-                <strong>Nuevo Proveedor</strong>
+                <strong>{{'providers.add' | translate}}</strong>
             </li>
         </ol>
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <button class="btn btn-success" type="button" [routerLink]="['/providers/providers']"> <i class="fa fa-times"></i> Cancelar </button>
-    <button class="btn btn-primary" type="button" (click)="save()">{{'ACTIONS.save' | translate }} <i class="fa fa-save"></i> </button>
     <form class="m-t-md ibox-content" [formGroup]="form">
         <div class="panel-body">
             <div class="row">
+                <label style="font-size: 15px;">{{'providers.grid.billing' | translate}}</label>
+                <div class="division"></div>
+            </div>
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Razón social</label>
+                        <label class="information">{{'providers.grid.businessName' | translate}}</label>
                         <input type="text" class="form-control" formControlName="name">
                         <span *ngIf="form.controls.name.errors?.maxlength" style="color: red;">
                             Máximo 200 caracteres.
@@ -33,21 +35,19 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <label class="control-label">Rubro</label>
+                    <label class="information">{{'providers.grid.sector' | translate}}</label>
                     <ng-select [items]="activeProvidersArea" bindLabel="description" bindValue="id" formControlName="providerAreaId" (change)="change($event)" [multiple]="true"></ng-select>
                     <span *ngIf="!form.get('providerAreaId')?.valid && (form.get('providerAreaId')?.touched || form.get('providerAreaId')?.dirty)" style="color: red;">
                         El campo es requerido.
                     </span>
                 </div>
                 <div class="col-md-4" *ngIf="critical != null">
-                    <label class="control-label">Crítico</label>
+                    <label class="information">Crítico</label>
                     <input type="text" class="form-control" disabled [placeholder]="critical">
                 </div>
-            </div>
-            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">CUIT</label>
+                        <label class="information">{{'providers.grid.cuit' | translate}}</label>
                         <input type="text" class="form-control" formControlName="CUIT">
                         <span *ngIf="form.controls.CUIT.errors?.maxlength || form.controls.CUIT.errors?.minlength || form.controls.CUIT.errors?.pattern" style="color: red;">
                             El campo debe tener 11 números.
@@ -57,9 +57,11 @@
                         </span>
                     </div>
                 </div>
+            </div>
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Ing. Brutos</label>
+                        <label class="information">{{'providers.grid.grossIncome' | translate}}</label>
                         <ng-select [items]="incomeTypes" bindLabel="description" bindValue="id" formControlName="ingresosBrutos"></ng-select>
                         <span *ngIf="!form.get('ingresosBrutos')?.valid && (form.get('ingresosBrutos')?.touched || form.get('ingresosBrutos')?.dirty)" style="color: red;">
                             El campo es requerido.
@@ -68,7 +70,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Condición IVA</label>
+                        <label class="information">{{'providers.grid.iva' | translate}}</label>
                         <ng-select [items]="IVAConditions" bindLabel="description" bindValue="id" formControlName="condicionIVA"></ng-select>
                         <span *ngIf="!form.get('condicionIVA')?.valid && (form.get('condicionIVA')?.touched || form.get('condicionIVA')?.dirty)" style="color: red;">
                             El campo es requerido.
@@ -76,13 +78,15 @@
                     </div>
                 </div>
             </div>
+           
             <div class="row">
-                <h4>Dirección:</h4>
+                <label class="subtitle">{{'providers.grid.address' | translate}}</label>
+                <div class="division"></div>
             </div>
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Calle</label>
+                        <label class="information">{{'providers.grid.street' | translate}}</label>
                         <input type="text" class="form-control" formControlName="address">
                         <span *ngIf="form.controls.address.errors?.maxlength" style="color: red;">
                             Máximo 1000 caracteres.
@@ -94,7 +98,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Localidad</label>
+                        <label class="information">{{'providers.grid.locality' | translate}}</label>
                         <input type="text" class="form-control" formControlName="city">
                         <span *ngIf="form.controls.city.errors?.maxlength" style="color: red;">
                             Máximo 1000 caracteres.
@@ -106,7 +110,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Código postal</label>
+                        <label class="information">{{'providers.grid.zipCode' | translate}}</label>
                         <input type="text" class="form-control" formControlName="ZIPCode">
                         <span *ngIf="form.controls.ZIPCode.errors?.maxlength" style="color: red;">
                             Máximo 10 caracteres.
@@ -118,7 +122,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Provincia</label>
+                        <label class="information">{{'providers.grid.province' | translate}}</label>
                         <input type="text" class="form-control" formControlName="province">
                         <span *ngIf="form.controls.province.errors?.maxlength" style="color: red;">
                             Máximo 20 caracteres.
@@ -130,7 +134,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">País</label>
+                        <label class="information">{{'providers.grid.country' | translate}}</label>
                         <input type="text" class="form-control" formControlName="country">
                         <span *ngIf="form.controls.country.errors?.maxlength" style="color: red;">
                             Máximo 20 caracteres.
@@ -142,12 +146,14 @@
                 </div>
             </div>
             <div class="row">
-                <h4>Contacto:</h4>
+                <label class="subtitle">{{'providers.grid.contact' | translate}}</label>
+                <div class="division"></div>
             </div>
+            
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Nombre y Apellido</label>
+                        <label class="information">{{'providers.grid.contactName' | translate}}</label>
                         <input type="text" class="form-control" formControlName="contactName">
                         <span *ngIf="form.controls.contactName.errors?.maxlength" style="color: red;">
                             Máximo 100 caracteres.
@@ -159,7 +165,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Teléfono</label>
+                        <label class="information">{{'providers.grid.phone' | translate}}</label>
                         <input type="text" class="form-control" formControlName="phone">
                         <span *ngIf="form.controls.phone.errors?.pattern" style="color: red;">
                             Ingrese sólo números.
@@ -174,7 +180,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Email</label>
+                        <label class="information">{{'providers.grid.email' | translate}}</label>
                         <input type="text" class="form-control" formControlName="email">
                         <span *ngIf="form.controls.email.errors?.maxlength" style="color: red;">
                             Máximo 100 caracteres.
@@ -191,7 +197,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Web</label>
+                        <label class="information">{{'providers.grid.web' | translate}}</label>
                         <input type="text" class="form-control" formControlName="website">
                         <span *ngIf="form.controls.website.errors?.maxlength" style="color: red;">
                             Máximo 1000 caracteres.
@@ -200,8 +206,8 @@
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label class="control-label">Comentarios</label>
-                        <textarea class="form-control" formControlName="comments" cols="30" rows="10"></textarea>
+                        <label class="information">{{'providers.grid.comments' | translate}}</label>
+                        <textarea class="form-control" formControlName="comments" ></textarea>
                         <span *ngIf="form.controls.comments.errors?.maxlength" style="color: red;">
                             Máximo 5000 caracteres.
                         </span>
@@ -210,4 +216,9 @@
             </div>
         </div>
     </form>
+    <div class="panel-footer">
+        <button class="btn btn-success" type="button" [routerLink]="['/providers/providers']"> <i class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate }} </button>
+        <button class="btn btn-primary" type="button" (click)="save()">{{'ACTIONS.save' | translate }} </button>
+    
+    </div>
 </div>

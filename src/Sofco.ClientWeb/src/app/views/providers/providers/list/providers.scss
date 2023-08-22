@@ -1,0 +1,23 @@
+// Lista de columna de Rubro
+.provider-areas-column {
+  margin: 0;
+  padding: 0;
+  list-style-position: inside;
+  list-style-type: '- ';
+}
+
+// Separador de rubros en la lista
+.provider-areas-column hr {
+  $separator-color: #c8c8c8;
+  margin: .5em 0;
+  border-top: 1px solid $separator-color;
+}
+
+.ibox-title{
+  padding: 10px 15px 10px 10px;
+}
+
+.title{
+  margin-top: 5px; 
+  margin-left: 10px;
+}

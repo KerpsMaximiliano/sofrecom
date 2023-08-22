@@ -316,6 +316,15 @@ namespace Sofco.Service.Implementations.AllocationManagement
             return response;
         }
 
+        public Response<Analytic> GetByIdWithOnlyPendingRefunds(int id)
+        {
+            var response = new Response<Analytic>();
+
+            response.Data = AnalyticValidationHelper.Find(response, unitOfWork, id, false);
+
+            return response;
+        }
+
         public Response<IList<Allocation>> GetTimelineResources(int id, DateTime dateSince, int months)
         {
             var response = new Response<IList<Allocation>>();
@@ -563,23 +572,25 @@ namespace Sofco.Service.Implementations.AllocationManagement
                 var subject = string.Format(MailSubjectResource.AddAnalytic, analytic.AccountName);
                 var body = string.Format(MailMessageResource.AddAnalytic, $"{analytic.Title} - {analytic.Name}", $"{emailConfig.SiteUrl}contracts/analytics/{analytic.Id}/view");
 
-                var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode);
-                //var mailGaf = unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode);
+                //var mailPmo = unitOfWork.GroupRepository.GetEmail(emailConfig.PmoCode); // 2023-08-17
+                var mailGaf = unitOfWork.GroupRepository.GetEmail(emailConfig.GafCode); // 2023-08-17
                 var mailRrhh = unitOfWork.GroupRepository.GetEmail(emailConfig.RrhhCode);
                 //var mailCompliance = unitOfWork.GroupRepository.GetEmail(emailConfig.ComplianceCode);
-                var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode);
+                //var mailQuality = unitOfWork.GroupRepository.GetEmail(emailConfig.QualityCode); // 2023-08-17
                 //var mailCdg = unitOfWork.GroupRepository.GetEmail(emailConfig.CdgCode);
 
                 var recipientsList = new List<string>();
 
                 //recipientsList.AddRange(new[] { mailPmo, mailRrhh, mailGaf, mailCompliance, mailQuality, mailCdg });
                 recipientsList.AddRange(new[] {
-                    mailPmo,
+                    //mailPmo, // 2023-08-17
+                    mailGaf,
                     "mscovello@sofredigital.com.ar",
                     "fgiani@sofredigital.com.ar",
-                    "NMiguez@sofredigital.com.ar",
+                    "dacaruso@sofredigital.com.ar", // 2023-08-17
                     mailRrhh,
-                    mailQuality });
+                    //mailQuality // 2023-08-17
+                });
 
                 var manager = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.ManagerId);
                 var seller = unitOfWork.UserRepository.GetSingle(x => x.Id == analytic.CommercialManagerId);
