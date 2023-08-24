@@ -1157,7 +1157,7 @@
             "analytic":"Analítica",
             "dateFrom":"Fecha Desde",
             "dateTo":"Fecha Hasta",
-            "number":"Número",
+            "number":"Número de NP",
             "processApproval":"Proceso de Aprobación",
             "approve":"Aprobadas o Finalizadas",
             "description":"Descripción:",

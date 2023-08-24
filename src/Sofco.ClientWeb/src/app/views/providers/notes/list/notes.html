@@ -55,14 +55,11 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label">{{ 'notes.grid.analytic' | translate }}</label>
-                <label class="control-label"> Analítica </label>
                 <ng-select [items]="analiticas" bindLabel="text" bindValue="id" [(ngModel)]="analyticId">
                 </ng-select>
               </div>
             </div>
-          </div>
 
-          <div class="row">
             <div class="col-sm-2">
               <div class="form-group">
                 <label class="control-label">{{ 'notes.grid.dateFrom' | translate }}</label>
@@ -161,15 +158,15 @@
                       <i class="fa fa-suitcase"></i>
                     </button>
 
-                    <button title="Agregar orden de compra" class="btn btn-default btn-xs" (click)="addOC(note.id)"
+                    <button title="Agregar orden de compra" class="btn btn-xs cartIcon" (click)="addOC(note.id)"
                       *ngIf="(note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL) && note.hasEditPermissions">
-                      <i class="fa fa-barcode"></i>
+                      <i class="fa fa-shopping-cart"></i>
                     </button>
 
-                    <button title="Mostrar PMs Aprobadores" class="btn btn-default btn-xs"
+                    <button title="Mostrar PMs Aprobadores" class="btn btn-success btn-xs"
                       (click)="getApprovedManagers(note.id)"
                       *ngIf="note.statusId == currentEnviroment.NP_PEND_APRO_GER_AN && note.hasReadPermissions">
-                      <i class="fa fa-barcode"></i>
+                      <i class="fa fa-user"></i>
                     </button>
                   </td>
                 </tr>
