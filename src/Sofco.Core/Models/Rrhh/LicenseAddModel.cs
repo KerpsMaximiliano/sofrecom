@@ -1,6 +1,7 @@
 ﻿using System;
 using Sofco.Domain.Enums;
 using Sofco.Domain.Models.Rrhh;
+using Sofco.Domain.Utils;
 
 namespace Sofco.Core.Models.Rrhh
 {
@@ -59,7 +60,7 @@ namespace Sofco.Core.Models.Rrhh
             domain.Final = Final;
             domain.Comments = Comments;
             domain.ExamDescription = ExamDescription;
-            domain.CreationDate = DateTime.UtcNow;
+            domain.CreationDate = DateUtils.GetTimeNowArgentina();
             domain.Status = LicenseStatus.Draft;
 
             return domain;
