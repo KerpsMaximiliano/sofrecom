@@ -100,7 +100,7 @@ namespace Sofco.Framework.Managers
 
             mails.AddRange(GetOperationMails(purchaseOrder));
 
-            //mails.AddRange(GetGafMails()); // 2023-08-17
+            mails.AddRange(GetGafMails()); // 2023-08-17 - Se comenta //2023-08-24 - Se descomenta metodo
 
             var analytics = unitOfWork.PurchaseOrderRepository.GetByAnalyticsWithManagers(purchaseOrder.Id);
 
@@ -118,6 +118,9 @@ namespace Sofco.Framework.Managers
             //if (humanResourceManager != null) mails.Add(humanResourceManager.Email); // 2023-08-17
             //if (humanResourceProjectLeader != null) mails.Add(humanResourceProjectLeader.Email); // 2023-08-17
             if (generalDirector != null) mails.Add(generalDirector.Email);
+
+            var financialDirectorUser = unitOfWork.UserRepository.Get(appSetting.FinancialDirectorUserId); //2023-08-24 - Se agrega metodo
+            if (financialDirectorUser != null) mails.Add(financialDirectorUser.Email); //2023-08-24 - Se agrega metodo
 
             return mails;
         }
