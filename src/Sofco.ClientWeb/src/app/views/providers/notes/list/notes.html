@@ -1,28 +1,28 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <h2> Notas de pedido </h2>
+        <h2> {{ 'notes.title' | translate }} </h2>
         <ol class="breadcrumb">
             <li>
                 <a [routerLink]="['/']">Inicio</a>
             </li>
             <li>
-                <a>Abastecimiento y Proveedores</a>
+                <a>{{ 'providers.title' | translate }}</a>
             </li>
             <li class="active">
-                <strong>Búsqueda</strong>
+                <strong>{{ 'notes.title' | translate }}</strong>
             </li>
         </ol>
     </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div style="display: flex; justify-content: space-between; gap: 1rem;">
-        <div class="panel panel-success" style="width: 92%;">
+        <div class="panel-group" id="accordion">
+        <div class="panel panel-success">
             <div class="panel-heading">
                 <h5 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" (click)="changeIcon()"
                         style="display: block">
-                        <span>Parámetros de Búsqueda</span>
+                        <span>{{ 'notes.search' | translate }}</span>
                         <i id="search-icon" class="fa fa-caret-up fa-2x pull-right" style="line-height: 0.7"></i>
                     </a>
                 </h5>
@@ -32,84 +32,94 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="control-label">Solicitante</label>
-                                <ng-select [items]="applicants" bindLabel="name" bindValue="id" [(ngModel)]="applicantId">
+                                <label class="control-label">{{ 'notes.grid.userApplicant' | translate}}</label>
+                                <ng-select [items]="applicants" bindLabel="name" bindValue="id" [(ngModel)]="applicantId" (keyup.enter)="search()">
                                 </ng-select>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="control-label">Fecha desde</label>
-                                <date-picker [(date)]="dateSince"></date-picker>
+                                <label class="control-label">{{ 'notes.grid.status' | translate}}</label>
+                                <ng-select [items]="states2" bindLabel="text" bindValue="id" [(ngModel)]="stateId" (keyup.enter)="search()">
+                                </ng-select>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="control-label">Fecha hasta</label>
-                                <date-picker [(date)]="dateTo"></date-picker>
+                                <label class="control-label">{{ 'notes.grid.provider' | translate}}</label>
+                                <ng-select [items]="providers" bindLabel="name" bindValue="id" [(ngModel)]="providerId" (keyup.enter)="search()">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'notes.grid.analytic' | translate}}</label>
+                                <ng-select [items]="analiticas" bindLabel="text" bindValue="id" [(ngModel)]="analyticId">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'notes.grid.dateFrom' | translate}}</label>
+                                <date-picker [(date)]="dateSince" (keyup.enter)="search()"></date-picker>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'notes.grid.dateTo' | translate}}</label>
+                                <date-picker [(date)]="dateTo" (keyup.enter)="search()"></date-picker>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">{{ 'notes.grid.number' | translate}}</label>
+                                <input type="text" [(ngModel)]="noteId" class="form-control" (keyup.enter)="search()">
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="control-label">Estados</label>
-                                <ng-select [items]="states2" bindLabel="text" bindValue="id" [(ngModel)]="stateId">
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="control-label">Proveedor</label>
-                                <ng-select [items]="providers" bindLabel="name" bindValue="id" [(ngModel)]="providerId">
-                                </ng-select>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="control-label">Número</label>
-                                <input type="text" [(ngModel)]="noteId" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="panel-footer">
                             <div class="text-right">
-                                <button class="btn btn-warning" (click)="refreshSearch()"> {{ 'ACTIONS.clean' | translate }}
-                                    <i class="fa fa-refresh"></i></button>
-                                <button class="btn btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
+                                <button class="btn btn-sm btn-success" (click)="search()"> {{ 'ACTIONS.search' | translate }} <i
                                         class="fa fa-search"></i></button>
+                                        <button class="btn btn-sm btn-warning" (click)="refreshSearch()"> {{ 'ACTIONS.clean' | translate }}
+                                            <i class="fa fa-refresh"></i></button>
                             </div>
                         </div>
-    
                     </div>
-                </div>
             </div>
-        </div>
-        <div>
-            <button class="btn btn-success pull-right" routerLink="./add" style="margin-top: .15rem"> Nueva <i class="fa fa-plus"></i></button>
         </div>
     </div>
-    
+         
     <div class="ibox"> 
         <div class="ibox-content">
-            <div class="tabs-container">
-                <ul class="nav nav-pills" role="tablist">
-                    <li class="active"><a class="nav-link" data-toggle="tab" (click)="changeTab(1)" #tabOne> En proceso de aprobación </a></li>
-                    <li><a class="nav-link" data-toggle="tab" (click)="changeTab(2)" #tabTwo> Aprobados o Finalizados </a></li>
-                </ul>
+            <div>
+                <button class="btn btn-sm btn-primary pull-right" routerLink="./add" style="margin-top: .15rem"> {{ 'notes.add' | translate }} <i class="fa fa-plus"></i></button>
             </div>
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                  <li class="active">
+                    <a data-toggle="tab"class="tab-link-warning" href="#tab-1" (click)="changeTab(1)" #tabOne>
+                      {{ "notes.grid.processApproval" | translate }}
+                    </a>
+                  </li>
+                  <li class="">
+                    <a data-toggle="tab"class="tab-link-primary" href="#tab-2" (click)="changeTab(2)" #tabTwo>
+                      {{ "notes.grid.approve" | translate }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
             <div class="tab-content">
                 <div role="tabpanel" id="tab-1" class="tab-pane active">
                     <div class="panel-body table-responsive">
                         <table class="table table-striped dataTable" role="grid" id="dataTable">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Descripción</th>
-                                    <th>Estado</th>
-                                    <th>Fecha Creación</th>
-                                    <th>Creado por</th>
+                                    <th>{{ "notes.grid.number" | translate }}</th>
+                                    <th>{{ "notes.grid.description" | translate }}</th>
+                                    <th>{{ "notes.grid.status" | translate }}</th>
+                                    <th>{{ "notes.grid.createDate" | translate }}</th>
+                                    <th>{{ "notes.grid.createBy" | translate }}</th>
                                     <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
                                 </tr>
                             </thead>
@@ -131,7 +141,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
+           </div>
         </div>
     </div>
 </div>

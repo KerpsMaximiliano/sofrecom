@@ -4,6 +4,7 @@ import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 import { ProvidersService } from "app/services/admin/providers.service";
 import { PurchaseOrderService } from "app/services/admin/purchase-order.service";
 import { RequestNoteService } from "app/services/admin/request-note.service";
+import { AnalyticService } from "app/services/allocation-management/analytic.service";
 import { EmployeeService } from "app/services/allocation-management/employee.service";
 import { DataTableService } from "app/services/common/datatable.service";
 import { MessageService } from "app/services/common/message.service";
@@ -11,7 +12,8 @@ import { environment } from "environments/environment";
 
 @Component({
     selector: 'notes',
-    templateUrl: './notes.html'
+    templateUrl: './notes.html',
+    styleUrls: ['./notes.scss']
 })
 
 export class NotesComponent implements OnInit, AfterViewInit{
@@ -31,6 +33,8 @@ export class NotesComponent implements OnInit, AfterViewInit{
     notesBackup = [];
     notesInProcess = [];
     notesEnded = [];
+    analiticas = [];
+    analyticId: number;
 
     @ViewChild('tabOne') tabOne: ElementRef;
     @ViewChild('tabTwo') tabTwo: ElementRef;
@@ -51,7 +55,8 @@ export class NotesComponent implements OnInit, AfterViewInit{
         private router: Router,
         private requestNoteService: RequestNoteService,
         private dataTableService: DataTableService,
-        private purchaseOrderService: PurchaseOrderService
+        private purchaseOrderService: PurchaseOrderService,
+        private analyticService: AnalyticService
     ){}
 
     ngOnInit(): void {
@@ -63,15 +68,21 @@ export class NotesComponent implements OnInit, AfterViewInit{
     }
 
     inicializar() {
+        // this.messageService.showLoading();
+        this.analyticService.getByCurrentUserRequestNote().subscribe(d => {
+            this.analiticas = d.data;
+        });
         var json = {
             statusId: null,
             creationUserId: null,
             fromDate: null,
             toDate: null,
             providerId: null,
-            noteId: null
+            noteId: null,
+            analyticId: null
         };
         setTimeout(() => {
+            this.messageService.showLoading();
             this.requestNoteService.getAll(json).subscribe(d=>{
                 d.forEach(note => {
                     // if(note.statusId <= 12) {
@@ -91,18 +102,14 @@ export class NotesComponent implements OnInit, AfterViewInit{
                     }
                 })
                 this.notes = this.notesInProcess;
-                this.notes.sort(function(a, b) { 
+                this.notes.sort(function(a, b) {
                     return b.id - a.id;
                 });
                 console.log(this.notes)
                 this.initGrid();
-                setTimeout(() => {
-                    let el: HTMLElement = document.getElementsByClassName('sorting_asc')[0] as HTMLElement;
-                    el.click()
-                }, 501);
             });
         }, 500);
-        
+
         this.employeeService.getEveryone().subscribe(d => {
             d.forEach(employee => {
                 if(employee.endDate == null && employee.isExternal == 0) {
@@ -112,12 +119,14 @@ export class NotesComponent implements OnInit, AfterViewInit{
             });
         });
         this.providerService.getAll().subscribe(d => {
+            this.messageService.showLoading();
             d.data.forEach(provider => {
                 if(provider.active == true) {
                     this.providers.push(provider);
                     this.providers = [...this.providers]
                 }
             })
+            this.messageService.closeLoading();
         });
         this.collapse();
     }
@@ -167,6 +176,7 @@ export class NotesComponent implements OnInit, AfterViewInit{
             fromDate: this.dateSince,
             toDate: this.dateTo,
             providerId: this.providerId,
+            analyticId: this.analyticId
         };
         json.fromDate = (this.dateSince == null || this.dateSince == undefined) ? null : `${this.dateSince.getFullYear()}/${this.dateSince.getMonth() + 1}/${this.dateSince.getDate()}`;
         json.toDate = (this.dateTo == null || this.dateTo == undefined) ? null : `${this.dateTo.getFullYear()}/${this.dateTo.getMonth() + 1}/${this.dateTo.getDate()}`;
@@ -229,16 +239,21 @@ export class NotesComponent implements OnInit, AfterViewInit{
 
     initGrid() {
         var columns = [0, 1, 2, 3, 4, 5];
-    
+
         var params = {
             selector: '#dataTable',
             columns: columns,
             title: 'Notas',
             withExport: true
         }
-    
+
         this.dataTableService.destroy(params.selector);
         this.dataTableService.initialize(params);
+        setTimeout(() => {
+          let el: HTMLElement = document.getElementsByClassName('sorting_asc')[0] as HTMLElement;
+          el.click()
+        }, 501);
+        this.messageService.closeLoading();
     }
 
     changeTab(tab?: number) {

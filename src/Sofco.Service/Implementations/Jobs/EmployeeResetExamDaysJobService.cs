@@ -1,5 +1,6 @@
 ﻿using Sofco.Core.DAL;
 using Sofco.Core.Services.Jobs;
+using Sofco.DAL;
 
 namespace Sofco.Service.Implementations.Jobs
 {
@@ -15,6 +16,9 @@ namespace Sofco.Service.Implementations.Jobs
         public void ResetExamDays()
         {
             unitOfWork.EmployeeRepository.ResetAllExamDays();
+            unitOfWork.EmployeeRepository.ResetAllPaternityDays();
+            unitOfWork.EmployeeRepository.ResetAllBirthdayDays();
+            unitOfWork.EmployeeRepository.ResetAllFlexDays();
         }
     }
 }

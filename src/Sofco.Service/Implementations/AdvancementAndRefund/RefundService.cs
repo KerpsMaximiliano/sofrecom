@@ -336,6 +336,18 @@ namespace Sofco.Service.Implementations.AdvancementAndRefund
             };
         }
 
+        public Response<IList<Refund>> GetPendingByAnaliticId(int id)
+        {
+            return new Response<IList<Refund>>
+            {
+                Data = this.refundRepository.GetPendingRefundsByAnalytic(id)
+
+            };
+        }
+    
+ 
+
+
         public Response<List<RefundListResultModel>> GetByParameters(RefundListParameterModel model)
         {
             ValidParameter(model);

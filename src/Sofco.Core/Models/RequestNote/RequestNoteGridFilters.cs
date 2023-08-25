@@ -17,9 +17,8 @@ namespace Sofco.Core.Models.RequestNote
         public int? CreationUserId { get; set; }
         public DateTime? FromDate { get; set; }
         public DateTime? ToDate { get; set; }
-
         public int? ProviderId { get; set; }
-        
+        public int? AnalyticID { get; set; }
         public int? StatusId { get; set; }
     }
    

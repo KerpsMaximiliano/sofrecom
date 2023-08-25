@@ -35,14 +35,13 @@ namespace Sofco.Core.Models.RequestNote
         }
         private bool ValidateReadPermissions(List<string> permissions, int userId)
         {
-            return CreationUserId == userId || permissions.Any(p => p == "NP_READONLY");
+            return CreationUserId == userId || permissions.Any(p => p == "NP_READONLY") || AnalyticsManagers.Any(a => a == userId);
         }
         private bool ValidateEditPermissions(List<string> permissions, int userId)
         {
             var hasPermission = CreationUserId == userId; //Si es suya, siempre la puede ver
             if (hasPermission && StatusId == _settings.WorkflowStatusNPBorrador)
                 return hasPermission;
-
             if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionGerente) //case RequestNoteStatus.PendienteAprobaciónGerentesAnalítica:
                 hasPermission = hasPermission || (permissions.Any(p => p == "NP_APROBACION_GERE") && AnalyticsManagers.Any(a => a == userId));
             else if (StatusId == _settings.WorkflowStatusNPPendienteAprobacionDAF) // case RequestNoteStatus.PendienteAprobaciónDAF:

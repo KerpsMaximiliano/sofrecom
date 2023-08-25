@@ -60,7 +60,7 @@ namespace Sofco.Service.Implementations.Rrhh.Licenses
 
             if (response.HasErrors()) return response;
 
-            LicenseValidationHandler.ValidateDays(response, domain, unitOfWork);
+            LicenseValidationHandler.ValidateDays(response, domain, unitOfWork); //Revisar y agregar licencias en LicenseFactory
             LicenseValidationHandler.ValidateApplicantNotEqualManager(response, domain, unitOfWork);
 
             if (response.HasErrors()) return response;

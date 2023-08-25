@@ -46,6 +46,15 @@
                         <label style="font-size: 15px"> {{'rrhh.license.sector' | translate }}: </label>
                         <span style="font-size: 14px"> {{ model.sectorDesc }}</span>
                     </div>
+                    <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <select-two [label]="'rrhh.license.reason'" [(value)]="model.typeId" [options]="licensesTypes" (valueChange)="validateLimit()">
+                            </select-two>
+                            </div>
+                        </div>
+                    </div>
+                   
 
                     <div class="row">
                         <div class="col-sm-6">
@@ -72,8 +81,7 @@
                         </div>
                     </div>
 
-                    <select-two [label]="'rrhh.license.reason'" [(value)]="model.typeId" [options]="licensesTypes">
-                    </select-two>
+                  
 
                     <div class="form-group" [hidden]="model.typeId != 13 && model.typeId != 14">
                         <label class="control-label">{{'rrhh.license.comments' | translate }}</label>
