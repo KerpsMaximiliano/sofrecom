@@ -7,6 +7,7 @@ namespace Sofco.Core.Services.Rrhh
     public interface ILicenseTypeService
     {
         ICollection<LicenseType> GetOptions();
+        ICollection<LicenseType> GetOptionsRrhh();
         Response UpdateLicenseTypeDays(int typeId, int value);
     }
 }

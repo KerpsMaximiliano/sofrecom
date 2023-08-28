@@ -14,7 +14,25 @@ namespace Sofco.DAL.Repositories.AllocationManagement
 
         public ICollection<LicenseType> GetAllActivesReadOnly()
         {
-            return context.LicenseTypes.Where(x => x.Active).ToList().AsReadOnly();
+            return context.LicenseTypes.Where(x => x.Active && x.ListEmp).ToList().AsReadOnly();
+        }
+
+        public List<LicenseType> GetAllListRrhh()
+        {
+            var query = context.LicenseTypes
+                        .Where(x => x.Active && x.ListRRHH && x.ListEmp)
+                        .ToList();
+            return query;
+        }
+
+        public List<LicenseType> GetAllListEmp()
+        {
+            var query = context.LicenseTypes
+                        .Where(x => x.Active && 
+                                    x.ListRRHH.Equals(false) && 
+                                    x.ListEmp)
+                        .ToList();
+            return query;
         }
     }
 }
