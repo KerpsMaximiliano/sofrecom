@@ -342,7 +342,6 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
         this.model.typeId = 0;
       });
     } else{
-      debugger;
       this.getLicenseTypeSubscrip = this.licenseService
       .getLicensesForRRHH()
       .subscribe((data) => {
