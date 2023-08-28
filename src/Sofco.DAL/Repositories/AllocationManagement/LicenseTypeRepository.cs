@@ -18,9 +18,11 @@ namespace Sofco.DAL.Repositories.AllocationManagement
         }
 
         public List<LicenseType> GetAllListRrhh()
-        {
+        {            
             var query = context.LicenseTypes
-                        .Where(x => x.Active && x.ListRRHH && x.ListEmp)
+                        .Where(x => x.Active && 
+                                    x.ListRRHH.Equals(true) || 
+                                    x.ListEmp.Equals(true))
                         .ToList();
             return query;
         }
