@@ -14,10 +14,14 @@ namespace Sofco.Domain.Models.AllocationManagement
         public int TaskId { get; set; }
 
         public bool CertificateRequired { get; set; }
+        
+        public string LabelKey { get; set; }
 
         public bool Active { get; set; }
 
-        public string LabelKey { get; set; }
+        public bool ListEmp { get; set; }
+
+        public bool ListRRHH { get; set; }
 
         public ICollection<License> Licenses { get; set; }
     }

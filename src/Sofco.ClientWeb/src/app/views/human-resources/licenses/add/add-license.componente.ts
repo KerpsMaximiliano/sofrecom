@@ -333,13 +333,24 @@ export class AddLicenseComponent implements OnInit, OnDestroy {
   }
 
   private getLicenceTypes(): void {
-    this.getLicenseTypeSubscrip = this.licenseService
+    if(this.fromProfile){
+      this.getLicenseTypeSubscrip = this.licenseService
       .getLicenceTypes()
       .subscribe((data) => {
         this.licensesTypesOptions = data;
         this.licensesTypes = data.optionsWithPayment;
         this.model.typeId = 0;
       });
+    } else{
+      this.getLicenseTypeSubscrip = this.licenseService
+      .getLicensesForRRHH()
+      .subscribe((data) => {
+        this.licensesTypesOptions = data;
+        this.licensesTypes = data.optionsWithPayment;
+        this.model.typeId = 0;
+      });
+    }
+    
   }
 
   private updateStorage(): void {

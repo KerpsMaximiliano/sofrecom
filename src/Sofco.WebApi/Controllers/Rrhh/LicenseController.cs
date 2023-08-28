@@ -60,6 +60,22 @@ namespace Sofco.WebApi.Controllers.Rrhh
             return Ok(model);
         }
 
+        [HttpGet("typesRrhh")]
+        public IActionResult GetOptionsRrhh()
+        {
+            var options = licenseTypeService.GetOptionsRrhh();
+
+            var model = new LicenseTypeOptions
+            {
+                OptionsWithPayment = options.Where(x => x.WithPayment)
+                    .Select(x => new Option { Id = x.Id, Text = x.Description }).ToList(),
+                OptionsWithoutPayment = options.Where(x => !x.WithPayment)
+                    .Select(x => new Option { Id = x.Id, Text = x.Description }).ToList()
+            };
+
+            return Ok(model);
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
