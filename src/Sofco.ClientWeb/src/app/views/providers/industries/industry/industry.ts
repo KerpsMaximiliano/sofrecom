@@ -24,6 +24,7 @@ export class IndustryComponent implements AfterContentInit {
   public mode: string;
   public form: FormGroup;
   public edit: boolean = false;
+  public active: any;
   public startDate: any;
   public endDate: any;
 
@@ -59,9 +60,9 @@ export class IndustryComponent implements AfterContentInit {
       description: this.form.get("description").value,
       critical: this.form.get("critical").value,
       rnAmmountReq: this.form.get("rnAmmountReq").value,
-      startDate: this.startDate,
-      endDate: this.form.get("active").value ? null : this.endDate,
-      active: this.form.get("active").value,
+      active: this.industry.active,
+      startDate: this.industry.startDate,
+      endDate: this.industry.endDate,
     };
 
     if (this.param.includes("add")) this.addIndustry(form);
@@ -139,25 +140,23 @@ export class IndustryComponent implements AfterContentInit {
       ),
       critical: new FormControl(null, Validators.required),
       rnAmmountReq: new FormControl(null, Validators.required),
-      active: new FormControl(null, Validators.required),
     });
   }
 
   private setForm(industry: any): void {
     this.form.get("description").setValue(industry.description);
     this.startDate = industry.startDate;
-    this.endDate = industry.endDate ? industry.endDate : new Date();
+    this.endDate = industry.endDate;
+    this.active = industry.active;
 
     if (this.edit) {
       this.form.get("critical").setValue(industry.critical);
       this.form.get("rnAmmountReq").setValue(industry.rnAmmountReq);
-      this.form.get("active").setValue(industry.active);
       return;
     }
 
     this.form.get("critical").setValue(industry.critical ? "Si" : "No");
     this.form.get("rnAmmountReq").setValue(industry.rnAmmountReq ? "Si" : "No");
-    this.form.get("active").setValue(industry.active ? "Activo" : "Inactivo");
   }
 
   public getErrorMessage(control: FormControl): string {

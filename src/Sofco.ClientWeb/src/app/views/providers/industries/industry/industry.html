@@ -10,8 +10,19 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
-  <button class="btn btn-success" type="button" [routerLink]="['/providers/industries']"> <i
-      class="fa fa-arrow-left"></i> {{'ACTIONS.back' | translate}} </button>
+  <div class="row">
+    <div class="col-sm-12 row">
+      <div class="pull-left" style="margin-left: 2rem;">
+        <button class="btn btn-success btn-outline dim" [routerLink]="['/providers/industries']">
+          <i class="fa fa-arrow-left"></i> Volver
+        </button>
+        <button *ngIf="edit" class="btn btn-primary btn-outline dim" type="button" (click)="confirm()">
+          Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+
   <form class="ibox-content" [formGroup]="form">
     <div class="panel-body">
       <div class="row">
@@ -60,47 +71,28 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" *ngIf="!edit">
         <div class="col-md-4">
           <div class="form-group">
             <label class="control-label"> Estado </label>
-            <ng-select [multiple]="false" [searchable]="false" [clearable]="false" formControlName="active"
-              *ngIf="edit; else noEditActive" #active>
-              <ng-option [value]="true"> Activo </ng-option>
-              <ng-option [value]="false"> Inactivo </ng-option>
-            </ng-select>
-            <ng-template #noEditActive>
-              <input class="form-control" formControlName="active">
-            </ng-template>
-            <span *ngIf="form.get('active')?.invalid && form.get('active')?.touched">
-              {{ getErrorMessage(form.get("active")) }}
-            </span>
+            <input class="form-control" [value]="active ? 'Activo' : 'Inactivo'" disabled>
           </div>
         </div>
 
         <div class="col-md-4">
           <div class="form-group">
             <label class="control-label"> Fecha desde </label>
-            <date-picker [(date)]="startDate" *ngIf="edit; else noEditStartDate"></date-picker>
-            <ng-template #noEditStartDate>
-              <input class="form-control" [value]="startDate" disabled>
-            </ng-template>
+            <input class="form-control" [value]="startDate" disabled>
           </div>
         </div>
 
-        <div class="col-md-4" *ngIf="form.get('active')?.value === false || form.get('active')?.value === 'Inactivo'">
+        <div class="col-md-4" *ngIf="active === false">
           <div class="form-group">
             <label class="control-label"> Fecha hasta </label>
-            <date-picker [(date)]="endDate" *ngIf="edit; else noEditEndDate"></date-picker>
-            <ng-template #noEditEndDate>
-              <input class="form-control" [value]="endDate" disabled>
-            </ng-template>
+            <input class="form-control" [value]="endDate" disabled>
           </div>
         </div>
       </div>
-      <button class="btn btn-primary" type="button" (click)="confirm()">
-        Guardar
-      </button>
     </div>
   </form>
 </div>

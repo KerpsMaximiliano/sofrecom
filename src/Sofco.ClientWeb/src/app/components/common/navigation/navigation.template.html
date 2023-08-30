@@ -263,16 +263,16 @@
         <a href="#"><i class="fa fa-user-plus"></i> <span class="nav-label">{{'Abastecimiento y Proveedores' | translate
             }}</span> <span class="fa arrow"></span></a>
         <ul class="nav nav-second-level collapse" [ngClass]="{in: activeRoute('providers')}">
-          <li [ngClass]="{active: activeRoute('providers')}" *ngIf="menuService.hasModule('PROV')"><a
+          <li [ngClass]="{active: activeRoute('/providers/providers')}" *ngIf="menuService.hasModule('PROV')"><a
               [routerLink]="['/providers/providers']">Proveedores</a>
           </li>
-          <li [ngClass]="{active: activeRoute('industries')}" *ngIf="menuService.hasModule('PROV')"><a
+          <li [ngClass]="{active: activeRoute('/providers/industries')}" *ngIf="menuService.hasModule('PROV')"><a
               [routerLink]="['/providers/industries']"> Rubros </a>
           </li>
-          <li [ngClass]="{active: activeRoute('notes')}" *ngIf="menuService.hasModule('NOPE')"><a
+          <li [ngClass]="{active: activeRoute('/providers/notes')}" *ngIf="menuService.hasModule('NOPE')"><a
               [routerLink]="['/providers/notes']">Notas de Pedido</a>
           </li>
-          <li [ngClass]="{active: activeRoute('purchase-orders')}"><a
+          <li [ngClass]="{active: activeRoute('/providers/purchase-orders')}"><a
               [routerLink]="['/providers/purchase-orders']">Ordenes de Compra</a>
           </li>
         </ul>

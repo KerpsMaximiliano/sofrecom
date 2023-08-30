@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { Router } from "@angular/router";
 
@@ -13,7 +13,7 @@ import { ProvidersAreaService } from "app/services/admin/providersArea.service";
   styleUrls: ["./industries.scss"],
   providers: [DatePipe],
 })
-export class IndustriesComponent implements AfterViewInit {
+export class IndustriesComponent implements OnInit {
   public data = []; // dataTable.
 
   public description: string = ""; // INPUT: Descripción.
@@ -27,9 +27,10 @@ export class IndustriesComponent implements AfterViewInit {
     private router: Router
   ) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this._message.showLoading();
     if (this._industries.getMode() && this._industries.getIndustry()) {
+      this.data = [];
       this.data.push(this._industries.getIndustry());
       this._industries.setMode(false);
       this._message.closeLoading();
@@ -102,7 +103,7 @@ export class IndustriesComponent implements AfterViewInit {
   public change(industry: any): void {
     this._message.showLoading();
     this._industries.action(industry, !industry.active).subscribe({
-      next: () => {
+      next: (res: any) => {
         this.updateTable(industry.id);
         this._message.showMessage(
           `El rubro fue ${
@@ -117,11 +118,12 @@ export class IndustriesComponent implements AfterViewInit {
   }
 
   private updateTable(id: number): void {
-    let index = this.data.findIndex((industry) => industry.id === id);
+    let index: number = this.data.findIndex((industry) => industry.id === id);
     if (index === -1) return;
     this._industries.get(id).subscribe({
       next: (res: any) => {
         this.data[index] = res.data;
+        this.setDataTable(this.data);
       },
       error: () => this._message.closeLoading(),
       complete: () => this._message.closeLoading(),
