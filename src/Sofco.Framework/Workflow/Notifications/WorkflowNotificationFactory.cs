@@ -37,6 +37,7 @@ namespace Sofco.Framework.Workflow.Notifications
                 case "REQUEST-NOTE-REJECT": return new WorkflowRequestNoteNotificationReject(mailSender, emailConfig, appSetting, unitOfWork);
                 case "BUY-ORDER-DEFAULT": return new WorkflowBuyOrderNotificationDefault(mailSender, emailConfig, appSetting, unitOfWork);
                 case "BUY-ORDER-REJECT": return new WorkflowBuyOrderNotificationReject(mailSender, emailConfig, appSetting, unitOfWork);
+                case "REQUEST-NOTE-TODAF": return new WorkflowRequestNoteToDAFNotification(mailSender, emailConfig, appSetting, unitOfWork);
 
                 default: return null;
             }

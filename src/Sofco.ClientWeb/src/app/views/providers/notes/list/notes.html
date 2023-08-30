@@ -55,121 +55,124 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label">{{ 'notes.grid.analytic' | translate }}</label>
-                <label class="control-label"> Analítica </label>
                 <ng-select [items]="analiticas" bindLabel="text" bindValue="id" [(ngModel)]="analyticId">
                 </ng-select>
               </div>
             </div>
-          </div>
 
-          <div class="col-sm-2">
-            <div class="form-group">
-              <label class="control-label">{{ 'notes.grid.dateFrom' | translate }}</label>
-              <date-picker [(date)]="dateSince" (keyup.enter)="search()"></date-picker>
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label class="control-label">{{ 'notes.grid.dateFrom' | translate }}</label>
+                <date-picker [(date)]="dateSince" (keyup.enter)="search()"></date-picker>
+              </div>
+            </div>
+
+            <div class="col-sm-2">
+              <div class="form-group">
+                <label class="control-label">{{ 'notes.grid.dateTo' | translate}}</label>
+                <date-picker [(date)]="dateTo" (keyup.enter)="search()"></date-picker>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label">{{ 'notes.grid.number' | translate }}</label>
+                <input type="text" [(ngModel)]="noteId" class="form-control" (keyup.enter)="search()">
+              </div>
             </div>
           </div>
 
-          <div class="col-sm-2">
-            <div class="form-group">
-              <label class="control-label">{{ 'notes.grid.dateTo' | translate}}</label>
-              <date-picker [(date)]="dateTo" (keyup.enter)="search()"></date-picker>
+          <div class="row">
+            <div class="text-right">
+              <button class="btn btn-sm btn-success" (click)="search()">
+                {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i>
+              </button>
+              <button class="btn btn-sm btn-warning" (click)="refreshSearch()">
+                {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i>
+              </button>
             </div>
           </div>
-
-          <div class="col-sm-4">
-            <div class="form-group">
-              <label class="control-label">{{ 'notes.grid.number' | translate }}</label>
-              <input type="text" [(ngModel)]="noteId" class="form-control" (keyup.enter)="search()">
-            </div>
-          </div>
-
         </div>
-
-        <div class="panel-footer">
-          <div class="text-right">
-            <button class="btn btn-sm btn-success" (click)="search()">
-              {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i>
-            </button>
-            <button class="btn btn-sm btn-warning" (click)="refreshSearch()">
-              {{ 'ACTIONS.clean' | translate }} <i class="fa fa-refresh"></i>
-            </button>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
-</div>
 
-<div class="ibox">
-  <div class="ibox-content">
-    <div>
-      <button class="btn btn-sm btn-primary pull-right" routerLink="./add" style="margin-top: .15rem">
-        {{ 'notes.add' | translate }} <i class="fa fa-plus"></i>
-      </button>
-    </div>
+  <div class="ibox">
+    <div class="ibox-content">
+      <div>
+        <button class="btn btn-sm btn-primary pull-right" routerLink="./add" style="margin-top: .15rem">
+          {{ 'notes.add' | translate }} <i class="fa fa-plus"></i>
+        </button>
+      </div>
 
-    <div class="tabs-container">
-      <ul class="nav nav-tabs">
-        <li class="active">
-          <a data-toggle="tab" class="tab-link-warning" href="#tab-1" (click)="changeTab(1)" #tabOne>
-            {{ "notes.grid.processApproval" | translate }}
-          </a>
-        </li>
-        <li class="">
-          <a data-toggle="tab" class="tab-link-primary" href="#tab-2" (click)="changeTab(2)" #tabTwo>
-            {{ "notes.grid.approve" | translate }}
-          </a>
-        </li>
-      </ul>
-    </div>
+      <div class="tabs-container">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a data-toggle="tab" class="tab-link-warning" href="#tab-1" (click)="changeTab(1)" #tabOne>
+              {{ "notes.grid.processApproval" | translate }}
+            </a>
+          </li>
+          <li class="">
+            <a data-toggle="tab" class="tab-link-primary" href="#tab-2" (click)="changeTab(2)" #tabTwo>
+              {{ "notes.grid.approve" | translate }}
+            </a>
+          </li>
+        </ul>
+      </div>
 
-    <div class="tab-content">
-      <div role="tabpanel" id="tab-1" class="tab-pane active">
-        <div class="panel-body table-responsive">
-          <table class="table table-striped dataTable" role="grid" id="dataTable">
-            <thead>
-              <tr>
-                <th>{{ "notes.grid.number" | translate }}</th>
-                <th>{{ "notes.grid.description" | translate }}</th>
-                <th>{{ "notes.grid.status" | translate }}</th>
-                <th>{{ "notes.grid.createDate" | translate }}</th>
-                <th>{{ "notes.grid.createBy" | translate }}</th>
-                <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
-              </tr>
-            </thead>
+      <div class="tab-content">
+        <div role="tabpanel" id="tab-1" class="tab-pane active">
+          <div class="panel-body table-responsive">
+            <table class="table table-striped dataTable" role="grid" id="dataTable">
+              <thead>
+                <tr>
+                  <th>{{ "notes.grid.number" | translate }}</th>
+                  <th>{{ "notes.grid.description" | translate }}</th>
+                  <th>{{ "notes.grid.status" | translate }}</th>
+                  <th>{{ "notes.grid.createDate" | translate }}</th>
+                  <th>{{ "notes.grid.createBy" | translate }}</th>
+                  <th class="column-sm text-center">{{ 'ACTIONS.title' | translate }}</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr *ngFor="let note of notes">
-                <td>{{note.id}}</td>
-                <td>{{note.description}}</td>
-                <td><span class="label">{{note.status | requestNoteState}}</span></td>
-                <td>{{note.creationDate}}</td>
-                <td>{{note.creationUserName}}</td>
-                <td class="column-sm text-center">
-                  <button title="ver" class="btn btn-primary btn-xs" (click)="view(note.id)"
-                    *ngIf="note.statusId != 1 && note.hasReadPermissions">
-                    <i class="fa fa-eye"></i>
-                  </button>
+              <tbody>
+                <tr *ngFor="let note of notes">
+                  <td>{{note.id}}</td>
+                  <td>{{note.description}}</td>
+                  <td><span class="label">{{note.status | requestNoteState}}</span></td>
+                  <td>{{note.creationDate}}</td>
+                  <td>{{note.creationUserName}}</td>
+                  <td class="column-sm text-center">
+                    <button title="Ver" class="btn btn-primary btn-xs" (click)="view(note.id)"
+                      *ngIf="note.statusId != 1 && note.hasReadPermissions">
+                      <i class="fa fa-eye"></i>
+                    </button>
 
-                  <button title="editar" class="btn btn-warning btn-xs" (click)="edit(note.id)"
-                    *ngIf="note.statusId != 11 && note.statusId != 12 && note.hasEditPermissions">
-                    <i class="fa fa-edit"></i>
-                  </button>
+                    <button title="Editar" class="btn btn-warning btn-xs" (click)="edit(note.id)"
+                      *ngIf="note.statusId != 11 && note.statusId != 12 && note.hasEditPermissions">
+                      <i class="fa fa-edit"></i>
+                    </button>
 
-                  <button title="proveedores" class="btn btn-info btn-xs" (click)="getProviders(note.id)"
-                    *ngIf="note.statusId == currentEnviroment.NP_PEND_APRO_DAF || note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL || note.statusId == currentEnviroment.NP_CERRADA">
-                    <i class="fa fa-suitcase"></i>
-                  </button>
+                    <button title="Proveedores" class="btn btn-info btn-xs" (click)="getProviders(note.id)"
+                      *ngIf="note.statusId == currentEnviroment.NP_PEND_APRO_DAF || note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL || note.statusId == currentEnviroment.NP_CERRADA">
+                      <i class="fa fa-suitcase"></i>
+                    </button>
 
-                  <button title="agregar orden de compra" class="btn btn-default btn-xs" (click)="addOC(note.id)"
-                    *ngIf="(note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL) && note.hasEditPermissions">
-                    <i class="fa fa-barcode"></i>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    <button title="Agregar orden de compra" class="btn btn-xs cartIcon" (click)="addOC(note.id)"
+                      *ngIf="(note.statusId == currentEnviroment.NP_PEND_GEN_SAP || note.statusId == currentEnviroment.NP_PEND_RECEP_MERC || note.statusId == currentEnviroment.NP_RECEP_PARCIAL) && note.hasEditPermissions">
+                      <i class="fa fa-shopping-cart"></i>
+                    </button>
+
+                    <button title="Mostrar PMs Aprobadores" class="btn btn-success btn-xs"
+                      (click)="getApprovedManagers(note.id)"
+                      *ngIf="note.statusId == currentEnviroment.NP_PEND_APRO_GER_AN && note.hasReadPermissions">
+                      <i class="fa fa-user"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -186,4 +189,30 @@
   <div *ngIf="modalProvidersList.length == 0">
     <h2> No hay proveedores seleccionados </h2>
   </div>
+</ng2-modal>
+
+<!-- PMs Aprobadores -->
+<ng2-modal class="analitic-managers-modal" [config]="approvedManagersModalConfig" #approvedManagersModal>
+  <!-- Aprobados -->
+  <div class="managers approved">
+    <h3> Estado: "{{ analiticStates.APPROVED }}". </h3>
+    <ng-template [ngIf]="analiticManagers.approved.size" [ngIfElse]="noAnaliticManagers">
+      <ul *ngFor="let manager of analiticManagers.approved">
+        <li>{{ manager }}</li>
+      </ul>
+    </ng-template>
+  </div>
+  <!-- Pendientes de aprobación -->
+  <div class="managers pending-approval">
+    <h3> Estado: "{{ analiticStates.PENDING_APPROVAL }}". </h3>
+    <ng-template [ngIf]="analiticManagers.pending_approval.size" [ngIfElse]="noAnaliticManagers">
+      <ul *ngFor="let manager of analiticManagers.pending_approval">
+        <li>{{ manager }}</li>
+      </ul>
+    </ng-template>
+  </div>
+  <!-- Mensaje a mostrar cuando no hay gerentes -->
+  <ng-template #noAnaliticManagers>
+    <span> No hay gerentes con este estado. </span>
+  </ng-template>
 </ng2-modal>

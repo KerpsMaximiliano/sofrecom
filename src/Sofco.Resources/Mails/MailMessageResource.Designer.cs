@@ -19,7 +19,7 @@ namespace Sofco.Resources.Mails {
     // a través de una herramienta como ResGen o Visual Studio.
     // Para agregar o quitar un miembro, edite el archivo .ResX y, a continuación, vuelva a ejecutar ResGen
     // con la opción /str o recompile su proyecto de VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MailMessageResource {
@@ -666,6 +666,16 @@ namespace Sofco.Resources.Mails {
         public static string WorkflowNotificationRequestNoteReject {
             get {
                 return ResourceManager.GetString("WorkflowNotificationRequestNoteReject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Busca una cadena traducida similar a La nota de Pedido: {0} requiere la gestion del Seguro y/o ART correspondiente. &lt;br/&gt;&lt;br/&gt;
+        ///Por favor, no responda este mail, cualquier consulta realicela a traves del &lt;a href=&apos;{1}&apos; target=&apos;_blank&apos;&gt;portal&lt;/a&gt;.
+        /// </summary>
+        public static string WorkflowNotificationRequestNoteToDAF {
+            get {
+                return ResourceManager.GetString("WorkflowNotificationRequestNoteToDAF", resourceCulture);
             }
         }
         

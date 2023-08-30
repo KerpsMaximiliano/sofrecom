@@ -240,4 +240,7 @@
   <data name="WorkflowNotificationRequestNote" xml:space="preserve">
     <value>Nota de Pedido - {0}</value>
   </data>
+  <data name="WorkflowNotificationRequestNoteToDAF" xml:space="preserve">
+    <value>Nota de Pedido - {0}</value>
+  </data>
 </root>

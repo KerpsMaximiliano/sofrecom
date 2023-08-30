@@ -50,6 +50,10 @@ export class LicenseService {
     return this.http.get<any>(`${this.baseUrl}/licenses/types`);
   }
 
+  getLicensesForRRHH(){
+    return this.http.get<any>(`${this.baseUrl}/licenses/typesRrhh`);
+  }
+
   add(model){
     model.userId = this.menuService.user.id;
     model.isRrhh = this.menuService.userIsRrhh;

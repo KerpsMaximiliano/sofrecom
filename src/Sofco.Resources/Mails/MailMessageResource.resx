@@ -481,4 +481,8 @@ Motivo de rechazo: {3}</value>
 &lt;/br&gt;&lt;/br&gt;
 Motivo de rechazo: {3}</value>
   </data>
+  <data name="WorkflowNotificationRequestNoteToDAF" xml:space="preserve">
+    <value>La nota de Pedido: {0} requiere la gestion del Seguro y/o ART correspondiente. &lt;br/&gt;&lt;br/&gt;
+Por favor, no responda este mail, cualquier consulta realicela a traves del &lt;a href='{1}' target='_blank'&gt;portal&lt;/a&gt;</value>
+  </data>
 </root>

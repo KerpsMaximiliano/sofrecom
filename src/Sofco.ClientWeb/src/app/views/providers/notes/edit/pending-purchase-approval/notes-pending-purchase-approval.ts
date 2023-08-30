@@ -18,13 +18,13 @@ import { FileUploader } from "ng2-file-upload";
 
 // Declaración de interfaces utilizadas
 declare interface ProviderArea {
-  active: boolean;
-  startDate: string;
-  critical: boolean;
-  description: string;
-  endDate: any;
-  id: number;
-  rnAmmountReq: boolean;
+    active: boolean;
+    startDate: string;
+    critical: boolean;
+    description: string;
+    endDate: any;
+    id: number;
+    rnAmmountReq: boolean;
 }
 
 
@@ -98,13 +98,13 @@ export class NotesPendingPurchaseApproval {
     travelReturnDate: string;
     trainingDate: string;
 
-    currencies: Array<{id: number, description: string}> = [{id: 1, description: '$'}, {id:2, description: 'u$s'}];
-    units: Array<{id: number, description: string}> = [
-        {id: 1, description: "Total"},
-        {id: 2, description: "Hora"},
-        {id: 3, description: "Diario"},
-        {id: 4, description: "Mensual"},
-        {id: 5, description: "Anual"}
+    currencies: Array<{ id: number, description: string }> = [{ id: 1, description: '$' }, { id: 2, description: 'u$s' }];
+    units: Array<{ id: number, description: string }> = [
+        { id: 1, description: "Total" },
+        { id: 2, description: "Hora" },
+        { id: 3, description: "Diario" },
+        { id: 4, description: "Mensual" },
+        { id: 5, description: "Anual" }
     ];
 
     comments = [];
@@ -174,14 +174,14 @@ export class NotesPendingPurchaseApproval {
         private authService: AuthService,
         private router: Router,
         private workflowService: WorkflowService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.requestNoteId = this.currentNote.id;
         this.inicializar();
         this.mode = this.requestNoteService.getMode();
         this.userInfo = UserInfoService.getUserInfo();
-        if(this.requestNoteService.getMode() == "Edit") {
+        if (this.requestNoteService.getMode() == "Edit") {
             this.workflowModel = {
                 workflowId: this.currentNote.workflowId,
                 entityController: "RequestNoteBorrador",
@@ -198,8 +198,8 @@ export class NotesPendingPurchaseApproval {
         let find = this.providerAreas.find(p => p.id == this.formNota.get('providerArea').value);
         this.currentNote.providerAreaId = this.formNota.get('providerArea').value;
         this.currentNote.providerAreaDescription = find.description;
-        if(event.target.innerText == "RECHAZAR ") {
-            if(this.formNota.get('providerArea').value == null) {
+        if (event.target.innerText == "RECHAZAR ") {
+            if (this.formNota.get('providerArea').value == null) {
                 this.messageService.showMessage("Debe seleccionar un rubro", 2);
                 this.workflow.setCustomValidations(true);
                 return;
@@ -207,17 +207,17 @@ export class NotesPendingPurchaseApproval {
             this.workflow.updateRequestNote(this.currentNote);
             this.workflow.setCustomValidations(false);
             this.workflow.filesUploaded();
-        } else if(event.target.innerText == "ENVIAR A DAF ") {
+        } else if (event.target.innerText == "ENVIAR A DAF ") {
             this.markFormGroupTouched(this.formProvidersGrid);
-            if(this.formNota.get('providerArea').value == null) {
+            if (this.formNota.get('providerArea').value == null) {
                 this.messageService.showMessage("Debe seleccionar un rubro", 2);
                 this.workflow.setCustomValidations(true);
                 return;
             }
-            if(this.proveedoresSelected.length == 0) {
+            if (this.proveedoresSelected.length == 0) {
                 this.messageService.showMessage("Debe seleccionar al menos un proveedor", 2);
                 this.workflow.setCustomValidations(true);
-                const event = new KeyboardEvent("keydown",{
+                const event = new KeyboardEvent("keydown", {
                     'key': 'Escape'
                 });
                 setTimeout(() => {
@@ -225,12 +225,12 @@ export class NotesPendingPurchaseApproval {
                 }, 1000);
                 return;
             }
-            if(!this.formProvidersGrid.valid) {
+            if (!this.formProvidersGrid.valid) {
                 this.messageService.showMessage("Cada proveedor debe tener un monto", 2);
                 this.workflow.setCustomValidations(true);
                 return;
             };
-            if(this.proveedoresSelected.length != this.filesToUpload.length) {
+            if (this.proveedoresSelected.length != this.filesToUpload.length) {
                 this.messageService.showMessage("Cada proveedor debe tener un presupuesto cargado", 2);
                 this.workflow.setCustomValidations(true);
                 return;
@@ -250,7 +250,7 @@ export class NotesPendingPurchaseApproval {
         this.providersAreaService.getAll().subscribe(d => {
             this.ammountReq = d.data.find(rubro => rubro.id == this.currentNote.providerAreaId).rnAmmountReq;
             d.data.forEach(providerArea => {
-                if(providerArea.active) {
+                if (providerArea.active) {
                     this.providerAreas.push(providerArea);
                     this.providerAreas = [...this.providerAreas]
                 }
@@ -260,7 +260,7 @@ export class NotesPendingPurchaseApproval {
         this.employeeService.getEveryone().subscribe(d => {
             this.participants = d;
             d.forEach(user => {
-                if(user.isExternal == 0 && user.endDate == null) {
+                if (user.isExternal == 0 && user.endDate == null) {
                     this.filteredParticipants.push(user);
                     this.filteredParticipants = [...this.filteredParticipants]
                 }
@@ -281,7 +281,7 @@ export class NotesPendingPurchaseApproval {
     }
 
     existingData() {
-        if(this.currentNote.attachments != null) {
+        if (this.currentNote.attachments != null) {
             this.uploadedFilesId = this.currentNote.attachments;
         }
         this.providersAreaService.get(this.currentNote.providerAreaId).subscribe(d => {
@@ -302,8 +302,8 @@ export class NotesPendingPurchaseApproval {
 
             // Inicializa el registro de la selección de rubro con el valor inicial del select, si es que tiene
             this.previousProviderArea = d.data;
-          });
-        this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[this.currentNote.providerAreaId]}).subscribe(d => {
+        });
+        this.providersService.getByParams({ statusId: 1, businessName: null, providersArea: [this.currentNote.providerAreaId] }).subscribe(d => {
             this.providers = d.data;
         });
         this.analiticasTable = this.currentNote.analytics;
@@ -313,7 +313,7 @@ export class NotesPendingPurchaseApproval {
             this.formProvidersGrid.addControl(`control${prov.providerId}`, new FormControl(null, Validators.required));
         });
         this.proveedoresSelected = this.proveedoresTable;
-        if(this.currentNote.travelSection) {
+        if (this.currentNote.travelSection) {
             this.formViaje.patchValue({
                 destination: this.currentNote.travel.destination,
                 transportation: this.currentNote.travel.transportation,
@@ -327,14 +327,14 @@ export class NotesPendingPurchaseApproval {
             this.employeeService.getEveryone().subscribe(d => {
                 this.currentNote.travel.passengers.forEach(ps => {
                     let findPs = d.find(passenger => passenger.id == ps.employeeId);
-                    if(findPs != undefined) {
+                    if (findPs != undefined) {
                         this.participantesViaje.push(findPs);
                         this.participantesViaje = [...this.participantesViaje]
                     }
                 });
             });
         }
-        if(this.currentNote.trainingSection) {
+        if (this.currentNote.trainingSection) {
             this.formCapacitacion.patchValue({
                 name: this.currentNote.training.name,
                 subject: this.currentNote.training.subject,
@@ -350,10 +350,10 @@ export class NotesPendingPurchaseApproval {
         this.formNota.disable();
         this.formCapacitacion.disable();
         this.formViaje.disable();
-        if(!this.closed && !this.rejected) {
-            this.formNota.get('providers').enable();
-        };
-        this.formNota.get('providerArea').enable();
+        // if(!this.closed && !this.rejected) {
+        //     this.formNota.get('providers').enable();
+        // };
+        // this.formNota.get('providerArea').enable();
     }
 
     /**
@@ -362,42 +362,42 @@ export class NotesPendingPurchaseApproval {
      * @param {Ng2ModalComponent} alertModal Instancia del modal de advertencia para el cambio de rubro (requerida para mostrarlo y oculrtarlo)
      */
     change(event: ProviderArea, alertModal: Ng2ModalComponent) {
-      this.currentProviderArea = event;
-      // Si hay proveedores seleccionados abre el modal de alerta, sino cambia de rubro sin alertar
-      if(this.proveedoresSelected.length) {
-        alertModal.show();
-      } else {
-        this.providerAreaChange();
-      }
+        this.currentProviderArea = event;
+        // Si hay proveedores seleccionados abre el modal de alerta, sino cambia de rubro sin alertar
+        if (this.proveedoresSelected.length) {
+            alertModal.show();
+        } else {
+            this.providerAreaChange();
+        }
     }
 
     /**
      * Método que procesa el cambio de rubrio, actualizando la lista de proveedores
      */
     providerAreaChange() {
-      // Actualización de registro de la selección de rubro al nuevo valor
-      this.previousProviderArea = this.currentProviderArea;
+        // Actualización de registro de la selección de rubro al nuevo valor
+        this.previousProviderArea = this.currentProviderArea;
 
-      // Lógica previamente implementada en método change()
-      if(this.currentProviderArea != undefined) {
-        this.critical = (this.currentProviderArea.critical) ? "Si" : "No";
-        this.ammountReq = this.currentProviderArea.rnAmmountReq;
-        this.providers = [];
-        this.providersService.getByParams({statusId: 1, businessName: null, providersArea:[this.currentProviderArea.id]}).subscribe(d => {
-            this.providers = d.data;
-        });
-        Object.keys(this.formProvidersGrid.controls).forEach(key => {
-            this.formProvidersGrid.get(key).clearValidators();
-            if(this.ammountReq) {
-                this.formProvidersGrid.get(key).setValidators(Validators.required);
-            }
-        });
-      } else {
-          this.critical = null
-      }
+        // Lógica previamente implementada en método change()
+        if (this.currentProviderArea != undefined) {
+            this.critical = (this.currentProviderArea.critical) ? "Si" : "No";
+            this.ammountReq = this.currentProviderArea.rnAmmountReq;
+            this.providers = [];
+            this.providersService.getByParams({ statusId: 1, businessName: null, providersArea: [this.currentProviderArea.id] }).subscribe(d => {
+                this.providers = d.data;
+            });
+            Object.keys(this.formProvidersGrid.controls).forEach(key => {
+                this.formProvidersGrid.get(key).clearValidators();
+                if (this.ammountReq) {
+                    this.formProvidersGrid.get(key).setValidators(Validators.required);
+                }
+            });
+        } else {
+            this.critical = null
+        }
 
-      // Reestablece el select que agrega proveedores (evita que quede seleccionado el de otro rubro)
-      this.formNota.controls.providers.setValue(null);
+        // Reestablece el select que agrega proveedores (evita que quede seleccionado el de otro rubro)
+        this.formNota.controls.providers.setValue(null);
     }
 
     /**
@@ -406,21 +406,21 @@ export class NotesPendingPurchaseApproval {
      * @param {Ng2ModalComponent} alertModal Instancia del modal de advertencia para el cambio de rubro (requerida para mostrarlo y oculrtarlo)
      */
     alertModalAccept(alertModal: Ng2ModalComponent) {
-      // Cambia el rubro con la lógica utilizada anteriormente
-      this.providerAreaChange();
+        // Cambia el rubro con la lógica utilizada anteriormente
+        this.providerAreaChange();
 
-      // Borra los proveedores de la lista
-      this.proveedoresSelected.splice(0).forEach((item) => {
-        this.formProvidersGrid.removeControl(`control${item.providerId}`);
-        this.formProvidersGrid.removeControl(`control${item.providerId}-currency`);
-        this.formProvidersGrid.removeControl(`control${item.providerId}-unit`);
-      });
+        // Borra los proveedores de la lista
+        this.proveedoresSelected.splice(0).forEach((item) => {
+            this.formProvidersGrid.removeControl(`control${item.providerId}`);
+            this.formProvidersGrid.removeControl(`control${item.providerId}-currency`);
+            this.formProvidersGrid.removeControl(`control${item.providerId}-unit`);
+        });
 
-      // Oculta el modal
-      alertModal.hide();
+        // Oculta el modal
+        alertModal.hide();
 
-      // Sobreescribe el rubro, dado que se cambió
-      this.previousProviderArea = this.currentProviderArea;
+        // Sobreescribe el rubro, dado que se cambió
+        this.previousProviderArea = this.currentProviderArea;
     }
 
     /**
@@ -428,7 +428,7 @@ export class NotesPendingPurchaseApproval {
      * revierte el cambio en el select de rubro
      */
     alertModalCancel() {
-      this.formNota.get('providerArea').setValue(this.previousProviderArea.id);
+        this.formNota.get('providerArea').setValue(this.previousProviderArea.id);
     }
 
     openTravelModal() {
@@ -453,25 +453,26 @@ export class NotesPendingPurchaseApproval {
         this.router.navigate(["/providers/notes"]);
     }
 
-    clearSelectedFile(){
-        if(this.uploader.queue.length > 0){
+    clearSelectedFile() {
+        if (this.uploader.queue.length > 0) {
             this.uploader.queue[0].remove();
         }
 
         this.selectedFile.nativeElement.value = '';
     }
 
-    uploaderConfig(){
-        this.uploader = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
-            authToken: 'Bearer ' + Cookie.get('access_token') ,
+    uploaderConfig() {
+        this.uploader = new FileUploader({
+            url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token'),
         });
 
-        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            if(status == 401){
+        this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+            if (status == 401) {
                 this.authService.refreshToken().subscribe(token => {
                     this.messageService.closeLoading();
 
-                    if(token){
+                    if (token) {
                         this.clearSelectedFile();
                         this.messageService.showErrorByFolder('common', 'fileMustReupload');
                         this.uploaderConfig();
@@ -489,17 +490,18 @@ export class NotesPendingPurchaseApproval {
         this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
     }
 
-    uploaderProviderConfig(){
-        this.uploaderProviders = new FileUploader({url: this.requestNoteService.uploadDraftFiles(),
-            authToken: 'Bearer ' + Cookie.get('access_token') ,
+    uploaderProviderConfig() {
+        this.uploaderProviders = new FileUploader({
+            url: this.requestNoteService.uploadDraftFiles(),
+            authToken: 'Bearer ' + Cookie.get('access_token'),
         });
 
-        this.uploaderProviders.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
-            if(status == 401){
+        this.uploaderProviders.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+            if (status == 401) {
                 this.authService.refreshToken().subscribe(token => {
                     this.messageService.closeLoading();
 
-                    if(token){
+                    if (token) {
                         this.clearSelectedFile();
                         this.messageService.showErrorByFolder('common', 'fileMustReupload');
                         this.uploaderProviderConfig();
@@ -515,15 +517,15 @@ export class NotesPendingPurchaseApproval {
         this.uploaderProviders.onCompleteAll = () => {
             this.proveedoresSelected.forEach(prov => {
                 let search = this.filesToUpload.find(provFile => provFile.providerId == prov.providerId);
-                    this.finalProviders.push({
-                        fileDescription: null,
-                        fileId: search.fileId,
-                        providerDescription: prov.providerDescription,
-                        providerId: prov.providerId,
-                        ammount: this.formProvidersGrid.get(`control${prov.providerId}`).value,
-                        currencyID: this.formProvidersGrid.get(`control${prov.providerId}-currency`).value,
-                        unitID: this.formProvidersGrid.get(`control${prov.providerId}-unit`).value
-                    });
+                this.finalProviders.push({
+                    fileDescription: null,
+                    fileId: search.fileId,
+                    providerDescription: prov.providerDescription,
+                    providerId: prov.providerId,
+                    ammount: this.formProvidersGrid.get(`control${prov.providerId}`).value,
+                    currencyID: this.formProvidersGrid.get(`control${prov.providerId}-currency`).value,
+                    unitID: this.formProvidersGrid.get(`control${prov.providerId}-unit`).value
+                });
             });
             this.currentNote.providersSelected = this.finalProviders;
             this.workflow.updateRequestNote(this.currentNote);
@@ -534,7 +536,7 @@ export class NotesPendingPurchaseApproval {
 
     downloadFiles() {
         this.currentNote.attachments.forEach(file => {
-            if(file.fileDescription) {
+            if (file.fileDescription) {
                 this.requestNoteService.downloadFile(file.fileId, 5, file.fileDescription);
             }
         })
@@ -545,7 +547,7 @@ export class NotesPendingPurchaseApproval {
         if (this.formNota.controls.providers.value == null) {
             return;
         };
-        if(this.proveedoresSelected.find(prov => prov.providerId == this.formNota.controls.providers.value) != undefined) {
+        if (this.proveedoresSelected.find(prov => prov.providerId == this.formNota.controls.providers.value) != undefined) {
             return;
         }
         let busqueda = this.providers.find(proveedor => proveedor.id == this.formNota.controls.providers.value);
@@ -557,7 +559,7 @@ export class NotesPendingPurchaseApproval {
             ammount: null
         });
         this.proveedoresSelected = [...this.proveedoresSelected];
-        if(this.ammountReq) {
+        if (this.ammountReq) {
             this.formProvidersGrid.addControl(`control${busqueda.id}`, new FormControl(null, Validators.required));
             this.formProvidersGrid.addControl(`control${busqueda.id}-currency`, new FormControl(null, Validators.required));
             this.formProvidersGrid.addControl(`control${busqueda.id}-unit`, new FormControl(null, Validators.required));
@@ -572,8 +574,8 @@ export class NotesPendingPurchaseApproval {
 
     selectedFileProvider(providerId: number, event: any, i: number) {
         let search = this.filesToUpload.find(file => file.providerId == providerId);
-        if(search == undefined) {
-            if(event.length == 1) {
+        if (search == undefined) {
+            if (event.length == 1) {
                 let provData = {
                     providerId: providerId,
                     tableIndex: innerHeight,
@@ -583,13 +585,13 @@ export class NotesPendingPurchaseApproval {
                 this.filesToUpload.push(provData);
             }
         } else {
-            if(event.length == 1) {
+            if (event.length == 1) {
                 this.filesToUpload[search.queueIndex].tableIndex = i;
                 this.filesToUpload[search.queueIndex].queueIndex = this.uploaderProviders.queue.length - 1;
             } else {
-                this.filesToUpload.splice(search.queueIndex ,1);
+                this.filesToUpload.splice(search.queueIndex, 1);
                 this.filesToUpload.forEach(file => {
-                    if(file.queueIndex > search.queueIndex) {
+                    if (file.queueIndex > search.queueIndex) {
                         file.queueIndex--;
                     }
                 })
@@ -603,18 +605,18 @@ export class NotesPendingPurchaseApproval {
 
     eliminarProveedor(i: number, item: any) {
         this.proveedoresSelected.splice(i, 1);
-        let search =  this.filesToUpload.find(file => file.tableIndex == i);
+        let search = this.filesToUpload.find(file => file.tableIndex == i);
         if (search != undefined) {
             this.uploaderProviders.queue[search.queueIndex].remove();
-            this.filesToUpload.splice(search.queueIndex ,1);
+            this.filesToUpload.splice(search.queueIndex, 1);
             this.filesToUpload.forEach(file => {
-                if(file.queueIndex > search.queueIndex) {
+                if (file.queueIndex > search.queueIndex) {
                     file.queueIndex--;
                 }
             });
         };
         this.filesToUpload.forEach(file => {
-            if(file.tableIndex > i) {
+            if (file.tableIndex > i) {
                 file.tableIndex--;
             }
         });
@@ -625,11 +627,11 @@ export class NotesPendingPurchaseApproval {
     }
 
     saveComment() {
-        if(this.formComment.invalid) {
+        if (this.formComment.invalid) {
             this.markFormGroupTouched(this.formComment);
             return;
         }
-        this.requestNoteService.postComment({requestNoteId: this.requestNoteId, comment: this.formComment.get('comment').value}).subscribe(d => {
+        this.requestNoteService.postComment({ requestNoteId: this.requestNoteId, comment: this.formComment.get('comment').value }).subscribe(d => {
             this.formComment.reset();
             this.requestNoteService.getComments(this.requestNoteId).subscribe(d => {
                 this.comments = d;
@@ -652,7 +654,7 @@ export class NotesPendingPurchaseApproval {
      * @returns {string} Si hay rubro su descripción (incluso si está vacía), en caso contrario el mensaje por defecto cuando no hay rubro
      */
     protected printProviderArea(providerArea?: ProviderArea): string {
-      return providerArea ? providerArea.description : "Sin rubro";
+        return providerArea ? providerArea.description : "Sin rubro";
     }
 
 }

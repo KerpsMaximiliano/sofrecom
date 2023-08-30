@@ -20,6 +20,30 @@ import { MessageService } from "app/services/common/message.service";
 // * Components
 import { Ng2ModalConfig } from "app/components/modal/ng2modal-config";
 
+export interface Note {
+  creationDate: string;
+  creationUserDescription: string;
+  creationUserId: number;
+  creationUserName: string;
+  description: string;
+  hasEditPermissions: boolean;
+  hasReadPermissions: boolean;
+  id: number;
+  status: number;
+  statusDescription: string;
+  statusId: number;
+}
+
+export enum AnaliticState {
+  PENDING_APPROVAL = "Pendiente de Aprobación",
+  APPROVED = "Aprobada",
+}
+
+export interface AnaliticManager {
+  name: string;
+  status: AnaliticState;
+}
+
 @Component({
   selector: "notes",
   templateUrl: "./notes.html",
@@ -53,20 +77,28 @@ export class NotesComponent implements OnInit, AfterViewInit {
   public analiticas = [];
   public analyticId: number;
 
-  public providersModalConfig: Ng2ModalConfig;
+  public providersModalConfig: any;
+  public approvedManagersModalConfig: any;
+
+  analiticStates = AnaliticState;
+  analiticManagers: { [key: string]: Set<string> } = {
+    approved: new Set<string>(),
+    pending_approval: new Set<string>(),
+  };
 
   @ViewChild("tabOne") public tabOne: ElementRef;
   @ViewChild("tabTwo") public tabTwo: ElementRef;
-  @ViewChild("providersModal") public providersModal: Ng2ModalConfig;
+  @ViewChild("providersModal") public providersModal: any;
+  @ViewChild("approvedManagersModal") public approvedManagersModal: any;
 
   constructor(
     private analyticService: AnalyticService,
     private dataTableService: DataTableService,
     private employeeService: EmployeeService,
     private messageService: MessageService,
-    private requestNoteService: RequestNoteService,
     private providerService: ProvidersService,
     private purchaseOrderService: PurchaseOrderService,
+    private requestNoteService: RequestNoteService,
     private router: Router
   ) {}
 
@@ -74,6 +106,14 @@ export class NotesComponent implements OnInit, AfterViewInit {
     this.providersModalConfig = new Ng2ModalConfig(
       "Proveedores designados",
       "rejectModal",
+      false,
+      true,
+      "",
+      "Cerrar"
+    );
+    this.approvedManagersModalConfig = new Ng2ModalConfig(
+      "PMs Aprobadores",
+      "managersModal",
       false,
       true,
       "",
@@ -91,22 +131,48 @@ export class NotesComponent implements OnInit, AfterViewInit {
     return environment;
   }
 
-  public changeIcon(): void {
-    $("#collapseOne").hasClass("in")
-      ? $("#search-icon")
-          .toggleClass("fa-caret-down")
-          .toggleClass("fa-caret-up")
-      : $("#search-icon")
-          .toggleClass("fa-caret-up")
-          .toggleClass("fa-caret-down");
+  public view(id: number): void {
+    this.requestNoteService.setMode("View");
+    this.router.navigate([`providers/notes/edit/${id}`]);
   }
 
-  public collapse(): void {
-    $("#collapseOne").hasClass("in")
-      ? $("#collapseOne").removeClass("in")
-      : $("#collapseOne").addClass("in");
+  public edit(id: number) {
+    this.requestNoteService.setMode("Edit");
+    this.router.navigate([`providers/notes/edit/${id}`]);
+  }
 
-    this.changeIcon();
+  public addOC(id: number): void {
+    this.purchaseOrderService.setId(id);
+    this.router.navigate([`providers/purchase-orders/nueva`]);
+  }
+
+  public changeTab(tab?: number): void {
+    if (tab) {
+      this.currentTab = tab;
+    }
+    if (this.currentTab == 2) {
+      this.notes = this.notesEnded;
+    }
+    if (this.currentTab == 1) {
+      this.notes = this.notesInProcess;
+    }
+    this.initGrid();
+  }
+
+  public getProviders(id: number): void {
+    this.modalProvidersList = [];
+    this.messageService.showLoading();
+    this.requestNoteService.getProviders(id).subscribe((d) => {
+      this.modalProvidersList = d;
+      this.modalProvidersList.sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        return nameA < nameB ? -1 : 1;
+      });
+      this.messageService.closeLoading();
+      // ! No existe el método show() dentro del componente 'Ng2ModalConfig' | app/components/modal/ng2modal-config
+      this.providersModal.show();
+    });
   }
 
   public search(): void {
@@ -200,48 +266,43 @@ export class NotesComponent implements OnInit, AfterViewInit {
     this.noteId = null;
   }
 
-  public addOC(id: number): void {
-    this.purchaseOrderService.setId(id);
-    this.router.navigate([`providers/purchase-orders/nueva`]);
+  public collapse(): void {
+    $("#collapseOne").hasClass("in")
+      ? $("#collapseOne").removeClass("in")
+      : $("#collapseOne").addClass("in");
+
+    this.changeIcon();
   }
 
-  public changeTab(tab?: number): void {
-    if (tab) {
-      this.currentTab = tab;
-    }
-    if (this.currentTab == 2) {
-      this.notes = this.notesEnded;
-    }
-    if (this.currentTab == 1) {
-      this.notes = this.notesInProcess;
-    }
-    this.initGrid();
+  public changeIcon(): void {
+    $("#collapseOne").hasClass("in")
+      ? $("#search-icon")
+          .toggleClass("fa-caret-down")
+          .toggleClass("fa-caret-up")
+      : $("#search-icon")
+          .toggleClass("fa-caret-up")
+          .toggleClass("fa-caret-down");
   }
 
-  public getProviders(id: number): void {
-    this.modalProvidersList = [];
+  public getApprovedManagers(noteId: Note["id"]): void {
+    for (let managerSet in this.analiticManagers) {
+      this.analiticManagers[managerSet].clear();
+    }
     this.messageService.showLoading();
-    this.requestNoteService.getProviders(id).subscribe((d) => {
-      this.modalProvidersList = d;
-      this.modalProvidersList.sort((a, b) => {
-        const nameA = a.name.toUpperCase();
-        const nameB = b.name.toUpperCase();
-        return nameA < nameB ? -1 : 1;
+    // ! No existe el método show() dentro del componente 'Ng2ModalConfig' | app/components/modal/ng2modal-config
+    this.approvedManagersModal.show();
+    this.requestNoteService
+      .getApprovedManagers<AnaliticManager>(noteId)
+      .subscribe((managers) => {
+        this.messageService.closeLoading();
+        for (let manager of managers) {
+          if (manager.status == AnaliticState.APPROVED) {
+            this.analiticManagers.approved.add(manager.name);
+          } else if (manager.status == AnaliticState.PENDING_APPROVAL) {
+            this.analiticManagers.pending_approval.add(manager.name);
+          }
+        }
       });
-      this.messageService.closeLoading();
-      // ! No existe el método show() dentro del componente 'Ng2ModalConfig' | app/components/modal/ng2modal-config
-      // this.providersModal.show();
-    });
-  }
-
-  public view(id: number): void {
-    this.requestNoteService.setMode("View");
-    this.router.navigate([`providers/notes/edit/${id}`]);
-  }
-
-  public edit(id: number) {
-    this.requestNoteService.setMode("Edit");
-    this.router.navigate([`providers/notes/edit/${id}`]);
   }
 
   private inicializar(): void {
@@ -286,7 +347,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
 
         this.notes = this.notesInProcess;
 
-        this.notes.sort(function (a, b) {
+        this.notes.sort(function (a: any, b: any) {
           return b.id - a.id;
         });
 
@@ -311,7 +372,7 @@ export class NotesComponent implements OnInit, AfterViewInit {
     });
 
     this.providerService.getAll().subscribe((d) => {
-      d.data.forEach((provider) => {
+      d.data.forEach((provider: any) => {
         if (provider.active == true) {
           this.providers.push(provider);
           this.providers = [...this.providers];
