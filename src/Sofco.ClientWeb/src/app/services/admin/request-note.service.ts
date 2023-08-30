@@ -5,6 +5,7 @@ import { map } from "rxjs/operators";
 import { Service } from "../common/service";
 import * as FileSaver from "file-saver";
 import { SearchFilters } from "app/models/admin/requestNote";
+import { Note } from "app/views/providers/notes/list/notes";
 
 declare const InstallTrigger: any;
 @Injectable({
@@ -30,7 +31,7 @@ export class RequestNoteService {
         return this.mode;
     }
 
-    
+
 
     //FINALES
     public getById(id: number): Observable<any> {
@@ -144,7 +145,7 @@ export class RequestNoteService {
         return bytes.buffer;
     }
 
-    public 
+    public
     //Borrador
     public approveDraft(id: number): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/RequestNoteBorrador/AprobarBorrador?id=${id}`, null);
@@ -231,5 +232,9 @@ export class RequestNoteService {
 
     postComment(comment: {requestNoteId: number, comment: string}): Observable<any> {
         return this.http.post<any>(`${this.baseUrl}/RequestNoteComment`, comment);
+    }
+
+    getApprovedManagers<ApprovedManagers = any>(noteId: Note["id"]) {
+      return this.http.get<ApprovedManagers[]>(`${this.baseUrl}/RequestNoteAnalytic/GetApprovedManageners?requestNoteID=${noteId}`);
     }
 }

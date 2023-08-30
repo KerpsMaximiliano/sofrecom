@@ -6,6 +6,8 @@ namespace Sofco.Core.DAL.RequestNote
     {
         Domain.Models.RequestNote.RequestNoteAnalytic GetById(int id);
         List<Domain.Models.RequestNote.RequestNoteAnalytic> GetByRequestNoteId(int requestNoteId);
+        List<Domain.Models.RequestNote.RequestNoteAnalytic> GetManagersByRequestNoteId(int requestNoteId);
+
         void UpdateAnalityc(Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc);
         void InsertAnalityc(Domain.Models.RequestNote.RequestNoteAnalytic requestNoteAnalityc);
 

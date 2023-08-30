@@ -7,5 +7,8 @@ namespace Sofco.Core.DAL.AllocationManagement
     public interface ILicenseTypeRepository : IBaseRepository<LicenseType>
     {
         ICollection<LicenseType> GetAllActivesReadOnly();
+        List<LicenseType> GetAllListRrhh();
+        List<LicenseType> GetAllListEmp();
+
     }
 }
