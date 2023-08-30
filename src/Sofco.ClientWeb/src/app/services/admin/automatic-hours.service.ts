@@ -1,29 +1,31 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Service } from '../common/service';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Service } from "../common/service";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: "root",
 })
 export class AutomaticHoursService {
+  private url: string;
 
-  private baseUrl: string;
-
-  constructor(
-    private http: HttpClient,
-    private service: Service) {
-    this.baseUrl = this.service.UrlApi;
+  constructor(private http: HttpClient, private service: Service) {
+    this.url = this.service.UrlApi;
   }
 
   getTasks() {
-    return this.http.get<any>(`${this.baseUrl}/PreloadAutomaticWorkTimes/GetTasks`);
+    return this.http.get<any>(`${this.url}/PreloadAutomaticWorkTimes/GetTasks`);
   }
 
   runProcess() {
-    return this.http.get<any>(`${this.baseUrl}/PreloadAutomaticWorkTimes/RunProcess`);
-  }
-  runProcessMensual() {
-    return this.http.get<any>(`${this.baseUrl}/PreloadAutomaticWorkTimes/RunMonthProcess`);
+    return this.http.get<any>(
+      `${this.url}/PreloadAutomaticWorkTimes/RunProcess`
+    );
   }
 
+  runProcessMensual() {
+    return this.http.get(
+      `${this.url}/PreloadAutomaticWorkTimes/RunMonthProcess`,
+      { responseType: "text" } // La respuesta del servidor es un texto plano.
+    );
+  }
 }

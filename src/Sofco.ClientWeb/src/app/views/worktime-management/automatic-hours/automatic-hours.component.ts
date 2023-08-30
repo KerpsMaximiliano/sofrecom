@@ -6,92 +6,106 @@ import { SettingsService } from "app/services/admin/settings.service";
 import { MessageService } from "app/services/common/message.service";
 
 @Component({
-    selector: 'app-automatic-hours',
-    templateUrl: './automatic-hours.component.html',
-    styleUrls: ['./automatic-hours.component.css']
+  selector: "app-automatic-hours",
+  templateUrl: "./automatic-hours.component.html",
+  styleUrls: ["./automatic-hours.component.css"],
 })
-
-
 export class AutomaticHoursComponent implements OnInit {
- 
-    form: FormGroup = new FormGroup({
-        task: new FormControl(null, Validators.required)
+  form: FormGroup = new FormGroup({
+    task: new FormControl(null, Validators.required),
+  });
+
+  tasks = [] as Array<any>;
+
+  setting: any;
+
+  constructor(
+    private automaticHoursService: AutomaticHoursService,
+    public menuService: MenuService,
+    private settingsService: SettingsService,
+    private messageService: MessageService
+  ) {}
+
+  ngOnInit(): void {
+    this.settingsService.getAll().subscribe((d) => {
+      this.setting = d.body.data.find(
+        (setting) => setting.key == "TareaPrecargaHorasDefault"
+      );
+      this.form.controls["task"].setValue(Number(this.setting.value));
     });
+    this.automaticHoursService.getTasks().subscribe((d) => {
+      this.tasks = d;
+    });
+  }
 
-    tasks = [] as Array<any>;
-
-    setting: any;
-
-    constructor(
-        private automaticHoursService: AutomaticHoursService,
-        public menuService: MenuService,
-        private settingsService: SettingsService,
-        private messageService: MessageService
-    ) {}
-
-    ngOnInit(): void {
-        this.settingsService.getAll().subscribe(d => {
-            this.setting = d.body.data.find(setting => setting.key == 'TareaPrecargaHorasDefault');
-            this.form.controls['task'].setValue(Number(this.setting.value));
-        })
-        this.automaticHoursService.getTasks().subscribe(d => {
-            this.tasks = d;
-        });
+  save() {
+    if (this.form.invalid) {
+      this.markFormGroupTouched(this.form);
+      return;
     }
-
-    save() {
-        if (this.form.invalid) {
-            this.markFormGroupTouched(this.form);
-            return;
-        };
-        let model = {
-            id: this.setting.id,
-            key: this.setting.key,
-            category: this.setting.category,
-            type: this.setting.type,
-            value: Number(this.form.get('task').value)
-        };
-        this.settingsService.put(model).subscribe(d => {
-            this.messageService.showMessage("Cambios guardados", 0);
-        },
-        err => {
-            this.messageService.showMessage("Error al guardar cambios", 1);
-        })
-    }
-
-    run() {
-        if (this.form.invalid) {
-            this.markFormGroupTouched(this.form);
-            return;
-        };
-        this.automaticHoursService.runProcess().subscribe(d => {
-            this.messageService.showMessage("Proceso de carga de horas ejecutado", 0);
-        },
-        err => {
-            this.messageService.showMessage("Error al ejecutar el proceso", 1);
-        })
-    }
-
-    runMensual() {
-        if (this.form.invalid) {
-            this.markFormGroupTouched(this.form);
-            return;
-        };
-        this.automaticHoursService.runProcessMensual().subscribe(d => {
-            this.messageService.showMessage("Proceso de carga de horas ejecutado", 0);
-        },
-        err => {
-            this.messageService.showMessage("Error al ejecutar el proceso", 1);
-        })
-    }
-
-    markFormGroupTouched(formGroup: FormGroup) {
-        (<any>Object).values(formGroup.controls).forEach(control => {
-            control.markAsTouched();
-
-            if (control.controls) {
-                this.markFormGroupTouched(control);
-            }
-        });
+    let model = {
+      id: this.setting.id,
+      key: this.setting.key,
+      category: this.setting.category,
+      type: this.setting.type,
+      value: Number(this.form.get("task").value),
     };
+    this.settingsService.put(model).subscribe(
+      (d) => {
+        this.messageService.showMessage("Cambios guardados", 0);
+      },
+      (err) => {
+        this.messageService.showMessage("Error al guardar cambios", 1);
+      }
+    );
+  }
+
+  run() {
+    if (this.form.invalid) {
+      this.markFormGroupTouched(this.form);
+      return;
+    }
+    this.automaticHoursService.runProcess().subscribe(
+      (d) => {
+        this.messageService.showMessage(
+          "Proceso de carga de horas ejecutado",
+          0
+        );
+      },
+      (err) => {
+        this.messageService.showMessage("Error al ejecutar el proceso", 1);
+      }
+    );
+  }
+
+  /**
+   * Ejecuta la carga automática mensual de horas.
+   * ! La respuesta del servidor es un texto plano insertado en el servicio de mensajes.
+   * @returns Retorna si el formulario es invalido.
+   */
+  public runMensual(): void {
+    if (this.form.invalid) {
+      this.markFormGroupTouched(this.form);
+      return;
+    }
+
+    this.automaticHoursService.runProcessMensual().subscribe(
+      (response: any) => {
+        this.messageService.showMessage(response, 0);
+      },
+      (error: any) => {
+        this.messageService.showMessage("Error al ejecutar el proceso", 1);
+      }
+    );
+  }
+
+  markFormGroupTouched(formGroup: FormGroup) {
+    (<any>Object).values(formGroup.controls).forEach((control) => {
+      control.markAsTouched();
+
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
 }
