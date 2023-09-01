@@ -60,9 +60,6 @@ export class IndustryComponent implements AfterContentInit {
       description: this.form.get("description").value,
       critical: this.form.get("critical").value,
       rnAmmountReq: this.form.get("rnAmmountReq").value,
-      active: this.industry.active,
-      startDate: this.industry.startDate,
-      endDate: this.industry.endDate,
     };
 
     if (this.param.includes("add")) this.addIndustry(form);
