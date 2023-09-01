@@ -52,6 +52,7 @@ export class ProvidersComponent implements AfterViewInit {
   public businessName: string;
   public selectedAreas: [];
   public selectedCritical: number = 0;
+  public selectedActive: number = 0;
 
   // dataTable.
   public data = [];
@@ -139,9 +140,10 @@ export class ProvidersComponent implements AfterViewInit {
    */
   public clear(): void {
     this.selectedStates = 0;
+    this.selectedCritical = 0;
+    this.selectedActive = 0;
     this.businessName = "";
     this.selectedAreas = null;
-    this.selectedCritical = 0;
   }
 
   public changeIcon(): void {
@@ -168,7 +170,6 @@ export class ProvidersComponent implements AfterViewInit {
    */
   public search(): void {
     this.messageService.showLoading();
-
     this.providersService
       .getByParams({
         statusId: this.selectedStates === 0 ? null : this.selectedStates,
@@ -211,6 +212,22 @@ export class ProvidersComponent implements AfterViewInit {
    * @param provider Proveedor.
    */
   private reviewProvider(provider: IProviders): void {
+    switch (this.selectedActive) {
+      case 0:
+        this.reviewArea(provider);
+        break;
+      case 1:
+        if (provider.active === true) this.reviewArea(provider);
+        break;
+      case 2:
+        if (provider.active === false) this.reviewArea(provider);
+        break;
+      default:
+        break;
+    }
+  }
+
+  private reviewArea(provider: IProviders): void {
     switch (this.selectedCritical) {
       case 1:
         this.criticalArea(provider);
@@ -283,7 +300,9 @@ export class ProvidersComponent implements AfterViewInit {
         if (area) areas.push(area.description);
       }
     );
-    if (areas.length) this.setDataTable(provider, areas);
+    if (areas.length) {
+      this.setDataTable(provider, areas);
+    }
   }
 
   /**

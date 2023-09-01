@@ -38,6 +38,30 @@
 
             <div class="col-sm-4">
               <div class="form-group">
+                <label class="control-label">{{ 'providers.grid.critical' | translate }}</label>
+                <ng-select [(ngModel)]="selectedCritical" [multiple]="false" [searchable]="false" [clearable]="false">
+                  <ng-option [value]="0"> Todos </ng-option>
+                  <ng-option [value]="1"> Si </ng-option>
+                  <ng-option [value]="2"> No </ng-option>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label"> Activo </label>
+                <ng-select [(ngModel)]="selectedActive" [multiple]="false" [searchable]="false" [clearable]="false">
+                  <ng-option [value]="0"> Todos </ng-option>
+                  <ng-option [value]="1"> Si </ng-option>
+                  <ng-option [value]="2"> No </ng-option>
+                </ng-select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
                 <label class="control-label">{{ 'providers.grid.businessName' | translate }}</label>
                 <input type="text" class="form-control" [(ngModel)]="businessName" />
               </div>
@@ -48,17 +72,6 @@
                 <label class="control-label">{{ 'providers.grid.sector' | translate }}</label>
                 <ng-select [items]="areas$" bindLabel="description" bindValue="id" [(ngModel)]="selectedAreas"
                   [multiple]="true" [placeholder]="areas$.length ? '' : 'No se han podido cargar las áreas'">
-                </ng-select>
-              </div>
-            </div>
-
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label class="control-label">{{ 'providers.grid.critical' | translate }}</label>
-                <ng-select [(ngModel)]="selectedCritical" [multiple]="false" [searchable]="false" [clearable]="false">
-                  <ng-option [value]="0"> Todos </ng-option>
-                  <ng-option [value]="1"> Si </ng-option>
-                  <ng-option [value]="2"> No </ng-option>
                 </ng-select>
               </div>
             </div>
