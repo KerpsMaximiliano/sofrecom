@@ -28,7 +28,20 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label"> Crítico </label>
-                <ng-select [multiple]="false" [searchable]="false" [clearable]="false" [(ngModel)]="critical">
+                <ng-select [multiple]="false" [searchable]="false" [clearable]="false" [(ngModel)]="selectCritical">
+                  <ng-option [value]="0"> Todos </ng-option>
+                  <ng-option [value]="1"> Si </ng-option>
+                  <ng-option [value]="2"> No </ng-option>
+                </ng-select>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label title-ellipsis" title="¿Requiere monto en nota de pedido?">
+                  ¿Requiere monto en nota de pedido?
+                </label>
+                <ng-select [multiple]="false" [searchable]="false" [clearable]="false" [(ngModel)]="selectRnAmmountReq">
                   <ng-option [value]="0"> Todos </ng-option>
                   <ng-option [value]="1"> Si </ng-option>
                   <ng-option [value]="2"> No </ng-option>
@@ -39,22 +52,13 @@
             <div class="col-sm-4">
               <div class="form-group">
                 <label class="control-label"> Nombre </label>
-                <input type="text" class="form-control" [(ngModel)]="description" maxlength="50" />
-              </div>
-            </div>
-
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label class="control-label"> ¿Requiere monto en nota de pedido? </label>
-                <div class="checkbox-container">
-                  <input type="checkbox" class="w-2" [(ngModel)]="rnAmmountReq">
-                </div>
+                <input type="text" class="form-control" [(ngModel)]="inputDescription" maxlength="50" />
               </div>
             </div>
           </div>
 
           <div class="text-right">
-            <button class="btn btn-sm btn-success" (click)="search()">
+            <button class="btn btn-sm btn-success" (click)="search(true)">
               {{ 'ACTIONS.search' | translate }} <i class="fa fa-search"></i>
             </button>
             <button class="btn btn-sm btn-warning" (click)="clear()">

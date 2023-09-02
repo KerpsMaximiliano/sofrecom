@@ -14,11 +14,13 @@ import { ProvidersAreaService } from "app/services/admin/providersArea.service";
   providers: [DatePipe],
 })
 export class IndustriesComponent implements OnInit {
-  public data = []; // dataTable.
+  public inputDescription: string = ""; // INPUT: Descripción.
+  // 0 = Todos | 1 = Si | 2 = No
+  public selectCritical: number = 0; // SELECT: Critico.
+  // 0 = Todos | 1 = Si | 2 = No
+  public selectRnAmmountReq: number = 0; // SELECT: Requiere monto en notas de pedido.
 
-  public description: string = ""; // INPUT: Descripción.
-  public critical: number = 0; // SELECT: Critico.
-  public rnAmmountReq: boolean = false; // CHECKBOX: Requiere monto en notas de pedido.
+  public data = []; // dataTable.
 
   constructor(
     private _industries: ProvidersAreaService,
@@ -28,18 +30,13 @@ export class IndustriesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._message.showLoading();
     if (this._industries.getMode() && this._industries.getIndustry()) {
       this.data = [];
       this.data.push(this._industries.getIndustry());
       this._industries.setMode(false);
       this._message.closeLoading();
     } else {
-      this._industries.getAll().subscribe({
-        next: (res: any) => this.setDataTable(res.data),
-        error: () => this._message.closeLoading(), // ! Sin manejo de errores.
-        complete: () => this._message.closeLoading(),
-      });
+      this.search();
     }
   }
 
@@ -61,19 +58,18 @@ export class IndustriesComponent implements OnInit {
     this.changeIcon();
   }
 
-  public search(): void {
+  public search(option?: boolean): void {
     this._message.showLoading();
     this._industries.getAll().subscribe({
-      next: (res: any) => this.setDataTable(res.data),
+      next: (res: any) => this.setDataTable(res.data, option),
       error: () => this._message.closeLoading(), // ! Sin manejo de errores.
-      complete: () => this._message.closeLoading(),
     });
   }
 
   public clear(): void {
-    this.critical = 0;
-    this.description = "";
-    this.rnAmmountReq = false;
+    this.selectCritical = 0;
+    this.selectRnAmmountReq = 0;
+    this.inputDescription = "";
   }
 
   public mode(option: number, industry?: any): void {
@@ -113,7 +109,6 @@ export class IndustriesComponent implements OnInit {
         );
       },
       error: () => this._message.closeLoading(), // ! Sin manejo de errores.
-      complete: () => {},
     });
   }
 
@@ -126,17 +121,89 @@ export class IndustriesComponent implements OnInit {
         this.setDataTable(this.data);
       },
       error: () => this._message.closeLoading(),
-      complete: () => this._message.closeLoading(),
     });
   }
 
-  private setDataTable(data: any): void {
+  private setDataTable(data: any, option?: boolean): void {
     this.data = [];
     data.forEach((element: any) => {
-      this.data.push(element);
+      option ? this.handleFilter(element) : this.data.push(element);
     });
     this.data = [...this.data];
-    if (this.data.length > 1) this.initGrid();
+
+    this.initGrid();
+  }
+
+  private handleFilter(element: any): void {
+    // 0: todos.
+    // 1: true.
+    // 2: false.
+
+    // critico: true/false && rnAmmountReq: true/false.
+    if (this.selectCritical !== 0 && this.selectRnAmmountReq !== 0) {
+      if (this.handleSelect(element, 1) && this.handleSelect(element, 2)) {
+        this.filterDescription(element);
+        return;
+      }
+    } else {
+      // critico: TODOS && rnAmmountReq: TODOS.
+      if (this.selectCritical === 0 && this.selectRnAmmountReq === 0) {
+        this.filterDescription(element);
+        return;
+      }
+    }
+
+    // critico: TODOS && rnAmmountReq: true/false.
+    if (this.selectCritical === 0 && this.selectRnAmmountReq !== 0) {
+      if (this.handleSelect(element, 2)) this.filterDescription(element);
+    }
+
+    // critico: true/false && rnAmmountReq: TODOS.
+    if (this.selectCritical !== 0 && this.selectRnAmmountReq === 0) {
+      if (this.handleSelect(element, 1)) this.filterDescription(element);
+    }
+  }
+
+  /**
+   * Almacena el valor de la selección 'Critico' o 'rnAmmountReq' según la opción
+   * recibida.
+   *  1. Critico.
+   *  2. RnAmmountReq.
+   * Según la selección, almacena el valor de la propiedad del elemento en 'prop'.
+   * @param element Rubro a filtrar.
+   * @param option Selección con la que debe comparar.
+   * @returns Boolean: si existe coincidencia entre la selección y el valor de element.
+   */
+  private handleSelect(element: any, option: number): boolean {
+    let select: number = 0;
+    let prop: boolean;
+
+    if (option === 1) {
+      select = this.selectCritical;
+      prop = element.critical;
+    }
+
+    if (option === 2) {
+      select = this.selectRnAmmountReq;
+      prop = element.rnAmmountReq;
+    }
+
+    switch (select) {
+      case 1:
+        if (prop === true) return true;
+        break;
+      case 2:
+        if (prop === false) return true;
+        break;
+      default:
+        return false;
+    }
+  }
+
+  private filterDescription(element: any): void {
+    if (element.description.toLowerCase().includes(this.inputDescription)) {
+      this.data.push(element);
+    }
   }
 
   private initGrid(): void {
@@ -149,5 +216,7 @@ export class IndustriesComponent implements OnInit {
 
     this._table.destroy(config.selector);
     this._table.initialize(config);
+
+    this._message.closeLoading();
   }
 }

@@ -42,3 +42,14 @@ input[type="checkbox"] {
 .w-action {
   min-width: 100px !important;
 }
+
+.control-label {
+  margin-bottom: 8px;
+}
+
+.title-ellipsis {
+  vertical-align: top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
