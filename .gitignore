@@ -333,3 +333,4 @@ __pycache__/
 .orig
 .sonarqube
 /src/Sofco.ClientWeb/.angular/cache
+src/Sofco.ClientWeb/.angular/cache
